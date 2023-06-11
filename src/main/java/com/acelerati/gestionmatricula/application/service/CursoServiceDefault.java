@@ -4,6 +4,7 @@ import com.acelerati.gestionmatricula.application.service.interfaces.CursoServic
 import com.acelerati.gestionmatricula.domain.model.Curso;
 import com.acelerati.gestionmatricula.domain.persistence.CursoRepository;
 import com.acelerati.gestionmatricula.infraestructure.entitys.CursoEntity;
+import com.acelerati.gestionmatricula.infraestructure.entitys.SemestreAcademicoEntity;
 import org.springframework.stereotype.Service;
 
 import static com.acelerati.gestionmatricula.infraestructure.rest.mappers.CursoMapper.alCurso;
@@ -24,4 +25,6 @@ public class CursoServiceDefault implements CursoService {
         curso=alCurso(cursoRepository.save(cursoEntity)) ;
         return curso;
     }
+
+
 }

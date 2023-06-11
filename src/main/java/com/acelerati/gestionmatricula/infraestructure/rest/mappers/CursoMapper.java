@@ -1,7 +1,6 @@
 package com.acelerati.gestionmatricula.infraestructure.rest.mappers;
 
 import com.acelerati.gestionmatricula.domain.model.Curso;
-import com.acelerati.gestionmatricula.domain.model.SemestreAcademico;
 import com.acelerati.gestionmatricula.infraestructure.entitys.CursoEntity;
 
 public class CursoMapper {

@@ -4,7 +4,6 @@ import com.acelerati.gestionmatricula.domain.persistence.CursoRepository;
 import com.acelerati.gestionmatricula.infraestructure.adapters.interfaces.CursoRepositoryMySql;
 import com.acelerati.gestionmatricula.infraestructure.entitys.CursoEntity;
 import com.acelerati.gestionmatricula.infraestructure.entitys.SemestreAcademicoEntity;
-import org.springframework.stereotype.Service;
 
 
 public class CursoImpRepositoryMysql implements CursoRepository {
@@ -19,7 +18,21 @@ public class CursoImpRepositoryMysql implements CursoRepository {
     @Override
     public CursoEntity save(CursoEntity cursoEntity) {
         cursoEntity.setSemestreAcademicoEntity(SemestreAcademicoEntity.builder().id(1L).build());
-        return cursoRepositoryMySql.save(cursoEntity);
+        if(esGrupoUnicoMateriaSemetre(cursoEntity.getGrupo(),cursoEntity.getIdMateria(),cursoEntity.getSemestreAcademicoEntity())){
+            return cursoRepositoryMySql.save(cursoEntity);
+        }
+        else{
+            System.out.println("Este grupo ya fue asignado");
+            return null;
+        }
+
+
+    }
+    @Override
+    public boolean esGrupoUnicoMateriaSemetre(Integer grupo, Long idMateria, SemestreAcademicoEntity semestreAcademicoEntity){
+        return cursoRepositoryMySql.countByGrupoAndIdMateriaAndSemestreAcademicoEntity
+                (grupo,idMateria,semestreAcademicoEntity)==0;
+
 
     }
 }
