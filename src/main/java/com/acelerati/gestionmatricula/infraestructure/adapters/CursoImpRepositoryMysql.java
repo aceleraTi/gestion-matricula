@@ -4,6 +4,7 @@ import com.acelerati.gestionmatricula.domain.persistence.CursoRepository;
 import com.acelerati.gestionmatricula.infraestructure.adapters.interfaces.CursoRepositoryMySql;
 import com.acelerati.gestionmatricula.infraestructure.entitys.CursoEntity;
 import com.acelerati.gestionmatricula.infraestructure.entitys.SemestreAcademicoEntity;
+import com.acelerati.gestionmatricula.infraestructure.exceptions.NotCreatedInException;
 
 
 public class CursoImpRepositoryMysql implements CursoRepository {
@@ -23,7 +24,8 @@ public class CursoImpRepositoryMysql implements CursoRepository {
         }
         else{
             System.out.println("Este grupo ya fue asignado");
-            return null;
+
+            throw new NotCreatedInException("El grupo para el semestre y materia ya existe");
         }
 
 
