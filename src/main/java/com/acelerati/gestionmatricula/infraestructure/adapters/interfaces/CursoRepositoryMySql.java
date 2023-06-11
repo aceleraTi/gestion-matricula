@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CursoRepositoryMySql extends CrudRepository<CursoEntity,Long> {
+   // CursoEntity save(CursoEntity cursoEntity);
 }

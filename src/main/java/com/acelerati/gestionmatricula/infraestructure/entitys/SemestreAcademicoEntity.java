@@ -1,7 +1,10 @@
 package com.acelerati.gestionmatricula.infraestructure.entitys;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
+import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -9,8 +12,11 @@ import javax.validation.constraints.Min;
 import java.util.Date;
 import java.util.List;
 
-@Data
 
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "semestres_academicos")
 public class SemestreAcademicoEntity {
@@ -31,7 +37,7 @@ public class SemestreAcademicoEntity {
 
     //__________________________________Relaciones____________________________
 
-    @OneToMany(mappedBy = "semestreAcademico",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "semestreAcademicoEntity",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<CursoEntity> cursos;
 
 

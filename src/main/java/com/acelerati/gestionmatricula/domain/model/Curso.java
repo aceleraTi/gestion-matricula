@@ -5,14 +5,13 @@ import lombok.Data;
 
 @Data
 @Builder
-public class Course {
+public class Curso {
 
     private Long id;
     private Long idMateria;
     private Long idProfesor;
-    private Long idSemestreAcademico;
-    private String grupo;
-    private Boolean estado;
-
+    private SemestreAcademico semestreAcademico;
+    private Integer grupo;
+    private String estado;
 
 }

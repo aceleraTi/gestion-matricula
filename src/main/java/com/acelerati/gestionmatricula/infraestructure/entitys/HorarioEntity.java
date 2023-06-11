@@ -1,12 +1,13 @@
 package com.acelerati.gestionmatricula.infraestructure.entitys;
 
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.time.LocalTime;
 
 @Data
-
+@Builder
 @Entity
 @Table(name = "horarios")
 public class HorarioEntity {

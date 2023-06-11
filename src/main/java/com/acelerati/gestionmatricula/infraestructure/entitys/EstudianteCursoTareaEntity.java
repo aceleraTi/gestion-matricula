@@ -1,13 +1,14 @@
 package com.acelerati.gestionmatricula.infraestructure.entitys;
 
 
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Data
-
+@Builder
 @Entity
 @Table(name = "estudiantes_cursos_tareas")
 public class EstudianteCursoTareaEntity {

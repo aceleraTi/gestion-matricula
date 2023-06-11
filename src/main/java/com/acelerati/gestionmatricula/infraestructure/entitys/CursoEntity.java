@@ -1,28 +1,34 @@
 package com.acelerati.gestionmatricula.infraestructure.entitys;
 
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
-
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "cursos")
 public class CursoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotEmpty
+
     private Long idMateria;
 
     private Long idProfesor;
 
 
 
-    @NotEmpty
+    @NotNull
     private Integer grupo;
 
     @NotEmpty
@@ -32,7 +38,7 @@ public class CursoEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="id_semestre_academico")
-    private SemestreAcademicoEntity semestreAcademico;
+    private SemestreAcademicoEntity semestreAcademicoEntity;
 
     @OneToMany(mappedBy = "curso",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<HorarioEntity> horarios;
