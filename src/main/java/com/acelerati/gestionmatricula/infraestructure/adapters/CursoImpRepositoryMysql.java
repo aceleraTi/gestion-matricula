@@ -1,10 +1,17 @@
 package com.acelerati.gestionmatricula.infraestructure.adapters;
 
+import com.acelerati.gestionmatricula.domain.model.Materia;
+import com.acelerati.gestionmatricula.domain.model.Profesor;
 import com.acelerati.gestionmatricula.domain.persistence.CursoRepository;
 import com.acelerati.gestionmatricula.infraestructure.adapters.interfaces.CursoRepositoryMySql;
 import com.acelerati.gestionmatricula.infraestructure.entitys.CursoEntity;
 import com.acelerati.gestionmatricula.infraestructure.entitys.SemestreAcademicoEntity;
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotCreatedInException;
+import com.acelerati.gestionmatricula.infraestructure.exceptions.NotFoundItemsInException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import java.util.Optional;
 
 
 public class CursoImpRepositoryMysql implements CursoRepository {
@@ -18,22 +25,63 @@ public class CursoImpRepositoryMysql implements CursoRepository {
 
     @Override
     public CursoEntity save(CursoEntity cursoEntity) {
-        cursoEntity.setSemestreAcademicoEntity(SemestreAcademicoEntity.builder().id(1L).build());
-        if(esGrupoUnicoMateriaSemetre(cursoEntity.getGrupo(),cursoEntity.getIdMateria(),cursoEntity.getSemestreAcademicoEntity())){
-            return cursoRepositoryMySql.save(cursoEntity);
+        if(esGrupoUnicoMateriaSemetre(cursoEntity.getGrupo(),
+                cursoEntity.getMateria(),cursoEntity.getSemestreAcademicoEntity())){
+            System.out.println(countProfesorCurso(cursoEntity));
+            if(countProfesorCurso(cursoEntity)){
+                return cursoRepositoryMySql.save(cursoEntity);
+            }
+            throw new NotCreatedInException("El profesor ya tiene los 4 cursos permitidos en curso");
         }
         else{
             System.out.println("Este grupo ya fue asignado");
-
             throw new NotCreatedInException("El grupo para el semestre y materia ya existe");
         }
-
-
     }
+
     @Override
-    public boolean esGrupoUnicoMateriaSemetre(Integer grupo, Long idMateria, SemestreAcademicoEntity semestreAcademicoEntity){
-        return cursoRepositoryMySql.countByGrupoAndIdMateriaAndSemestreAcademicoEntity
-                (grupo,idMateria,semestreAcademicoEntity)==0;
+    public CursoEntity update(CursoEntity cursoEntity) {
+        if(countProfesorCurso(cursoEntity)){
+            return cursoRepositoryMySql.save(cursoEntity);
+        }
+        throw new NotCreatedInException("El profesor ya tiene los 4 cursos permitidos en curso");
+    }
+
+
+    @Override
+    public CursoEntity findById(Long id) {
+        Optional<CursoEntity> cursoEntityOptional=cursoRepositoryMySql.findById(id);
+
+        if (cursoEntityOptional.isPresent()){
+            return cursoEntityOptional.get();
+        }
+        throw new NotFoundItemsInException("El curso no existe");
+    }
+
+    @Override
+    public Page<CursoEntity> findByProfesor(Profesor profesor, Pageable pageable) {
+        Page<CursoEntity> pageCursoEntity=cursoRepositoryMySql.findByProfesor(profesor,pageable);
+        if(pageCursoEntity.getSize()>0){
+            return pageCursoEntity;
+        }
+        throw new NotFoundItemsInException("No se encontraron cursos asignados");
+    }
+
+
+    private boolean esGrupoUnicoMateriaSemetre(Integer grupo, Materia materia, SemestreAcademicoEntity semestreAcademicoEntity){
+        return cursoRepositoryMySql.countByGrupoAndMateriaAndSemestreAcademicoEntity
+                (grupo,materia,semestreAcademicoEntity)==0;
+    }
+
+    private boolean countProfesorCurso(CursoEntity cursoEntity){
+
+        if(cursoEntity.getProfesor()!=null){
+            return cursoRepositoryMySql.countByProfesorAndEstado(cursoEntity.getProfesor(),"En Curso")<4;
+        }
+        else
+        {
+            return true;
+        }
 
 
     }

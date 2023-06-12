@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Transient;
 
@@ -14,11 +13,10 @@ import javax.persistence.Transient;
 @NoArgsConstructor
 @AllArgsConstructor
 @Embeddable
-public class Materia {
+public class Pensum {
+
     private Long id;
     @Transient
-    private String nombre;
-    @Transient
-    private String descripcion;
+    private Integer año;
 
 }

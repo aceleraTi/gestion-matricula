@@ -8,8 +8,8 @@ import lombok.Data;
 public class Curso {
 
     private Long id;
-    private Long idMateria;
-    private Long idProfesor;
+    private Materia materia;
+    private Profesor profesor;
     private SemestreAcademico semestreAcademico;
     private Integer grupo;
     private String estado;

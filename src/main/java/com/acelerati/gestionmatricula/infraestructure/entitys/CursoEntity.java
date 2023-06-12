@@ -1,6 +1,8 @@
 package com.acelerati.gestionmatricula.infraestructure.entitys;
 
 
+import com.acelerati.gestionmatricula.domain.model.Materia;
+import com.acelerati.gestionmatricula.domain.model.Profesor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,12 +26,13 @@ public class CursoEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long idMateria;
-
-    private Long idProfesor;
-
-
-
+    @Embedded
+    @AttributeOverride(name = "id", column = @Column(name = "id_materia"))
+    @NotNull
+    private Materia materia;
+    @Embedded
+    @AttributeOverride(name = "id", column = @Column(name = "id_profesor"))
+    private Profesor profesor;
     @NotNull
     private Integer grupo;
 
@@ -53,7 +56,6 @@ public class CursoEntity {
     //-------------------------------------------------------------------------------
 
     @PrePersist
-
     protected void onCreate(){
         this.estado = "En Curso";
     }

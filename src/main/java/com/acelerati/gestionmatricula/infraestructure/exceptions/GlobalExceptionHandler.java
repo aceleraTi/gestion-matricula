@@ -30,5 +30,13 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(apiError);
     }
 
+    @ExceptionHandler(NotFoundItemsInException.class)
+    public ResponseEntity<ApiError> handleNotFoundItemsInException(NotFoundItemsInException ex){
+        List<String> errors=new ArrayList<>();
+        errors.add(ex.getMessage());
+        ApiError apiError = new ApiError(HttpStatus.NOT_FOUND.value(), ex.getMessage(), errors);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiError);
+    }
+
 
 }

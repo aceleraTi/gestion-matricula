@@ -4,6 +4,8 @@ import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Data
@@ -15,6 +17,8 @@ public class TareaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
+    @Size(max = 300, min = 100,message = "Cada tarea debe tener una descripcion de minimo 100 caracteres y maximo 300")
     private String descripcion;
 
     //__________________________________Relaciones____________________________

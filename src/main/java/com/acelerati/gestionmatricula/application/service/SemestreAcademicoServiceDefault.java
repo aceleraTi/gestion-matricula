@@ -22,8 +22,8 @@ public class SemestreAcademicoServiceDefault implements SemestreAcademicoService
     public SemestreAcademico create(SemestreAcademico semestreAcademico) {
 
         SemestreAcademicoEntity semestreAcademicoEntity=alSemestreAcademicoEntity(semestreAcademico);
-        semestreAcademico=alSemestreAcademico(semestreAcademicoRepository.save(semestreAcademicoEntity));
-        return semestreAcademico;
+        return alSemestreAcademico(semestreAcademicoRepository.save(semestreAcademicoEntity));
+
 
     }
 }

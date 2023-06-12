@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalTime;
 
 @Data
@@ -15,13 +16,13 @@ public class HorarioEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private LocalTime HoraInicio;
-
-    private LocalTime HoraFin;
-
+    @NotNull
+    private LocalTime horaInicio;
+    @NotNull
+    private LocalTime horaFin;
+    @NotNull
     private String dia;
-
+    @NotNull
     private String link;
 
 
