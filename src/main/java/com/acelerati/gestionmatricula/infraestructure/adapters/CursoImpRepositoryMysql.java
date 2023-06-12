@@ -25,8 +25,10 @@ public class CursoImpRepositoryMysql implements CursoRepository {
 
     @Override
     public CursoEntity save(CursoEntity cursoEntity) {
+
         if(esGrupoUnicoMateriaSemetre(cursoEntity.getGrupo(),
                 cursoEntity.getMateria(),cursoEntity.getSemestreAcademicoEntity())){
+
             System.out.println(countProfesorCurso(cursoEntity));
             if(countProfesorCurso(cursoEntity)){
                 return cursoRepositoryMySql.save(cursoEntity);

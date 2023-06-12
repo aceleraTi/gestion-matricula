@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 
 @Data
 @Builder
@@ -15,10 +16,16 @@ import javax.persistence.Transient;
 @AllArgsConstructor
 @Embeddable
 public class Materia {
+    @NotNull
     private Long id;
+    @NotNull
+    @Transient
+    private Pensum pensum;
     @Transient
     private String nombre;
     @Transient
     private String descripcion;
+    @Transient
+    private Materia materiaPrerequisito;
 
 }
