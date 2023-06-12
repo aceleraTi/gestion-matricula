@@ -3,14 +3,13 @@ package com.acelerati.gestionmatricula.infraestructure.adapters;
 import com.acelerati.gestionmatricula.domain.persistence.HorarioRepository;
 import com.acelerati.gestionmatricula.infraestructure.adapters.interfaces.HorarioRepositoryMySql;
 import com.acelerati.gestionmatricula.infraestructure.entitys.HorarioEntity;
-import com.acelerati.gestionmatricula.infraestructure.entitys.SemestreAcademicoEntity;
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotCreatedInException;
 
-public class HorarioImplRepositoryMySql implements HorarioRepository {
+public class HorarioImpRepositoryMySql implements HorarioRepository {
 
     private final HorarioRepositoryMySql horarioRepositoryMySql;
 
-    public HorarioImplRepositoryMySql(HorarioRepositoryMySql horarioRepositoryMySql) {
+    public HorarioImpRepositoryMySql(HorarioRepositoryMySql horarioRepositoryMySql) {
         this.horarioRepositoryMySql = horarioRepositoryMySql;
     }
 

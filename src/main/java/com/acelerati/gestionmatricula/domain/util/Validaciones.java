@@ -14,7 +14,7 @@ public class Validaciones {
             Usuario usuario=(Usuario) session.getAttribute("usuario");
             System.out.println(usuario.getTipoUsuario());
             System.out.println("--"+usuarioAut);
-            if(usuarioAut.equals(usuario.getTipoUsuario())){
+            if(usuarioAut.equalsIgnoreCase(usuario.getTipoUsuario())){
                 return usuario;
             }
                 throw new NotLoggedInException("Usuario no autorizado");
@@ -26,7 +26,7 @@ public class Validaciones {
     }
 
     public static Profesor validarProfesor(Usuario usuario){
-        if(usuario.getTipoUsuario().equals("profesor")){
+        if(usuario.getTipoUsuario().equalsIgnoreCase("profesor")){
            return Profesor.builder()
                     .id(usuario.getId())
                     .nombre(usuario.getNombre()).build();
@@ -34,8 +34,8 @@ public class Validaciones {
         throw new NotLoggedInException("Usuario no autorizado");
     }
 
-    public static Estudiante validarAlumno(Usuario usuario){
-        if(usuario.getTipoUsuario().equals("Estudiante")){
+    public static Estudiante validarEstudiante(Usuario usuario){
+        if(usuario.getTipoUsuario().equalsIgnoreCase("estudiante")){
             return Estudiante
                     .builder()
                     .id(usuario.getId())

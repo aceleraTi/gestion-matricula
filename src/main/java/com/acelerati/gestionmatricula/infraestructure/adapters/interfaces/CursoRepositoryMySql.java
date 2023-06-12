@@ -26,4 +26,6 @@ public interface CursoRepositoryMySql  extends PagingAndSortingRepository<CursoE
 
    Page<CursoEntity> findByProfesor(Profesor profesor, Pageable pageable);
 
+   Optional<CursoEntity> findByIdAndMateria(Long id, Materia materia);
+
 }

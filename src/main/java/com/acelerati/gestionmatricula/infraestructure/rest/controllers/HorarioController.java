@@ -28,7 +28,6 @@ public class HorarioController {
                 validarLogged("director",session);
                 Horario horarioAsignado = horarioService.asignarHorario(horario);
                 return new ResponseEntity<>(horarioAsignado, HttpStatus.OK);
-
     }
 
 

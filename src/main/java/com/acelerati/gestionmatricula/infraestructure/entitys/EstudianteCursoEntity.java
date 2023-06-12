@@ -1,9 +1,11 @@
 package com.acelerati.gestionmatricula.infraestructure.entitys;
 
+import com.acelerati.gestionmatricula.domain.model.Estudiante;
 import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
@@ -15,12 +17,15 @@ public class EstudianteCursoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Embedded
+    @AttributeOverride(name = "id", column = @Column(name = "id_estudiante"))
+    @NotNull
+    private Estudiante estudiante;
     private Double previo1;
     private Double previo2;
     private Double previo3;
     private Double previo4;
-    private double notaFinal;
+    private Double notaFinal;
 
 
     //__________________________________Relaciones____________________________

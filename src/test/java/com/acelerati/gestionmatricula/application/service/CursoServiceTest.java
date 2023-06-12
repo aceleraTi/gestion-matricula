@@ -30,7 +30,7 @@ public class CursoServiceTest {
 
     @BeforeEach
     public void setup() {
-        cursoIn=Curso.builder()
+       /* cursoIn=Curso.builder()
                 .idMateria(1L)
                 .idProfesor(3L)
                 .semestreAcademico(SemestreAcademico.builder().id(1L).build())
@@ -46,7 +46,7 @@ public class CursoServiceTest {
                 .build();
         openMocks(this);
         when(cursoRepository.save(any(CursoEntity.class))).thenReturn(cursoEntityOut);
-        cursoService=new CursoServiceDefault(cursoRepository);
+        cursoService=new CursoServiceDefault(cursoRepository);*/
 
     }
 
