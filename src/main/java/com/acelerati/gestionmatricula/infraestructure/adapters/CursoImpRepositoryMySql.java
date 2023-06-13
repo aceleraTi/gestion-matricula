@@ -14,12 +14,12 @@ import org.springframework.data.domain.Pageable;
 import java.util.Optional;
 
 
-public class CursoImpRepositoryMysql implements CursoRepository {
+public class CursoImpRepositoryMySql implements CursoRepository {
 
     private final CursoRepositoryMySql cursoRepositoryMySql;
 
 
-    public CursoImpRepositoryMysql(CursoRepositoryMySql cursoRepositoryMySql) {
+    public CursoImpRepositoryMySql(CursoRepositoryMySql cursoRepositoryMySql) {
         this.cursoRepositoryMySql = cursoRepositoryMySql;
     }
 

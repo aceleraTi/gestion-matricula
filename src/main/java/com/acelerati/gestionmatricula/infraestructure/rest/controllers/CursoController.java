@@ -2,7 +2,6 @@ package com.acelerati.gestionmatricula.infraestructure.rest.controllers;
 
 import com.acelerati.gestionmatricula.application.service.interfaces.CursoService;
 import com.acelerati.gestionmatricula.domain.model.Curso;
-import com.acelerati.gestionmatricula.domain.model.Estudiante;
 import com.acelerati.gestionmatricula.domain.model.Profesor;
 import com.acelerati.gestionmatricula.domain.model.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
-import java.util.List;
-
-import static com.acelerati.gestionmatricula.domain.util.Validaciones.*;
+import static com.acelerati.gestionmatricula.domain.util.Validaciones.validarLogged;
+import static com.acelerati.gestionmatricula.domain.util.Validaciones.validarProfesor;
 
 
 @RestController

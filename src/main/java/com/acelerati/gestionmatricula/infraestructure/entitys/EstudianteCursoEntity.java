@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -25,10 +27,20 @@ public class EstudianteCursoEntity {
     @AttributeOverride(name = "id", column = @Column(name = "id_estudiante"))
     @NotNull
     private Estudiante estudiante;
+    @Max(5)
+    @Min(0)
     private Double previo1;
+    @Max(5)
+    @Min(0)
     private Double previo2;
+    @Max(5)
+    @Min(0)
     private Double previo3;
+    @Max(5)
+    @Min(0)
     private Double previo4;
+    @Max(5)
+    @Min(0)
     private Double notaFinal;
 
 

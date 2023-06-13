@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.util.List;
 
 @Data
@@ -17,6 +19,8 @@ public class EstudianteCursoTareaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Max(5)
+    @Min(0)
     private Double nota;
 
     //__________________________________Relaciones____________________________
