@@ -1,5 +1,6 @@
 package com.acelerati.gestionmatricula.infraestructure.adapters;
 
+import com.acelerati.gestionmatricula.domain.model.Estudiante;
 import com.acelerati.gestionmatricula.domain.model.EstudiantePensum;
 import com.acelerati.gestionmatricula.domain.model.Materia;
 import com.acelerati.gestionmatricula.domain.persistence.EstudianteCursoRepository;
@@ -52,5 +53,11 @@ public class EstudianteCursoImpRepositoryMySql implements EstudianteCursoReposit
 
 
         return estudianteCursoRepositoryMysql.save(estudianteCursoEntity);
+    }
+
+    @Override
+    public List<EstudianteCursoEntity> ListarCursosEstudiante(Estudiante estudiante){
+
+        return estudianteCursoRepositoryMysql.findByEstudiante(estudiante);
     }
 }

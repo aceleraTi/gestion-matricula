@@ -2,7 +2,7 @@ package com.acelerati.gestionmatricula.infraestructure.rest.controllers;
 
 import com.acelerati.gestionmatricula.application.service.interfaces.CursoService;
 import com.acelerati.gestionmatricula.application.service.interfaces.EstudianteCursoService;
-import com.acelerati.gestionmatricula.application.service.interfaces.EstudiantePensumService;
+import com.acelerati.gestionmatricula.application.service.interfaces.HorarioService;
 import com.acelerati.gestionmatricula.domain.model.*;
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotFoundItemsInException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +11,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.acelerati.gestionmatricula.domain.util.Validaciones.validarEstudiante;
 import static com.acelerati.gestionmatricula.domain.util.Validaciones.validarLogged;
@@ -22,12 +26,14 @@ public class EstudianteCursoController {
     private EstudianteCursoService estudianteCursoService;
     @Autowired
     private CursoService cursoService;
+    @Autowired
+    private HorarioService horarioService;
 
     @PostMapping("/registrar/{idCurso}")
     public ResponseEntity<EstudianteCurso> registrar(@PathVariable("idCurso")Long idCurso, HttpSession session) {
 
         Materia materia=Materia.builder()
-                .id(1L)
+                .id(2L)
                 .pensum(Pensum.builder().id(2L).build())
                 .nombre("matematicas")
                 .descripcion("Prueba materia")
@@ -45,6 +51,23 @@ public class EstudianteCursoController {
                 .estudiante(estudiante).curso(curso).build(),materia);
 //no se ha validado las materias con prerrequisitos
         return new ResponseEntity<>(estudianteCursoRegistrado, HttpStatus.OK);
+    }
+
+    @GetMapping("/consultarHorarioVigente")
+    public ResponseEntity<List<String>>consultarHorario(HttpSession session){
+        Estudiante estudiante= validarEstudiante(validarLogged("estudiante",session));
+
+        List<Curso> cursoList=estudianteCursoService.listarEstudianteCurso(estudiante);
+        List<List<Horario>> horarioList = cursoList.stream()
+                .map(curso -> horarioService.findByCurso(curso))
+                .collect(Collectors.toList());
+
+        List<String> horariosCursos = horarioList.stream()
+                .flatMap(List::stream)
+                .map(horario -> "Curso "+ horario.getCurso().getId() + " - Dia " + horario.getDia() + " - Hora " + horario.getHoraInicio())
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(horariosCursos,HttpStatus.OK);
     }
 
 }
