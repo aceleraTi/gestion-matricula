@@ -23,4 +23,9 @@ public class TareaServiceDefault implements TareaService {
         TareaEntity tareaEntity=alaTareaEntity(tarea);
         return alaTarea(tareaRepository.crearTarea(tareaEntity));
     }
+
+    @Override
+    public Tarea findByTareaId(Long id) {
+        return alaTarea(tareaRepository.findByTareaId(id));
+    }
 }
