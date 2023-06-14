@@ -4,6 +4,8 @@ import com.acelerati.gestionmatricula.domain.persistence.EstudianteCursoTareaRep
 import com.acelerati.gestionmatricula.infraestructure.adapters.interfaces.EstudianteCursoTareaRepositoryMySql;
 import com.acelerati.gestionmatricula.infraestructure.entitys.EstudianteCursoTareaEntity;
 
+import java.util.Optional;
+
 public class EstudianteCursoTareaImpRepositoryMySql implements EstudianteCursoTareaRepository {
     private final EstudianteCursoTareaRepositoryMySql estudianteCursoTareaRepositoryMySql;
 
@@ -19,6 +21,10 @@ public class EstudianteCursoTareaImpRepositoryMySql implements EstudianteCursoTa
 
     @Override
     public Double notaTarea(Long idTarea, Long idEstudianteCurso) {
-        return estudianteCursoTareaRepositoryMySql.findByIdTareaAndIdEstudianteCursoTarea(idTarea,idEstudianteCurso);
+        Optional<EstudianteCursoTareaEntity> optionalEstudianteCursoTareaEntity=estudianteCursoTareaRepositoryMySql.findByTareaIdAndEstudianteCursoId(idTarea,idEstudianteCurso);
+       if(optionalEstudianteCursoTareaEntity.isPresent()){
+           return optionalEstudianteCursoTareaEntity.get().getNota();
+       }
+        return 0.0;
     }
 }

@@ -7,7 +7,6 @@ import com.acelerati.gestionmatricula.infraestructure.entitys.TareaEntity;
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotCreatedInException;
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotFoundItemsInException;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,7 +43,7 @@ public class TareaImpRepositoryMySql implements TareaRepository {
 
     @Override
     public List<TareaEntity> findByCursoId(Long id) {
-         return tareaRepositoryMySql.findByIdCurso(id);
+         return tareaRepositoryMySql.findByCursoId(id);
     }
 
     private boolean countTareaCurso(TareaEntity tareaEntity){

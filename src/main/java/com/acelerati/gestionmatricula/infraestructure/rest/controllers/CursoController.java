@@ -82,9 +82,12 @@ public class CursoController {
         List<EstudianteCurso> estudianteCursos = estudianteCursoService.findByCurso(curso);
         for (EstudianteCurso estud : estudianteCursos) {
 
-            if (estud.getPrevio1() != null ||
-                    estud.getPrevio2() != null ||
-                    estud.getPrevio4() != null) {
+            if (estud.getPrevio1() == null ||
+                    estud.getPrevio2() == null ||
+                    estud.getPrevio4() == null) {
+                System.out.println(estud.getPrevio1());
+                System.out.println(estud.getPrevio2());
+                System.out.println(estud.getPrevio4());
                 throw new NotCreatedInException("Aun no se han subido todas las notas de los previos");
             } else if (estud.getNotaFinal() != null) {
                 continue;
@@ -98,9 +101,12 @@ public class CursoController {
             estud.setPrevio3(notaPrevio3);
 
             Double notaFinal = ((estud.getPrevio1() + estud.getPrevio2() +
-                    estud.getPrevio3()) * 0.7) + (estud.getPrevio4() * 0.3);
+                    estud.getPrevio3()) * 7/30) + (estud.getPrevio4() * 0.3);
+            System.out.println("Nota Final" + notaFinal);
             estud.setNotaFinal(notaFinal);
         }
+
+
 
         List<EstudianteCurso> estudianteCursosCerrados =  estudianteCursoService.guardarEstudiantesCursos(estudianteCursos);
         curso.setEstado("Cerrado");

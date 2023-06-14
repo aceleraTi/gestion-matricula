@@ -4,8 +4,10 @@ import com.acelerati.gestionmatricula.infraestructure.entitys.EstudianteCursoTar
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface EstudianteCursoTareaRepositoryMySql extends CrudRepository<EstudianteCursoTareaEntity,Long> {
 
-    Double findByIdTareaAndIdEstudianteCursoTarea(Long idTarea,Long idEstudiante);
+    Optional<EstudianteCursoTareaEntity> findByTareaIdAndEstudianteCursoId(Long idTarea, Long idEstudiante);
 }

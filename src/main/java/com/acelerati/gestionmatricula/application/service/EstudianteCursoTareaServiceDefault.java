@@ -27,6 +27,6 @@ public class EstudianteCursoTareaServiceDefault implements EstudianteCursoTareaS
 
     @Override
     public Double notaTarea(Long idTarea, Long idEstudianteCurso) {
-        return null;
+        return estudianteCursoTareaRepository.notaTarea(idTarea,idEstudianteCurso);
     }
 }

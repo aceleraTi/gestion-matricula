@@ -12,7 +12,7 @@ public interface TareaRepositoryMySql extends CrudRepository<TareaEntity, Long> 
 
     int countByCurso(CursoEntity curso);
 
-    List<TareaEntity> findByIdCurso(Long id);
+    List<TareaEntity> findByCursoId(Long id);
 
 
 }
