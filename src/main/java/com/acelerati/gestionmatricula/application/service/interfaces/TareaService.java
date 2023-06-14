@@ -6,4 +6,6 @@ public interface TareaService {
 
     Tarea crearTarea(Tarea tarea);
 
+    Tarea findByTareaId(Long id);
+
 }

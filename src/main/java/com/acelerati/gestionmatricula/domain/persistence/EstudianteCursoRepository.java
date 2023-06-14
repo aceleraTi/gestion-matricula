@@ -9,4 +9,7 @@ import java.util.List;
 public interface EstudianteCursoRepository {
     EstudianteCursoEntity registrarCurso(EstudianteCursoEntity estudianteCurso, Materia materia);
     List<EstudianteCursoEntity> ListarCursosEstudiante(Estudiante estudiante);
+
+    EstudianteCursoEntity findByEstudianteCursoEntityId(Long id);
+
 }
