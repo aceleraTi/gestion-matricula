@@ -4,4 +4,5 @@ import com.acelerati.gestionmatricula.infraestructure.entitys.EstudianteCursoTar
 
 public interface EstudianteCursoTareaRepository {
     EstudianteCursoTareaEntity subirNota(EstudianteCursoTareaEntity estudianteCursoTareaEntity);
+    Double notaTarea(Long idTarea,Long idEstudianteCurso);
 }

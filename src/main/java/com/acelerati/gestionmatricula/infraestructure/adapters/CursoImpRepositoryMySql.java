@@ -43,7 +43,7 @@ public class CursoImpRepositoryMySql implements CursoRepository {
 
     @Override
     public CursoEntity update(CursoEntity cursoEntity) {
-        if(countProfesorCurso(cursoEntity)){
+        if(countProfesorCurso(cursoEntity) && cursoEntity.getEstado().equalsIgnoreCase("Cerrado")){
             return cursoRepositoryMySql.save(cursoEntity);
         }
         throw new NotCreatedInException("El profesor ya tiene los 4 cursos permitidos en curso");
