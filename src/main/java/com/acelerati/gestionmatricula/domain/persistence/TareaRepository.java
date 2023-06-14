@@ -6,6 +6,6 @@ public interface TareaRepository {
 
     TareaEntity crearTarea(TareaEntity tareaEntity);
 
-
+    TareaEntity findByTareaId(Long id);
 
 }

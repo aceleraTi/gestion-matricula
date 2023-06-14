@@ -5,15 +5,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Embeddable;
-
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Embeddable
-public class Tarea {
+public class EstudianteCursoTarea {
     private Long id;
-    private Curso curso;
-    private String descripcion;
+    private EstudianteCurso estudianteCurso;
+    private Tarea tarea;
+    private Double nota;
+
 }

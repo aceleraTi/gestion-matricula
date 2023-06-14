@@ -4,6 +4,7 @@ import com.acelerati.gestionmatricula.application.service.interfaces.CursoServic
 import com.acelerati.gestionmatricula.application.service.interfaces.EstudianteCursoService;
 import com.acelerati.gestionmatricula.application.service.interfaces.HorarioService;
 import com.acelerati.gestionmatricula.domain.model.*;
+import com.acelerati.gestionmatricula.infraestructure.exceptions.NotCreatedInException;
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotFoundItemsInException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,13 +12,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.acelerati.gestionmatricula.domain.util.Validaciones.validarEstudiante;
-import static com.acelerati.gestionmatricula.domain.util.Validaciones.validarLogged;
+import static com.acelerati.gestionmatricula.domain.util.Validaciones.*;
 
 @RestController
 @RequestMapping("/estudianteCursos")
@@ -69,5 +67,39 @@ public class EstudianteCursoController {
 
         return new ResponseEntity<>(horariosCursos,HttpStatus.OK);
     }
+    @PutMapping("/subirPrevio")
+    public ResponseEntity<EstudianteCurso> subirNota(@RequestBody EstudianteCurso estudianteCurso, HttpSession session){
+
+        Profesor profesor= validarProfesor(validarLogged("profesor",session));
+
+        if(estudianteCurso.getPrevio3()!=null){
+            throw new NotCreatedInException("El previo 3 corresponde a la sumatoria de las tareas");
+        }
+        EstudianteCurso estudianteCursoConsulta=estudianteCursoService.findByEstudianteCursoId(estudianteCurso.getId());
+
+        if(profesor.getId()!=estudianteCursoConsulta.getCurso().getProfesor().getId()){
+            throw new NotCreatedInException("Este Curso no esta asignado a usted");
+        }
+
+        if(estudianteCurso.getPrevio1()!=null && estudianteCursoConsulta.getPrevio1()!=null ||
+                estudianteCurso.getPrevio2()!=null && estudianteCursoConsulta.getPrevio2()!=null ||
+                estudianteCurso.getPrevio4()!=null && estudianteCursoConsulta.getPrevio4()!=null ){
+            throw new NotCreatedInException("Uno de los previos ya tiene  nota asignada");
+        }
+
+        if(estudianteCurso.getPrevio1()!=null)
+            estudianteCursoConsulta.setPrevio1(estudianteCurso.getPrevio1());
+
+        if(estudianteCurso.getPrevio2()!=null)
+            estudianteCursoConsulta.setPrevio2(estudianteCurso.getPrevio2());
+
+        if(estudianteCurso.getPrevio4()!=null)
+            estudianteCursoConsulta.setPrevio4(estudianteCurso.getPrevio4());
+
+        EstudianteCurso estudianteCursoPrevioRegistrado=estudianteCursoService.asignarNota(estudianteCursoConsulta);
+
+        return new ResponseEntity<>(estudianteCursoPrevioRegistrado,HttpStatus.OK);
+    }
+
 
 }

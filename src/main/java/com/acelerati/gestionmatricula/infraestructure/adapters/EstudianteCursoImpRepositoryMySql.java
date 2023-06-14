@@ -10,6 +10,7 @@ import com.acelerati.gestionmatricula.infraestructure.adapters.interfaces.Estudi
 import com.acelerati.gestionmatricula.infraestructure.entitys.CursoEntity;
 import com.acelerati.gestionmatricula.infraestructure.entitys.EstudianteCursoEntity;
 import com.acelerati.gestionmatricula.infraestructure.entitys.EstudiantePensumEntity;
+import com.acelerati.gestionmatricula.infraestructure.entitys.TareaEntity;
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotCreatedInException;
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotFoundItemsInException;
 
@@ -32,17 +33,17 @@ public class EstudianteCursoImpRepositoryMySql implements EstudianteCursoReposit
 
     @Override
     public EstudianteCursoEntity registrarCurso(EstudianteCursoEntity estudianteCursoEntity, Materia materia) {
-        System.out.println("paso1");
+
         List<EstudiantePensumEntity> estudiantePensums=estudiantePensumRepositoryMySql.findByEstudianteAndPensum
                 (estudianteCursoEntity.getEstudiante(),materia.getPensum());
-        System.out.println("paso2");
+
       if(estudiantePensums.size()==0){
           throw new NotFoundItemsInException("No estas registrado en el pensum del curso que quieres matricular");
       }
-        System.out.println("paso3");
+
         Optional<CursoEntity> cursoEntityOptional=cursoRepositoryMySql.findByIdAndMateria
                 (estudianteCursoEntity.getCurso().getId(),materia);
-        System.out.println("paso4");
+
       if(!cursoEntityOptional.isPresent()){
           throw new NotFoundItemsInException("El curso y la materia no coinciden");
       }
@@ -59,5 +60,19 @@ public class EstudianteCursoImpRepositoryMySql implements EstudianteCursoReposit
     public List<EstudianteCursoEntity> ListarCursosEstudiante(Estudiante estudiante){
 
         return estudianteCursoRepositoryMysql.findByEstudiante(estudiante);
+    }
+
+    @Override
+    public EstudianteCursoEntity findByEstudianteCursoEntityId(Long id) {
+        Optional<EstudianteCursoEntity> optionalEstudianteCursoEntity=estudianteCursoRepositoryMysql.findById(id);
+        if (!optionalEstudianteCursoEntity.isPresent()){
+            throw new NotFoundItemsInException("El id del estudiante curso no existe existe.");
+        }
+        return optionalEstudianteCursoEntity.get();
+    }
+
+    @Override
+    public EstudianteCursoEntity asignarNotaPrevio(EstudianteCursoEntity estudianteCursoEntity) {
+        return estudianteCursoRepositoryMysql.save(estudianteCursoEntity);
     }
 }

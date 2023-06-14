@@ -10,6 +10,12 @@ import java.util.List;
 public interface EstudianteCursoService {
     EstudianteCurso registrarCurso(EstudianteCurso estudianteCurso, Materia materia);
 
+    EstudianteCurso asignarNota(EstudianteCurso estudianteCurso);
+
 
     List<Curso> listarEstudianteCurso (Estudiante estudiante);
+
+    EstudianteCurso findByEstudianteCursoId(Long id);
+
+
 }

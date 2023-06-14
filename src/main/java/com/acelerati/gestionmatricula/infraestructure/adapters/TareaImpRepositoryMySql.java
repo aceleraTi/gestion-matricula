@@ -5,6 +5,10 @@ import com.acelerati.gestionmatricula.infraestructure.adapters.interfaces.CursoR
 import com.acelerati.gestionmatricula.infraestructure.adapters.interfaces.TareaRepositoryMySql;
 import com.acelerati.gestionmatricula.infraestructure.entitys.TareaEntity;
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotCreatedInException;
+import com.acelerati.gestionmatricula.infraestructure.exceptions.NotFoundItemsInException;
+
+import javax.swing.text.html.Option;
+import java.util.Optional;
 
 public class TareaImpRepositoryMySql implements TareaRepository {
     private final TareaRepositoryMySql tareaRepositoryMySql;
@@ -26,6 +30,15 @@ public class TareaImpRepositoryMySql implements TareaRepository {
             throw new NotCreatedInException("El curso ya tiene las 3 tareas permitidas");
         }
         throw new NotCreatedInException("El curso no esta habilitado para que usted le asigne tareas");
+    }
+
+    @Override
+    public TareaEntity findByTareaId(Long id) {
+        Optional<TareaEntity> optionalTareaEntity=tareaRepositoryMySql.findById(id);
+        if (!optionalTareaEntity.isPresent()){
+            throw new NotFoundItemsInException("La tarea a la que intenta subirle una nota no existe.");
+        }
+        return optionalTareaEntity.get();
     }
 
     private boolean countTareaCurso(TareaEntity tareaEntity){
