@@ -32,6 +32,12 @@ public class EstudianteCursoServiceDefault implements EstudianteCursoService {
     }
 
     @Override
+    public EstudianteCurso asignarNota(EstudianteCurso estudianteCurso) {
+        EstudianteCursoEntity estudianteCursoEntity=alEstudianteCursoEntity(estudianteCurso);
+        return alEstudianteCurso(estudianteCursoRepository.asignarNotaPrevio(estudianteCursoEntity));
+    }
+
+    @Override
     public List<Curso> listarEstudianteCurso(Estudiante estudiante) {
 
         List<EstudianteCursoEntity>estudianteCursoEntities=estudianteCursoRepository.ListarCursosEstudiante(estudiante);
