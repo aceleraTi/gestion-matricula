@@ -72,7 +72,8 @@ public class EstudianteCursoImpRepositoryMySql implements EstudianteCursoReposit
     }
 
     @Override
-    public EstudianteCursoEntity asignarNotaPrevio(EstudianteCursoEntity estudianteCursoEntity) {
+    public EstudianteCursoEntity actualizarCursoEstudiante(EstudianteCursoEntity estudianteCursoEntity) {
         return estudianteCursoRepositoryMysql.save(estudianteCursoEntity);
     }
+
 }

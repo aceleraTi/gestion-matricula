@@ -8,6 +8,7 @@ import com.acelerati.gestionmatricula.infraestructure.exceptions.NotCreatedInExc
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotFoundItemsInException;
 
 import javax.swing.text.html.Option;
+import java.util.List;
 import java.util.Optional;
 
 public class TareaImpRepositoryMySql implements TareaRepository {
@@ -39,6 +40,11 @@ public class TareaImpRepositoryMySql implements TareaRepository {
             throw new NotFoundItemsInException("La tarea a la que intenta subirle una nota no existe.");
         }
         return optionalTareaEntity.get();
+    }
+
+    @Override
+    public List<TareaEntity> findByCursoId(Long id) {
+         return tareaRepositoryMySql.findByIdCurso(id);
     }
 
     private boolean countTareaCurso(TareaEntity tareaEntity){

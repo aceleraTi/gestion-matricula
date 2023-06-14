@@ -12,6 +12,6 @@ public interface EstudianteCursoRepository {
 
     EstudianteCursoEntity findByEstudianteCursoEntityId(Long id);
 
-    EstudianteCursoEntity asignarNotaPrevio(EstudianteCursoEntity estudianteCursoEntity);
+    EstudianteCursoEntity actualizarCursoEstudiante(EstudianteCursoEntity estudianteCursoEntity);
 
 }

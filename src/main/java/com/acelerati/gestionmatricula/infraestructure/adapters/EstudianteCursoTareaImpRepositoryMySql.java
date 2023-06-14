@@ -16,4 +16,9 @@ public class EstudianteCursoTareaImpRepositoryMySql implements EstudianteCursoTa
         return estudianteCursoTareaRepositoryMySql.save(estudianteCursoTareaEntity);
 
     }
+
+    @Override
+    public Double notaTarea(Long idTarea, Long idEstudianteCurso) {
+        return estudianteCursoTareaRepositoryMySql.findByIdTareaAndIdEstudianteCursoTarea(idTarea,idEstudianteCurso);
+    }
 }

@@ -1,10 +1,16 @@
 package com.acelerati.gestionmatricula.application.service;
 
 import com.acelerati.gestionmatricula.application.service.interfaces.TareaService;
+import com.acelerati.gestionmatricula.domain.model.Curso;
 import com.acelerati.gestionmatricula.domain.model.Tarea;
 import com.acelerati.gestionmatricula.domain.persistence.TareaRepository;
 import com.acelerati.gestionmatricula.infraestructure.entitys.TareaEntity;
+import com.acelerati.gestionmatricula.infraestructure.rest.mappers.CursoMapper;
+import com.acelerati.gestionmatricula.infraestructure.rest.mappers.TareaMapper;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.acelerati.gestionmatricula.infraestructure.rest.mappers.TareaMapper.alaTarea;
 import static com.acelerati.gestionmatricula.infraestructure.rest.mappers.TareaMapper.alaTareaEntity;
@@ -27,5 +33,11 @@ public class TareaServiceDefault implements TareaService {
     @Override
     public Tarea findByTareaId(Long id) {
         return alaTarea(tareaRepository.findByTareaId(id));
+    }
+    @Override
+    public List<Tarea> findByCursoId(Long id) {
+            return tareaRepository.findByCursoId(id).stream()
+                .map(TareaMapper::alaTarea)
+                .collect(Collectors.toList());
     }
 }

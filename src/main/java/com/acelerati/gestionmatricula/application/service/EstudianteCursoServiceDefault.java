@@ -32,9 +32,9 @@ public class EstudianteCursoServiceDefault implements EstudianteCursoService {
     }
 
     @Override
-    public EstudianteCurso asignarNota(EstudianteCurso estudianteCurso) {
+    public EstudianteCurso actualizarCursoEstudiante(EstudianteCurso estudianteCurso) {
         EstudianteCursoEntity estudianteCursoEntity=alEstudianteCursoEntity(estudianteCurso);
-        return alEstudianteCurso(estudianteCursoRepository.asignarNotaPrevio(estudianteCursoEntity));
+        return alEstudianteCurso(estudianteCursoRepository.actualizarCursoEstudiante(estudianteCursoEntity));
     }
 
     @Override

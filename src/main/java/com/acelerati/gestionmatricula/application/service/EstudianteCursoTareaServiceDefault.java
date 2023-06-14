@@ -27,4 +27,9 @@ public class EstudianteCursoTareaServiceDefault implements EstudianteCursoTareaS
         EstudianteCursoTareaEntity estudianteCursoTareaEntity=alEstudianteCursoTareaEntity(estudianteCursoTarea);
         return alEstudianteCursoTarea(estudianteCursoTareaRepository.subirNota(estudianteCursoTareaEntity));
     }
+
+    @Override
+    public Double notaTarea(Long idTarea, Long idEstudianteCurso) {
+        return null;
+    }
 }

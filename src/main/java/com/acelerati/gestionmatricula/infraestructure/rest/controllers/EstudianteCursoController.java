@@ -1,8 +1,6 @@
 package com.acelerati.gestionmatricula.infraestructure.rest.controllers;
 
-import com.acelerati.gestionmatricula.application.service.interfaces.CursoService;
-import com.acelerati.gestionmatricula.application.service.interfaces.EstudianteCursoService;
-import com.acelerati.gestionmatricula.application.service.interfaces.HorarioService;
+import com.acelerati.gestionmatricula.application.service.interfaces.*;
 import com.acelerati.gestionmatricula.domain.model.*;
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotCreatedInException;
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotFoundItemsInException;
@@ -23,9 +21,15 @@ public class EstudianteCursoController {
     @Autowired
     private EstudianteCursoService estudianteCursoService;
     @Autowired
+    private EstudianteCursoTareaService estudianteCursoTareaService;
+    @Autowired
     private CursoService cursoService;
     @Autowired
     private HorarioService horarioService;
+
+    @Autowired
+    private TareaService tareaService;
+
 
     @PostMapping("/registrar/{idCurso}")
     public ResponseEntity<EstudianteCurso> registrar(@PathVariable("idCurso")Long idCurso, HttpSession session) {
@@ -71,7 +75,6 @@ public class EstudianteCursoController {
     public ResponseEntity<EstudianteCurso> subirNota(@RequestBody EstudianteCurso estudianteCurso, HttpSession session){
 
         Profesor profesor= validarProfesor(validarLogged("profesor",session));
-
         if(estudianteCurso.getPrevio3()!=null){
             throw new NotCreatedInException("El previo 3 corresponde a la sumatoria de las tareas");
         }
@@ -80,26 +83,51 @@ public class EstudianteCursoController {
         if(profesor.getId()!=estudianteCursoConsulta.getCurso().getProfesor().getId()){
             throw new NotCreatedInException("Este Curso no esta asignado a usted");
         }
-
         if(estudianteCurso.getPrevio1()!=null && estudianteCursoConsulta.getPrevio1()!=null ||
                 estudianteCurso.getPrevio2()!=null && estudianteCursoConsulta.getPrevio2()!=null ||
                 estudianteCurso.getPrevio4()!=null && estudianteCursoConsulta.getPrevio4()!=null ){
             throw new NotCreatedInException("Uno de los previos ya tiene  nota asignada");
         }
-
         if(estudianteCurso.getPrevio1()!=null)
             estudianteCursoConsulta.setPrevio1(estudianteCurso.getPrevio1());
-
         if(estudianteCurso.getPrevio2()!=null)
             estudianteCursoConsulta.setPrevio2(estudianteCurso.getPrevio2());
-
         if(estudianteCurso.getPrevio4()!=null)
             estudianteCursoConsulta.setPrevio4(estudianteCurso.getPrevio4());
-
-        EstudianteCurso estudianteCursoPrevioRegistrado=estudianteCursoService.asignarNota(estudianteCursoConsulta);
-
+        EstudianteCurso estudianteCursoPrevioRegistrado=estudianteCursoService.actualizarCursoEstudiante(estudianteCursoConsulta);
         return new ResponseEntity<>(estudianteCursoPrevioRegistrado,HttpStatus.OK);
     }
+
+ @PutMapping("/subirPrevio/{idEstudianteCurso}")
+    public ResponseEntity<EstudianteCurso> subirNota(@PathVariable("idEstudianteCurso")Long idEstudianteCurso, HttpSession session){
+
+        Profesor profesor= validarProfesor(validarLogged("profesor",session));
+        EstudianteCurso estudianteCursoConsulta=estudianteCursoService.findByEstudianteCursoId(idEstudianteCurso);
+
+        if(estudianteCursoConsulta.getPrevio1()!=null ||
+                estudianteCursoConsulta.getPrevio2()!=null ||
+                estudianteCursoConsulta.getPrevio4()!=null)
+        {
+            throw new NotCreatedInException("Aun no se han subido todas las notas de los previos");
+        }
+          Double notaPrevio3 = tareaService.findByCursoId(estudianteCursoConsulta.getCurso().getId())
+             .stream()
+             .mapToDouble(tar -> estudianteCursoTareaService.notaTarea(tar.getId(), idEstudianteCurso))
+                  .average()
+                  .orElse(0.0);
+
+        estudianteCursoConsulta.setPrevio3(notaPrevio3);
+
+        Double notaFinal=((estudianteCursoConsulta.getPrevio1()+estudianteCursoConsulta.getPrevio2()+
+                estudianteCursoConsulta.getPrevio3())*0.7)+(estudianteCursoConsulta.getPrevio4()*0.3);
+
+        estudianteCursoConsulta.setNotaFinal(notaFinal);
+     EstudianteCurso estudianteCursoCerrado=estudianteCursoService.actualizarCursoEstudiante(estudianteCursoConsulta);
+     return new ResponseEntity<>(estudianteCursoCerrado,HttpStatus.OK);
+
+    }
+
+
 
 
 }

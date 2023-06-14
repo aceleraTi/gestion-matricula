@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface EstudianteCursoTareaRepositoryMySql extends CrudRepository<EstudianteCursoTareaEntity,Long> {
+
+    Double findByIdTareaAndIdEstudianteCursoTarea(Long idTarea,Long idEstudiante);
 }
