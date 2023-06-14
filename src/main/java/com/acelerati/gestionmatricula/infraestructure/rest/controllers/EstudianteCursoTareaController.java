@@ -32,24 +32,15 @@ public class EstudianteCursoTareaController {
                                                  HttpSession session){
 
         Profesor profesor= validarProfesor(validarLogged("profesor",session));
-        System.out.println("prueba");
-        System.out.println(estudianteCursoTarea.getEstudianteCurso().getId());
-        System.out.println(estudianteCursoTarea.getTarea().getId());
-        System.out.println("pruebaF");
+
         Tarea tarea=tareaService.findByTareaId(estudianteCursoTarea.getTarea().getId());
-        System.out.println("Fast1");
         if(profesor.getId()!=tarea.getCurso().getProfesor().getId()){
             throw new NotCreatedInException("Este Curso no esta asignado a usted");
         }
-        System.out.println("Fast2");
-        EstudianteCurso estudianteCurso=estudianteCursoService.findByEstudianteCursoId
+       EstudianteCurso estudianteCurso=estudianteCursoService.findByEstudianteCursoId
                 (estudianteCursoTarea.getEstudianteCurso().getId());
-        System.out.println("Fast3");
         estudianteCursoTarea.setEstudianteCurso(estudianteCurso);
-        System.out.println("Fast4");
         estudianteCursoTarea.setTarea(tarea);
-        System.out.println("Fast5");
-        System.out.println(estudianteCursoTarea);
         EstudianteCursoTarea estudianteCursoTareaNotaOk=estudianteCursoTareaService.subirNota(estudianteCursoTarea);
 
         return new ResponseEntity<>(estudianteCursoTareaNotaOk, HttpStatus.OK);
