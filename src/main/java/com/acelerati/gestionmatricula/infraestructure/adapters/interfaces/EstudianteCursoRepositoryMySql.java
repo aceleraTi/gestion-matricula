@@ -15,4 +15,6 @@ public interface EstudianteCursoRepositoryMySql extends CrudRepository<Estudiant
     //@Query(value="SELECT * FROM tasks WHERE completed='false' ORDER BY priority ASC ",nativeQuery = true)
     List<EstudianteCursoEntity> findByEstudiante(Estudiante estudiante);
 
+    List<EstudianteCursoEntity> findByCurso(CursoEntity cursoEntity);
+
 }

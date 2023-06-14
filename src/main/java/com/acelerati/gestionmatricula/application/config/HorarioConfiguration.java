@@ -8,9 +8,6 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class HorarioConfiguration {
-
-
-
     @Bean
     public HorarioRepository instanciaHorarioRepositoryMySql(HorarioRepositoryMySql horarioRepositoryMySql){
         return new HorarioImpRepositoryMySql(horarioRepositoryMySql);

@@ -1,8 +1,10 @@
 package com.acelerati.gestionmatricula.infraestructure.entitys;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -11,6 +13,8 @@ import java.util.List;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "estudiantes_cursos_tareas")
 public class EstudianteCursoTareaEntity {

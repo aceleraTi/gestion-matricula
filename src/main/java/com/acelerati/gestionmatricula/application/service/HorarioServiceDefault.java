@@ -6,14 +6,12 @@ import com.acelerati.gestionmatricula.domain.model.Horario;
 import com.acelerati.gestionmatricula.domain.persistence.HorarioRepository;
 import com.acelerati.gestionmatricula.infraestructure.entitys.CursoEntity;
 import com.acelerati.gestionmatricula.infraestructure.entitys.HorarioEntity;
-import com.acelerati.gestionmatricula.infraestructure.rest.mappers.CursoMapper;
 import com.acelerati.gestionmatricula.infraestructure.rest.mappers.HorarioMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.acelerati.gestionmatricula.infraestructure.rest.mappers.CursoMapper.alCurso;
 import static com.acelerati.gestionmatricula.infraestructure.rest.mappers.CursoMapper.alCursoEntity;
 import static com.acelerati.gestionmatricula.infraestructure.rest.mappers.HorarioMapper.alHorario;
 import static com.acelerati.gestionmatricula.infraestructure.rest.mappers.HorarioMapper.alHorarioEntity;

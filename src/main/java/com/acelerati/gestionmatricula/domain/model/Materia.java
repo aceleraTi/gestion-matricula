@@ -27,5 +27,4 @@ public class Materia {
     private String descripcion;
     @Transient
     private Materia materiaPrerequisito;
-
 }
