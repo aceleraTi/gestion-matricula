@@ -38,5 +38,13 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiError);
     }
 
+    @ExceptionHandler(NotApplicationProcessed.class)
+    public ResponseEntity<ApiError> handleNotApplicationProcessedInException(NotApplicationProcessed ex){
+        List<String> errors=new ArrayList<>();
+        errors.add(ex.getMessage());
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST.value(), ex.getMessage(), errors);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
+    }
+
 
 }
