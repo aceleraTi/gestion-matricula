@@ -76,4 +76,14 @@ public class EstudianteCursoImpRepositoryMySql implements EstudianteCursoReposit
         return estudianteCursoRepositoryMysql.save(estudianteCursoEntity);
     }
 
+    @Override
+    public List<EstudianteCursoEntity> findByCurso(CursoEntity cursoEntity) {
+        return estudianteCursoRepositoryMysql.findByCurso(cursoEntity);
+    }
+
+    @Override
+    public List<EstudianteCursoEntity> guardarEstudiantesCursos(List<EstudianteCursoEntity> estudianteCursoEntities) {
+        return (List<EstudianteCursoEntity>) estudianteCursoRepositoryMysql.saveAll(estudianteCursoEntities);
+    }
+
 }

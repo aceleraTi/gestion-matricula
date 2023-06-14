@@ -8,12 +8,14 @@ import com.acelerati.gestionmatricula.domain.model.Materia;
 import com.acelerati.gestionmatricula.domain.persistence.EstudianteCursoRepository;
 import com.acelerati.gestionmatricula.infraestructure.entitys.EstudianteCursoEntity;
 import com.acelerati.gestionmatricula.infraestructure.rest.mappers.CursoMapper;
+import com.acelerati.gestionmatricula.infraestructure.rest.mappers.EstudianteCursoMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.acelerati.gestionmatricula.infraestructure.rest.mappers.CursoMapper.alCursoEntity;
 import static com.acelerati.gestionmatricula.infraestructure.rest.mappers.EstudianteCursoMapper.alEstudianteCurso;
 import static com.acelerati.gestionmatricula.infraestructure.rest.mappers.EstudianteCursoMapper.alEstudianteCursoEntity;
 
@@ -55,5 +57,29 @@ public class EstudianteCursoServiceDefault implements EstudianteCursoService {
     public EstudianteCurso findByEstudianteCursoId(Long id) {
 
        return  alEstudianteCurso(estudianteCursoRepository.findByEstudianteCursoEntityId(id));
+    }
+
+    @Override
+    public List<EstudianteCurso> findByCurso(Curso curso) {
+
+        List<EstudianteCursoEntity>estudianteCursoEntities=estudianteCursoRepository.findByCurso(alCursoEntity(curso));
+        return estudianteCursoEntities.stream()
+                .map(EstudianteCursoMapper::alEstudianteCurso)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<EstudianteCurso> guardarEstudiantesCursos(List<EstudianteCurso> estudianteCurso) {
+
+        List<EstudianteCursoEntity>estudianteCursoEntities=estudianteCursoRepository.guardarEstudiantesCursos(
+                estudianteCurso.stream()
+                        .map(EstudianteCursoMapper::alEstudianteCursoEntity)
+                        .collect(Collectors.toList()));
+
+
+
+        return estudianteCursoEntities.stream()
+                .map(EstudianteCursoMapper::alEstudianteCurso)
+                .collect(Collectors.toList());
     }
 }

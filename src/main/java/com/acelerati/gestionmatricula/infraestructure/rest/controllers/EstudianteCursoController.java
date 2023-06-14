@@ -98,34 +98,7 @@ public class EstudianteCursoController {
         return new ResponseEntity<>(estudianteCursoPrevioRegistrado,HttpStatus.OK);
     }
 
- @PutMapping("/subirPrevio/{idEstudianteCurso}")
-    public ResponseEntity<EstudianteCurso> subirNota(@PathVariable("idEstudianteCurso")Long idEstudianteCurso, HttpSession session){
 
-        Profesor profesor= validarProfesor(validarLogged("profesor",session));
-        EstudianteCurso estudianteCursoConsulta=estudianteCursoService.findByEstudianteCursoId(idEstudianteCurso);
-
-        if(estudianteCursoConsulta.getPrevio1()!=null ||
-                estudianteCursoConsulta.getPrevio2()!=null ||
-                estudianteCursoConsulta.getPrevio4()!=null)
-        {
-            throw new NotCreatedInException("Aun no se han subido todas las notas de los previos");
-        }
-          Double notaPrevio3 = tareaService.findByCursoId(estudianteCursoConsulta.getCurso().getId())
-             .stream()
-             .mapToDouble(tar -> estudianteCursoTareaService.notaTarea(tar.getId(), idEstudianteCurso))
-                  .average()
-                  .orElse(0.0);
-
-        estudianteCursoConsulta.setPrevio3(notaPrevio3);
-
-        Double notaFinal=((estudianteCursoConsulta.getPrevio1()+estudianteCursoConsulta.getPrevio2()+
-                estudianteCursoConsulta.getPrevio3())*0.7)+(estudianteCursoConsulta.getPrevio4()*0.3);
-
-        estudianteCursoConsulta.setNotaFinal(notaFinal);
-     EstudianteCurso estudianteCursoCerrado=estudianteCursoService.actualizarCursoEstudiante(estudianteCursoConsulta);
-     return new ResponseEntity<>(estudianteCursoCerrado,HttpStatus.OK);
-
-    }
 
 
 
