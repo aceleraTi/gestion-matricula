@@ -1,7 +1,7 @@
-package com.acelerati.gestionmatricula.infraestructure.adapters;
+package com.acelerati.gestionmatricula.infraestructure.driven_adapters.persistence;
 
-import com.acelerati.gestionmatricula.domain.persistence.HorarioRepository;
-import com.acelerati.gestionmatricula.infraestructure.adapters.interfaces.HorarioRepositoryMySql;
+import com.acelerati.gestionmatricula.infraestructure.driven_adapters.persistence.interfaces.jpa_repository.HorarioRepository;
+import com.acelerati.gestionmatricula.infraestructure.driven_adapters.persistence.interfaces.HorarioRepositoryMySql;
 import com.acelerati.gestionmatricula.infraestructure.entitys.CursoEntity;
 import com.acelerati.gestionmatricula.infraestructure.entitys.HorarioEntity;
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotCreatedInException;

@@ -9,9 +9,7 @@ public interface CursoService {
 
     Curso create(Curso curso);
     Curso findById(Long id);
-
     Curso update(Curso curso);
-
     Page<Curso> findByProfesor(Profesor profesor, Pageable pageable);
 
 }

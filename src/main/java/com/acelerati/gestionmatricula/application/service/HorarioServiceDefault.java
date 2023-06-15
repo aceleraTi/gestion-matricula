@@ -3,7 +3,7 @@ package com.acelerati.gestionmatricula.application.service;
 import com.acelerati.gestionmatricula.application.service.interfaces.HorarioService;
 import com.acelerati.gestionmatricula.domain.model.Curso;
 import com.acelerati.gestionmatricula.domain.model.Horario;
-import com.acelerati.gestionmatricula.domain.persistence.HorarioRepository;
+import com.acelerati.gestionmatricula.infraestructure.driven_adapters.persistence.interfaces.jpa_repository.HorarioRepository;
 import com.acelerati.gestionmatricula.infraestructure.entitys.CursoEntity;
 import com.acelerati.gestionmatricula.infraestructure.entitys.HorarioEntity;
 import com.acelerati.gestionmatricula.infraestructure.rest.mappers.HorarioMapper;

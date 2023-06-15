@@ -1,7 +1,7 @@
-package com.acelerati.gestionmatricula.infraestructure.adapters;
+package com.acelerati.gestionmatricula.infraestructure.driven_adapters.persistence;
 
-import com.acelerati.gestionmatricula.domain.persistence.EstudianteCursoTareaRepository;
-import com.acelerati.gestionmatricula.infraestructure.adapters.interfaces.EstudianteCursoTareaRepositoryMySql;
+import com.acelerati.gestionmatricula.infraestructure.driven_adapters.persistence.interfaces.jpa_repository.EstudianteCursoTareaRepository;
+import com.acelerati.gestionmatricula.infraestructure.driven_adapters.persistence.interfaces.EstudianteCursoTareaRepositoryMySql;
 import com.acelerati.gestionmatricula.infraestructure.entitys.EstudianteCursoTareaEntity;
 
 import java.util.Optional;

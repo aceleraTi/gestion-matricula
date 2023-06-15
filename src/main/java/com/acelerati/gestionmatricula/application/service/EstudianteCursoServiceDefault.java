@@ -5,7 +5,7 @@ import com.acelerati.gestionmatricula.domain.model.Curso;
 import com.acelerati.gestionmatricula.domain.model.Estudiante;
 import com.acelerati.gestionmatricula.domain.model.EstudianteCurso;
 import com.acelerati.gestionmatricula.domain.model.Materia;
-import com.acelerati.gestionmatricula.domain.persistence.EstudianteCursoRepository;
+import com.acelerati.gestionmatricula.infraestructure.driven_adapters.persistence.interfaces.jpa_repository.EstudianteCursoRepository;
 import com.acelerati.gestionmatricula.infraestructure.entitys.EstudianteCursoEntity;
 import com.acelerati.gestionmatricula.infraestructure.rest.mappers.CursoMapper;
 import com.acelerati.gestionmatricula.infraestructure.rest.mappers.EstudianteCursoMapper;

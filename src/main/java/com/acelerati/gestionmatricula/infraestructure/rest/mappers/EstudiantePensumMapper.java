@@ -6,11 +6,11 @@ import com.acelerati.gestionmatricula.infraestructure.entitys.EstudiantePensumEn
 public class EstudiantePensumMapper {
 
     public static EstudiantePensum alEstudiantePensum(EstudiantePensumEntity estudiantePensumEntity){
-        return EstudiantePensum.builder()
-                .id(estudiantePensumEntity.getId())
-                .estudiante(estudiantePensumEntity.getEstudiante())
-                .pensum(estudiantePensumEntity.getPensum())
-                .build();
+
+        return new EstudiantePensum(estudiantePensumEntity.getId(),
+                estudiantePensumEntity.getEstudiante(),
+                estudiantePensumEntity.getPensum());
+
     }
 
     public static EstudiantePensumEntity alEstudiantePensumEntity(EstudiantePensum estudiantePensum){

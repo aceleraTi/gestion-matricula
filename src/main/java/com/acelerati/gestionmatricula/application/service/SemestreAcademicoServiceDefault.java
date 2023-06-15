@@ -2,7 +2,7 @@ package com.acelerati.gestionmatricula.application.service;
 
 import com.acelerati.gestionmatricula.application.service.interfaces.SemestreAcademicoService;
 import com.acelerati.gestionmatricula.domain.model.SemestreAcademico;
-import com.acelerati.gestionmatricula.domain.persistence.SemestreAcademicoRepository;
+import com.acelerati.gestionmatricula.infraestructure.driven_adapters.persistence.interfaces.jpa_repository.SemestreAcademicoRepository;
 import com.acelerati.gestionmatricula.infraestructure.entitys.SemestreAcademicoEntity;
 import org.springframework.stereotype.Service;
 

@@ -27,19 +27,21 @@ public class Validaciones {
 
     public static Profesor validarProfesor(Usuario usuario){
         if(usuario.getTipoUsuario().equalsIgnoreCase("profesor")){
-           return Profesor.builder()
-                    .id(usuario.getId())
-                    .nombre(usuario.getNombre()).build();
+            Profesor profesor = new Profesor();
+            profesor.setId(usuario.getId());
+            profesor.setNombre(usuario.getNombre());
+            return profesor;
         }
         throw new NotLoggedInException("Usuario no autorizado");
     }
 
     public static Estudiante validarEstudiante(Usuario usuario){
         if(usuario.getTipoUsuario().equalsIgnoreCase("estudiante")){
-            return Estudiante
-                    .builder()
-                    .id(usuario.getId())
-                    .nombre(usuario.getNombre()).build();
+            Estudiante estudiante=new Estudiante();
+            estudiante.setId(usuario.getId());
+            estudiante.setNombre(usuario.getNombre());
+
+            return estudiante;
         }
         throw new NotLoggedInException("Usuario no autorizado");
     }

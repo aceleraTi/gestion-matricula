@@ -1,9 +1,9 @@
-package com.acelerati.gestionmatricula.infraestructure.adapters;
+package com.acelerati.gestionmatricula.infraestructure.driven_adapters.persistence;
 
 import com.acelerati.gestionmatricula.domain.model.Materia;
 import com.acelerati.gestionmatricula.domain.model.Profesor;
-import com.acelerati.gestionmatricula.domain.persistence.CursoRepository;
-import com.acelerati.gestionmatricula.infraestructure.adapters.interfaces.CursoRepositoryMySql;
+import com.acelerati.gestionmatricula.infraestructure.driven_adapters.persistence.interfaces.jpa_repository.CursoRepository;
+import com.acelerati.gestionmatricula.infraestructure.driven_adapters.persistence.interfaces.CursoRepositoryMySql;
 import com.acelerati.gestionmatricula.infraestructure.entitys.CursoEntity;
 import com.acelerati.gestionmatricula.infraestructure.entitys.SemestreAcademicoEntity;
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotCreatedInException;
@@ -43,7 +43,7 @@ public class CursoImpRepositoryMySql implements CursoRepository {
 
     @Override
     public CursoEntity update(CursoEntity cursoEntity) {
-        if(countProfesorCurso(cursoEntity) && cursoEntity.getEstado().equalsIgnoreCase("Cerrado")){
+        if(countProfesorCurso(cursoEntity) || cursoEntity.getEstado().equalsIgnoreCase("Cerrado")){
             return cursoRepositoryMySql.save(cursoEntity);
         }
         throw new NotCreatedInException("El profesor ya tiene los 4 cursos permitidos en curso");

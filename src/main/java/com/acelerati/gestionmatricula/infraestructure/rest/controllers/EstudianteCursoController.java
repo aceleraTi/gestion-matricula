@@ -34,14 +34,10 @@ public class EstudianteCursoController {
     @PostMapping("/registrar/{idCurso}")
     public ResponseEntity<EstudianteCurso> registrar(@PathVariable("idCurso")Long idCurso, HttpSession session) {
 
-        Materia materia=Materia.builder()
-                .id(2L)
-                .pensum(Pensum.builder().id(2L).build())
-                .nombre("matematicas")
-                .descripcion("Prueba materia")
-                .materiaPrerequisito(Materia.builder().id(2L).build())
-                .build();
-
+        Materia materia=new Materia();
+        materia.setId(3L);
+        materia.setPensum(new Pensum(2L,2023));
+        materia.setDescripcion("Prueba materia");
 
         Estudiante estudiante= validarEstudiante(validarLogged("estudiante",session));
 
@@ -49,8 +45,11 @@ public class EstudianteCursoController {
         if(!curso.getEstado().equalsIgnoreCase("En Curso")){
             throw new NotFoundItemsInException("El curso esta cerrado");
         }
-       EstudianteCurso estudianteCursoRegistrado=estudianteCursoService.registrarCurso(EstudianteCurso.builder()
-                .estudiante(estudiante).curso(curso).build(),materia);
+
+        EstudianteCurso estudianteCurso=new EstudianteCurso();
+        estudianteCurso.setEstudiante(estudiante);
+        estudianteCurso.setCurso(curso);
+       EstudianteCurso estudianteCursoRegistrado=estudianteCursoService.registrarCurso(estudianteCurso,materia);
 //no se ha validado las materias con prerrequisitos
         return new ResponseEntity<>(estudianteCursoRegistrado, HttpStatus.OK);
     }

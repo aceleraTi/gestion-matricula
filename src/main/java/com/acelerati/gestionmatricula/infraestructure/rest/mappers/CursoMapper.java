@@ -10,14 +10,9 @@ public class CursoMapper {
 
     public static Curso alCurso(CursoEntity cursoEntity){
 
-        return Curso.builder()
-                .id(cursoEntity.getId())
-                .materia(cursoEntity.getMateria())
-                .profesor(cursoEntity.getProfesor())
-                .semestreAcademico(alSemestreAcademico(cursoEntity.getSemestreAcademicoEntity()))
-                .grupo(cursoEntity.getGrupo())
-                .estado(cursoEntity.getEstado())
-                .build();
+        return new Curso(cursoEntity.getId(),cursoEntity.getMateria(),cursoEntity.getProfesor(),
+                alSemestreAcademico(cursoEntity.getSemestreAcademicoEntity()),cursoEntity.getGrupo(),
+                cursoEntity.getEstado());
 
     }
 

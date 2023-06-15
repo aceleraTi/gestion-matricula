@@ -1,4 +1,4 @@
-package com.acelerati.gestionmatricula.infraestructure.adapters.interfaces;
+package com.acelerati.gestionmatricula.infraestructure.driven_adapters.persistence.interfaces;
 
 import com.acelerati.gestionmatricula.infraestructure.entitys.EstudianteCursoTareaEntity;
 import org.springframework.data.repository.CrudRepository;

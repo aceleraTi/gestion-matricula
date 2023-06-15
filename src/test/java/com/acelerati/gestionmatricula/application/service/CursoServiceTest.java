@@ -3,10 +3,8 @@ package com.acelerati.gestionmatricula.application.service;
 
 import com.acelerati.gestionmatricula.application.service.interfaces.CursoService;
 import com.acelerati.gestionmatricula.domain.model.Curso;
-import com.acelerati.gestionmatricula.domain.model.SemestreAcademico;
-import com.acelerati.gestionmatricula.domain.persistence.CursoRepository;
+import com.acelerati.gestionmatricula.infraestructure.driven_adapters.persistence.interfaces.jpa_repository.CursoRepository;
 import com.acelerati.gestionmatricula.infraestructure.entitys.CursoEntity;
-import com.acelerati.gestionmatricula.infraestructure.entitys.SemestreAcademicoEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -17,8 +15,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.openMocks;
 
 @DisplayName("Test Unitario para CursoService")
 public class CursoServiceTest {

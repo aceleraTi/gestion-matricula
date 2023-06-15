@@ -1,20 +1,11 @@
 package com.acelerati.gestionmatricula.domain.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@Embeddable
+
+
 public class Materia {
     @NotNull
     private Long id;
@@ -27,4 +18,55 @@ public class Materia {
     private String descripcion;
     @Transient
     private Materia materiaPrerequisito;
+
+    public Materia() {
+    }
+
+    public Materia(Long id, Pensum pensum, String nombre, String descripcion, Materia materiaPrerequisito) {
+        this.id = id;
+        this.pensum = pensum;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.materiaPrerequisito = materiaPrerequisito;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Pensum getPensum() {
+        return pensum;
+    }
+
+    public void setPensum(Pensum pensum) {
+        this.pensum = pensum;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public Materia getMateriaPrerequisito() {
+        return materiaPrerequisito;
+    }
+
+    public void setMateriaPrerequisito(Materia materiaPrerequisito) {
+        this.materiaPrerequisito = materiaPrerequisito;
+    }
 }

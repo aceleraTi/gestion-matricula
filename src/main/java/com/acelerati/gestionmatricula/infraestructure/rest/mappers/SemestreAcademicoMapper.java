@@ -7,13 +7,9 @@ public class SemestreAcademicoMapper {
 
     public static SemestreAcademico alSemestreAcademico(SemestreAcademicoEntity semestreAcademicoEntity){
 
-        return SemestreAcademico.builder()
-                .id(semestreAcademicoEntity.getId())
-                .numero(semestreAcademicoEntity.getNumero())
-                .año(semestreAcademicoEntity.getAño())
-                .fechaInicio(semestreAcademicoEntity.getFechaInicio())
-                .fechaFin(semestreAcademicoEntity.getFechaFin())
-                .build();
+        return new SemestreAcademico(semestreAcademicoEntity.getId(),semestreAcademicoEntity.getNumero(),
+                semestreAcademicoEntity.getAño(),semestreAcademicoEntity.getFechaInicio(),
+                semestreAcademicoEntity.getFechaFin());
 
     }
 

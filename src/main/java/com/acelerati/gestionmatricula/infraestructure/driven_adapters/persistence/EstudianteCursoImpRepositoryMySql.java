@@ -1,16 +1,14 @@
-package com.acelerati.gestionmatricula.infraestructure.adapters;
+package com.acelerati.gestionmatricula.infraestructure.driven_adapters.persistence;
 
 import com.acelerati.gestionmatricula.domain.model.Estudiante;
-import com.acelerati.gestionmatricula.domain.model.EstudiantePensum;
 import com.acelerati.gestionmatricula.domain.model.Materia;
-import com.acelerati.gestionmatricula.domain.persistence.EstudianteCursoRepository;
-import com.acelerati.gestionmatricula.infraestructure.adapters.interfaces.CursoRepositoryMySql;
-import com.acelerati.gestionmatricula.infraestructure.adapters.interfaces.EstudianteCursoRepositoryMySql;
-import com.acelerati.gestionmatricula.infraestructure.adapters.interfaces.EstudiantePensumRepositoryMySql;
+import com.acelerati.gestionmatricula.infraestructure.driven_adapters.persistence.interfaces.jpa_repository.EstudianteCursoRepository;
+import com.acelerati.gestionmatricula.infraestructure.driven_adapters.persistence.interfaces.CursoRepositoryMySql;
+import com.acelerati.gestionmatricula.infraestructure.driven_adapters.persistence.interfaces.EstudianteCursoRepositoryMySql;
+import com.acelerati.gestionmatricula.infraestructure.driven_adapters.persistence.interfaces.EstudiantePensumRepositoryMySql;
 import com.acelerati.gestionmatricula.infraestructure.entitys.CursoEntity;
 import com.acelerati.gestionmatricula.infraestructure.entitys.EstudianteCursoEntity;
 import com.acelerati.gestionmatricula.infraestructure.entitys.EstudiantePensumEntity;
-import com.acelerati.gestionmatricula.infraestructure.entitys.TareaEntity;
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotCreatedInException;
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotFoundItemsInException;
 

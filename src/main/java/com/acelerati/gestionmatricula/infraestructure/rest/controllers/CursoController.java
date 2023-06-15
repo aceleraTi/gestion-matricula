@@ -52,7 +52,8 @@ public class CursoController {
                                                  HttpSession session) {
 
         validarLogged("director", session);
-        Profesor profesor = Profesor.builder().id(idProfesor).build();
+        Profesor profesor = new Profesor();
+        profesor.setId(idProfesor);
         Curso curso = cursoService.findById(idCurso);
         curso.setProfesor(profesor);
         Curso cursoAct = cursoService.update(curso);
@@ -64,7 +65,7 @@ public class CursoController {
                                                             HttpSession session) {
 
         Profesor profesor = validarProfesor(validarLogged("profesor", session));
-        Pageable pageRequest = PageRequest.of(page, 3);
+        Pageable pageRequest = PageRequest.of(page, 2);
         Page<Curso> cursoPage = cursoService.findByProfesor(profesor, pageRequest);
         return new ResponseEntity<>(cursoPage, HttpStatus.OK);
 

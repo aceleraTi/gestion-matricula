@@ -1,7 +1,6 @@
-package com.acelerati.gestionmatricula.infraestructure.adapters.interfaces;
+package com.acelerati.gestionmatricula.infraestructure.driven_adapters.persistence.interfaces;
 
 import com.acelerati.gestionmatricula.domain.model.Estudiante;
-import com.acelerati.gestionmatricula.domain.model.EstudiantePensum;
 import com.acelerati.gestionmatricula.domain.model.Pensum;
 import com.acelerati.gestionmatricula.infraestructure.entitys.EstudiantePensumEntity;
 import org.springframework.data.repository.CrudRepository;
