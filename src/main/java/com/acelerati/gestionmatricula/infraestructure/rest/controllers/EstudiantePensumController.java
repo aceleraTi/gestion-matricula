@@ -23,7 +23,7 @@ public class EstudiantePensumController {
     private EstudiantePensumService estudiantePensumService;
     @PostMapping("/registrar")
     public ResponseEntity<EstudiantePensum> registrar(@RequestBody EstudiantePensum estudiantePensum, HttpSession session) {
-        validarEstudiante(validarLogged("estudiante",session));
+        validarEstudiante(validarLogged(4L,session));
 
         EstudiantePensum estudiantePensumRegistrado = estudiantePensumService.registrar(estudiantePensum);
         return new ResponseEntity<>(estudiantePensumRegistrado, HttpStatus.OK);

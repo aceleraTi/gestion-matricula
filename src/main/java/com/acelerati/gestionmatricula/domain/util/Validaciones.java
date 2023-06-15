@@ -9,12 +9,12 @@ import javax.servlet.http.HttpSession;
 
 public class Validaciones {
 
-    public static Usuario validarLogged(String usuarioAut,HttpSession session){
+    public static Usuario validarLogged(Long usuarioAut,HttpSession session){
         try {
             Usuario usuario=(Usuario) session.getAttribute("usuario");
             System.out.println(usuario.getTipoUsuario());
             System.out.println("--"+usuarioAut);
-            if(usuarioAut.equalsIgnoreCase(usuario.getTipoUsuario())){
+            if(usuarioAut==usuario.getTipoUsuario()){
                 return usuario;
             }
                 throw new NotLoggedInException("Usuario no autorizado");
@@ -24,11 +24,11 @@ public class Validaciones {
         }
 
     }
-
     public static Profesor validarProfesor(Usuario usuario){
-        if(usuario.getTipoUsuario().equalsIgnoreCase("profesor")){
+        if(usuario.getTipoUsuario()==3){
             Profesor profesor = new Profesor();
-            profesor.setId(usuario.getId());
+            profesor.setId(usuario.getUsuarioId()
+            );
             profesor.setNombre(usuario.getNombre());
             return profesor;
         }
@@ -36,9 +36,9 @@ public class Validaciones {
     }
 
     public static Estudiante validarEstudiante(Usuario usuario){
-        if(usuario.getTipoUsuario().equalsIgnoreCase("estudiante")){
+        if(usuario.getTipoUsuario()==4){
             Estudiante estudiante=new Estudiante();
-            estudiante.setId(usuario.getId());
+            estudiante.setId(usuario.getUsuarioId());
             estudiante.setNombre(usuario.getNombre());
 
             return estudiante;

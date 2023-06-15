@@ -41,7 +41,7 @@ public class CursoController {
     @PostMapping("/created")
     public ResponseEntity<Curso> crear(@RequestBody Curso curso, HttpSession session) {
 
-        validarLogged("director", session);
+        validarLogged(2L, session);
         Curso cursoCreado = cursoService.create(curso);
         return new ResponseEntity<>(cursoCreado, HttpStatus.CREATED);
     }
@@ -51,7 +51,7 @@ public class CursoController {
                                                  @PathVariable("idProfesor") Long idProfesor,
                                                  HttpSession session) {
 
-        validarLogged("director", session);
+        validarLogged(2L, session);
         Profesor profesor = new Profesor();
         profesor.setId(idProfesor);
         Curso curso = cursoService.findById(idCurso);
@@ -64,7 +64,7 @@ public class CursoController {
     public ResponseEntity<Page<Curso>> listarCursosProfesor(@RequestParam(name = "page", defaultValue = "0") int page,
                                                             HttpSession session) {
 
-        Profesor profesor = validarProfesor(validarLogged("profesor", session));
+        Profesor profesor = validarProfesor(validarLogged(3L, session));
         Pageable pageRequest = PageRequest.of(page, 2);
         Page<Curso> cursoPage = cursoService.findByProfesor(profesor, pageRequest);
         return new ResponseEntity<>(cursoPage, HttpStatus.OK);
@@ -74,7 +74,7 @@ public class CursoController {
     @PutMapping("/cerrarCurso/{idCurso}")
     public ResponseEntity<List<EstudianteCurso>> cerrarCurso(@PathVariable("idCurso") Long idCurso, HttpSession session) {
 
-        Profesor profesor = validarProfesor(validarLogged("profesor", session));
+        Profesor profesor = validarProfesor(validarLogged(3L, session));
 
         Curso curso = cursoService.findById(idCurso);
         if (curso.getProfesor().getId() != profesor.getId()) {

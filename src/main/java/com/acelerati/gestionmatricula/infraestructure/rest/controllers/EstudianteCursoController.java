@@ -39,7 +39,7 @@ public class EstudianteCursoController {
         materia.setPensum(new Pensum(2L,2023));
         materia.setDescripcion("Prueba materia");
 
-        Estudiante estudiante= validarEstudiante(validarLogged("estudiante",session));
+        Estudiante estudiante= validarEstudiante(validarLogged(4L,session));
 
         Curso curso=cursoService.findById(idCurso);
         if(!curso.getEstado().equalsIgnoreCase("En Curso")){
@@ -56,7 +56,7 @@ public class EstudianteCursoController {
 
     @GetMapping("/consultarHorarioVigente")
     public ResponseEntity<List<String>>consultarHorario(HttpSession session){
-        Estudiante estudiante= validarEstudiante(validarLogged("estudiante",session));
+        Estudiante estudiante= validarEstudiante(validarLogged(4L,session));
 
         List<Curso> cursoList=estudianteCursoService.listarEstudianteCurso(estudiante);
         List<List<Horario>> horarioList = cursoList.stream()
@@ -73,7 +73,7 @@ public class EstudianteCursoController {
     @PutMapping("/subirPrevio")
     public ResponseEntity<EstudianteCurso> subirNota(@RequestBody EstudianteCurso estudianteCurso, HttpSession session){
 
-        Profesor profesor= validarProfesor(validarLogged("profesor",session));
+        Profesor profesor= validarProfesor(validarLogged(3L,session));
         if(estudianteCurso.getPrevio3()!=null){
             throw new NotCreatedInException("El previo 3 corresponde a la sumatoria de las tareas");
         }

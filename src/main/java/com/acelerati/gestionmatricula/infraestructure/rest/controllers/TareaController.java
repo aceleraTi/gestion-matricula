@@ -31,7 +31,7 @@ public class TareaController {
     @PostMapping("crearTarea")
     public ResponseEntity<Tarea> crearTarea(@RequestBody Tarea tarea, HttpSession session){
 
-        validarProfesor(validarLogged("profesor",session));
+        validarProfesor(validarLogged(3L,session));
 
         Curso curso=cursoService.findById(tarea.getCurso().getId());
         tarea.setCurso(curso);

@@ -25,7 +25,7 @@ public class HorarioController {
     @PostMapping("/asignar")
     public ResponseEntity<Horario>asignar(@RequestBody Horario horario, HttpSession session) {
 
-                validarLogged("director",session);
+                validarLogged(2L,session);
                 Curso curso=cursoService.findById(horario.getCurso().getId());
                 horario.setCurso(curso);
 
