@@ -8,4 +8,6 @@ public interface EstudiantePensumRepository {
 
     Boolean findByIdPensum(Long idPensum);
 
+    Boolean findByPensumIdAndEstudianteId(Long pensumId,Long estudianteId);
+
 }

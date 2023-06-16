@@ -6,7 +6,9 @@ import com.acelerati.gestionmatricula.infraestructure.entitys.EstudiantePensumEn
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import javax.swing.text.html.Option;
 import java.util.List;
+import java.util.Optional;
 
 
 @Repository
@@ -15,4 +17,6 @@ public interface EstudiantePensumRepositoryMySql extends CrudRepository<Estudian
     List<EstudiantePensumEntity> findByEstudianteAndPensum(Estudiante estudiante, Pensum pensum);
 
     List<EstudiantePensumEntity> findByPensumId(Long PensumId);
+
+    Optional<EstudiantePensumEntity> findByPensumIdAndEstudianteId(Long pensumId, Long estudianteId);
 }
