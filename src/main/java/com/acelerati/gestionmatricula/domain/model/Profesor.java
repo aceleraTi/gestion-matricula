@@ -1,19 +1,10 @@
 package com.acelerati.gestionmatricula.domain.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-
-import javax.persistence.Embeddable;
 import javax.persistence.Transient;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@Embeddable
+
+
 public class Profesor {
     private Long id;
     @Transient
@@ -24,4 +15,56 @@ public class Profesor {
     private String email;
     @Transient
     private String codigo;
+
+
+    public Profesor() {
+    }
+
+    public Profesor(Long id, String nombre, String apellido, String email, String codigo) {
+        this.id = id;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.email = email;
+        this.codigo = codigo;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public String getApellido() {
+        return apellido;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
 }

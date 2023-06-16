@@ -1,6 +1,5 @@
-package com.acelerati.gestionmatricula.domain.persistence;
+package com.acelerati.gestionmatricula.infraestructure.driven_adapters.interfaces.jpa_repository;
 
-import com.acelerati.gestionmatricula.domain.model.Tarea;
 import com.acelerati.gestionmatricula.infraestructure.entitys.TareaEntity;
 
 import java.util.List;

@@ -17,6 +17,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpSession;
 
@@ -24,6 +26,7 @@ import java.util.List;
 
 import static com.acelerati.gestionmatricula.domain.util.Validaciones.validarLogged;
 import static com.acelerati.gestionmatricula.domain.util.Validaciones.validarProfesor;
+import static com.acelerati.gestionmatricula.infraestructure.settings.Url.URL_GESTION_USUARIO;
 
 
 @RestController
@@ -38,33 +41,50 @@ public class CursoController {
     @Autowired
     private EstudianteCursoTareaService estudianteCursoTareaService;
 
+    @Autowired
+    private RestTemplate cursoRestTemplate;
+
     @PostMapping("/created")
     public ResponseEntity<Curso> crear(@RequestBody Curso curso, HttpSession session) {
-
-        validarLogged("director", session);
+        Usuario usuario=(Usuario) session.getAttribute("usuario");
+        validarLogged(2L, usuario);
         Curso cursoCreado = cursoService.create(curso);
         return new ResponseEntity<>(cursoCreado, HttpStatus.CREATED);
     }
+
+
 
     @PutMapping("/asignarProfesor/{idCurso}/{idProfesor}")
     public ResponseEntity<Curso> asignarProfesor(@PathVariable("idCurso") Long idCurso,
                                                  @PathVariable("idProfesor") Long idProfesor,
                                                  HttpSession session) {
 
-        validarLogged("director", session);
-        Profesor profesor = Profesor.builder().id(idProfesor).build();
+        Usuario usuario=(Usuario) session.getAttribute("usuario");
+        validarLogged(2L, usuario);
+        try{
+
+        Usuario validarUsuario= cursoRestTemplate.getForObject(URL_GESTION_USUARIO+"/api/1.0/usuarios/"+idProfesor,Usuario.class);
+        if(validarUsuario.getTipoUsuario()!=3){
+            throw new NotLoggedInException("Este usuario no tiene rol de profesor");
+        }
+        Profesor profesor = new Profesor();
+        profesor.setId(idProfesor);
         Curso curso = cursoService.findById(idCurso);
         curso.setProfesor(profesor);
         Curso cursoAct = cursoService.update(curso);
         return new ResponseEntity<>(cursoAct, HttpStatus.OK);
+        }catch (HttpServerErrorException exception){
+            throw new NotLoggedInException("Usuario no existe");
+        }
     }
 
     @GetMapping("/listar")
     public ResponseEntity<Page<Curso>> listarCursosProfesor(@RequestParam(name = "page", defaultValue = "0") int page,
                                                             HttpSession session) {
 
-        Profesor profesor = validarProfesor(validarLogged("profesor", session));
-        Pageable pageRequest = PageRequest.of(page, 3);
+        Usuario usuario=(Usuario) session.getAttribute("usuario");
+        Profesor profesor = validarProfesor(validarLogged(3L,usuario));
+        Pageable pageRequest = PageRequest.of(page, 2);
         Page<Curso> cursoPage = cursoService.findByProfesor(profesor, pageRequest);
         return new ResponseEntity<>(cursoPage, HttpStatus.OK);
 
@@ -73,7 +93,8 @@ public class CursoController {
     @PutMapping("/cerrarCurso/{idCurso}")
     public ResponseEntity<List<EstudianteCurso>> cerrarCurso(@PathVariable("idCurso") Long idCurso, HttpSession session) {
 
-        Profesor profesor = validarProfesor(validarLogged("profesor", session));
+        Usuario usuario=(Usuario) session.getAttribute("usuario");
+        Profesor profesor = validarProfesor(validarLogged(3L, usuario));
 
         Curso curso = cursoService.findById(idCurso);
         if (curso.getProfesor().getId() != profesor.getId()) {
@@ -85,9 +106,6 @@ public class CursoController {
             if (estud.getPrevio1() == null ||
                     estud.getPrevio2() == null ||
                     estud.getPrevio4() == null) {
-                System.out.println(estud.getPrevio1());
-                System.out.println(estud.getPrevio2());
-                System.out.println(estud.getPrevio4());
                 throw new NotCreatedInException("Aun no se han subido todas las notas de los previos");
             } else if (estud.getNotaFinal() != null) {
                 continue;
@@ -102,7 +120,7 @@ public class CursoController {
 
             Double notaFinal = ((estud.getPrevio1() + estud.getPrevio2() +
                     estud.getPrevio3()) * 7/30) + (estud.getPrevio4() * 0.3);
-            System.out.println("Nota Final" + notaFinal);
+
             estud.setNotaFinal(notaFinal);
         }
 
@@ -115,13 +133,17 @@ public class CursoController {
     }
 
 
-    @PostMapping("/usuario")
-    public ResponseEntity<Usuario> setSession(@RequestBody Usuario usuario, HttpSession session) {
+    @PostMapping("/usuario/{idUsuario}")
+    public ResponseEntity<Usuario> setSession(@PathVariable("idUsuario") Long idUsuario, HttpSession session) {
 
-        session.setAttribute("usuario", usuario);
-        System.out.println(session.getAttribute("usuario"));
-        return new ResponseEntity<>(usuario, HttpStatus.OK);
-
+        try{
+            Usuario usuario1= cursoRestTemplate.getForObject(URL_GESTION_USUARIO+"/api/1.0/usuarios/"+idUsuario,Usuario.class);
+            session.setAttribute("usuario", usuario1);
+            System.out.println(session.getAttribute("usuario"));
+            return new ResponseEntity<>(usuario1, HttpStatus.OK);
+        }catch (HttpServerErrorException exception){
+           throw new NotLoggedInException("Usuario no existe");
+        }
     }
 
 

@@ -5,7 +5,7 @@ import com.acelerati.gestionmatricula.domain.model.Curso;
 import com.acelerati.gestionmatricula.domain.model.Estudiante;
 import com.acelerati.gestionmatricula.domain.model.EstudianteCurso;
 import com.acelerati.gestionmatricula.domain.model.Materia;
-import com.acelerati.gestionmatricula.domain.persistence.EstudianteCursoRepository;
+import com.acelerati.gestionmatricula.infraestructure.driven_adapters.interfaces.jpa_repository.EstudianteCursoRepository;
 import com.acelerati.gestionmatricula.infraestructure.entitys.EstudianteCursoEntity;
 import com.acelerati.gestionmatricula.infraestructure.rest.mappers.CursoMapper;
 import com.acelerati.gestionmatricula.infraestructure.rest.mappers.EstudianteCursoMapper;
@@ -28,9 +28,9 @@ public class EstudianteCursoServiceDefault implements EstudianteCursoService {
     }
 
     @Override
-    public EstudianteCurso registrarCurso(EstudianteCurso estudianteCurso, Materia materia) {
+    public EstudianteCurso registrarCurso(EstudianteCurso estudianteCurso) {
         EstudianteCursoEntity estudianteCursoEntity=alEstudianteCursoEntity(estudianteCurso);
-        return alEstudianteCurso(estudianteCursoRepository.registrarCurso(estudianteCursoEntity,materia));
+        return alEstudianteCurso(estudianteCursoRepository.registrarCurso(estudianteCursoEntity));
     }
 
     @Override
@@ -40,7 +40,7 @@ public class EstudianteCursoServiceDefault implements EstudianteCursoService {
     }
 
     @Override
-    public List<Curso> listarEstudianteCurso(Estudiante estudiante) {
+    public List<Curso> listarCursos(Estudiante estudiante) {
 
         List<EstudianteCursoEntity>estudianteCursoEntities=estudianteCursoRepository.ListarCursosEstudiante(estudiante);
 
@@ -50,6 +50,14 @@ public class EstudianteCursoServiceDefault implements EstudianteCursoService {
                 .flatMap(curso -> Stream.of(CursoMapper.alCurso(curso)))
                 .collect(Collectors.toList());
 
+    }
+
+    @Override
+    public List<EstudianteCurso> listarEstudianteCursos(Estudiante estudiante) {
+        List<EstudianteCursoEntity>estudianteCursoEntities=estudianteCursoRepository.ListarCursosEstudiante(estudiante);
+        return estudianteCursoEntities.stream()
+                .map(EstudianteCursoMapper::alEstudianteCurso)
+                .collect(Collectors.toList());
     }
 
 

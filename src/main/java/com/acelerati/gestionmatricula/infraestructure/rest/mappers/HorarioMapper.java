@@ -11,14 +11,9 @@ public class HorarioMapper {
 
 
     public static Horario alHorario(HorarioEntity horarioEntity){
-        return Horario.builder()
-                .id(horarioEntity.getId())
-                .curso(alCurso(horarioEntity.getCurso()))
-                .horaInicio(horarioEntity.getHoraInicio())
-                .horaFin(horarioEntity.getHoraFin())
-                .dia(horarioEntity.getDia())
-                .link(horarioEntity.getLink())
-                .build();
+
+        return new Horario(horarioEntity.getId(),alCurso(horarioEntity.getCurso()),horarioEntity.getHoraInicio(),
+                       horarioEntity.getHoraFin(), horarioEntity.getDia(),horarioEntity.getLink());
     }
 
     public static HorarioEntity alHorarioEntity(Horario horario){

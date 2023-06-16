@@ -1,22 +1,40 @@
 package com.acelerati.gestionmatricula.domain.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import javax.persistence.Embeddable;
 import javax.persistence.Transient;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@Embeddable
+
+
 public class Pensum {
 
     private Long id;
     @Transient
-    private Integer año;
+    private Integer anio;
 
+
+    public Pensum(Long id, Integer anio) {
+        this.id = id;
+        this.anio = anio;
+    }
+
+    public Pensum() {
+    }
+
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Integer getAnio() {
+        return anio;
+    }
+
+    public void setAnio(Integer anio) {
+        this.anio = anio;
+    }
 }
