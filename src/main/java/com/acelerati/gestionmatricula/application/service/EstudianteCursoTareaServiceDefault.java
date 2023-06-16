@@ -2,7 +2,7 @@ package com.acelerati.gestionmatricula.application.service;
 
 import com.acelerati.gestionmatricula.application.service.interfaces.EstudianteCursoTareaService;
 import com.acelerati.gestionmatricula.domain.model.EstudianteCursoTarea;
-import com.acelerati.gestionmatricula.domain.persistence.EstudianteCursoTareaRepository;
+import com.acelerati.gestionmatricula.infraestructure.driven_adapters.interfaces.jpa_repository.EstudianteCursoTareaRepository;
 import com.acelerati.gestionmatricula.infraestructure.entitys.EstudianteCursoTareaEntity;
 import org.springframework.stereotype.Service;
 

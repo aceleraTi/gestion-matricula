@@ -5,6 +5,7 @@ import com.acelerati.gestionmatricula.application.service.interfaces.HorarioServ
 import com.acelerati.gestionmatricula.domain.model.Curso;
 import com.acelerati.gestionmatricula.domain.model.Horario;
 
+import com.acelerati.gestionmatricula.domain.model.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +25,8 @@ public class HorarioController {
     private CursoService cursoService;
     @PostMapping("/asignar")
     public ResponseEntity<Horario>asignar(@RequestBody Horario horario, HttpSession session) {
-
-                validarLogged("director",session);
+        Usuario usuario=(Usuario) session.getAttribute("usuario");
+                validarLogged(2L,usuario);
                 Curso curso=cursoService.findById(horario.getCurso().getId());
                 horario.setCurso(curso);
 

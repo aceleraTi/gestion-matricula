@@ -5,16 +5,14 @@ import com.acelerati.gestionmatricula.domain.model.Profesor;
 import com.acelerati.gestionmatricula.domain.model.Usuario;
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotLoggedInException;
 
-import javax.servlet.http.HttpSession;
-
 public class Validaciones {
 
-    public static Usuario validarLogged(String usuarioAut,HttpSession session){
+    public static Usuario validarLogged(Long usuarioAut,Usuario usuario){
         try {
-            Usuario usuario=(Usuario) session.getAttribute("usuario");
+
             System.out.println(usuario.getTipoUsuario());
             System.out.println("--"+usuarioAut);
-            if(usuarioAut.equalsIgnoreCase(usuario.getTipoUsuario())){
+            if(usuarioAut==usuario.getTipoUsuario()){
                 return usuario;
             }
                 throw new NotLoggedInException("Usuario no autorizado");
@@ -24,22 +22,24 @@ public class Validaciones {
         }
 
     }
-
     public static Profesor validarProfesor(Usuario usuario){
-        if(usuario.getTipoUsuario().equalsIgnoreCase("profesor")){
-           return Profesor.builder()
-                    .id(usuario.getId())
-                    .nombre(usuario.getNombre()).build();
+        if(usuario.getTipoUsuario()==3){
+            Profesor profesor = new Profesor();
+            profesor.setId(usuario.getUsuarioId()
+            );
+            profesor.setNombre(usuario.getNombre());
+            return profesor;
         }
         throw new NotLoggedInException("Usuario no autorizado");
     }
 
     public static Estudiante validarEstudiante(Usuario usuario){
-        if(usuario.getTipoUsuario().equalsIgnoreCase("estudiante")){
-            return Estudiante
-                    .builder()
-                    .id(usuario.getId())
-                    .nombre(usuario.getNombre()).build();
+        if(usuario.getTipoUsuario()==4){
+            Estudiante estudiante=new Estudiante();
+            estudiante.setId(usuario.getUsuarioId());
+            estudiante.setNombre(usuario.getNombre());
+
+            return estudiante;
         }
         throw new NotLoggedInException("Usuario no autorizado");
     }

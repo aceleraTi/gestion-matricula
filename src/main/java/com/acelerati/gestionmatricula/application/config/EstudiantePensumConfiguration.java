@@ -1,8 +1,8 @@
 package com.acelerati.gestionmatricula.application.config;
 
-import com.acelerati.gestionmatricula.domain.persistence.EstudiantePensumRepository;
-import com.acelerati.gestionmatricula.infraestructure.adapters.EstudiantePensumImpRepositoryMySql;
-import com.acelerati.gestionmatricula.infraestructure.adapters.interfaces.EstudiantePensumRepositoryMySql;
+import com.acelerati.gestionmatricula.infraestructure.driven_adapters.interfaces.jpa_repository.EstudiantePensumRepository;
+import com.acelerati.gestionmatricula.infraestructure.driven_adapters.EstudiantePensumImpRepositoryMySql;
+import com.acelerati.gestionmatricula.infraestructure.driven_adapters.interfaces.EstudiantePensumRepositoryMySql;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

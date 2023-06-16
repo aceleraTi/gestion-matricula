@@ -1,11 +1,9 @@
 package com.acelerati.gestionmatricula.application.service;
 
 import com.acelerati.gestionmatricula.application.service.interfaces.TareaService;
-import com.acelerati.gestionmatricula.domain.model.Curso;
 import com.acelerati.gestionmatricula.domain.model.Tarea;
-import com.acelerati.gestionmatricula.domain.persistence.TareaRepository;
+import com.acelerati.gestionmatricula.infraestructure.driven_adapters.interfaces.jpa_repository.TareaRepository;
 import com.acelerati.gestionmatricula.infraestructure.entitys.TareaEntity;
-import com.acelerati.gestionmatricula.infraestructure.rest.mappers.CursoMapper;
 import com.acelerati.gestionmatricula.infraestructure.rest.mappers.TareaMapper;
 import org.springframework.stereotype.Service;
 

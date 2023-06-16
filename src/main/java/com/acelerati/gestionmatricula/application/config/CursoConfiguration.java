@@ -1,8 +1,8 @@
 package com.acelerati.gestionmatricula.application.config;
 
-import com.acelerati.gestionmatricula.domain.persistence.CursoRepository;
-import com.acelerati.gestionmatricula.infraestructure.adapters.CursoImpRepositoryMySql;
-import com.acelerati.gestionmatricula.infraestructure.adapters.interfaces.CursoRepositoryMySql;
+import com.acelerati.gestionmatricula.infraestructure.driven_adapters.interfaces.jpa_repository.CursoRepository;
+import com.acelerati.gestionmatricula.infraestructure.driven_adapters.CursoImpRepositoryMySql;
+import com.acelerati.gestionmatricula.infraestructure.driven_adapters.interfaces.CursoRepositoryMySql;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

@@ -19,12 +19,11 @@ public class EstudianteCursoTareaMapper {
 
     }
     public static EstudianteCursoTarea alEstudianteCursoTarea(EstudianteCursoTareaEntity estudianteCursoTareaEntity){
-        return EstudianteCursoTarea.builder()
-                .id(estudianteCursoTareaEntity.getId())
-                .estudianteCurso(alEstudianteCurso(estudianteCursoTareaEntity.getEstudianteCurso()))
-                .tarea(alaTarea(estudianteCursoTareaEntity.getTarea()))
-                .nota(estudianteCursoTareaEntity.getNota())
-                .build();
+
+        return new EstudianteCursoTarea(estudianteCursoTareaEntity.getId(),
+               alEstudianteCurso(estudianteCursoTareaEntity.getEstudianteCurso()),
+                alaTarea(estudianteCursoTareaEntity.getTarea()),
+                estudianteCursoTareaEntity.getNota());
 
     }
 

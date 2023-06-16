@@ -6,6 +6,7 @@ import com.acelerati.gestionmatricula.domain.model.Curso;
 import com.acelerati.gestionmatricula.domain.model.Profesor;
 import com.acelerati.gestionmatricula.domain.model.Tarea;
 import com.acelerati.gestionmatricula.domain.model.Usuario;
+import com.acelerati.gestionmatricula.infraestructure.exceptions.NotLoggedInException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,9 +32,13 @@ public class TareaController {
     @PostMapping("crearTarea")
     public ResponseEntity<Tarea> crearTarea(@RequestBody Tarea tarea, HttpSession session){
 
-        validarProfesor(validarLogged("profesor",session));
+        Usuario usuario=(Usuario) session.getAttribute("usuario");
+        validarProfesor(validarLogged(3L,usuario));
 
         Curso curso=cursoService.findById(tarea.getCurso().getId());
+        if (curso.getProfesor().getId() != usuario.getUsuarioId()) {
+         throw new NotLoggedInException("No esta autorizado para crear esta tarea");
+        }
         tarea.setCurso(curso);
         Tarea tareaCreada=tareaService.crearTarea(tarea);
         return new ResponseEntity<>(tareaCreada, HttpStatus.CREATED);

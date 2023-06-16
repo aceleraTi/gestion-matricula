@@ -1,9 +1,9 @@
-package com.acelerati.gestionmatricula.infraestructure.adapters;
+package com.acelerati.gestionmatricula.infraestructure.driven_adapters;
 
 import com.acelerati.gestionmatricula.domain.model.Materia;
 import com.acelerati.gestionmatricula.domain.model.Profesor;
-import com.acelerati.gestionmatricula.domain.persistence.CursoRepository;
-import com.acelerati.gestionmatricula.infraestructure.adapters.interfaces.CursoRepositoryMySql;
+import com.acelerati.gestionmatricula.infraestructure.driven_adapters.interfaces.jpa_repository.CursoRepository;
+import com.acelerati.gestionmatricula.infraestructure.driven_adapters.interfaces.CursoRepositoryMySql;
 import com.acelerati.gestionmatricula.infraestructure.entitys.CursoEntity;
 import com.acelerati.gestionmatricula.infraestructure.entitys.SemestreAcademicoEntity;
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotCreatedInException;
@@ -11,7 +11,9 @@ import com.acelerati.gestionmatricula.infraestructure.exceptions.NotFoundItemsIn
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 public class CursoImpRepositoryMySql implements CursoRepository {
@@ -43,7 +45,7 @@ public class CursoImpRepositoryMySql implements CursoRepository {
 
     @Override
     public CursoEntity update(CursoEntity cursoEntity) {
-        if(countProfesorCurso(cursoEntity) && cursoEntity.getEstado().equalsIgnoreCase("Cerrado")){
+        if(countProfesorCurso(cursoEntity) ||cursoEntity.getEstado().equalsIgnoreCase("Cerrado")){
             return cursoRepositoryMySql.save(cursoEntity);
         }
         throw new NotCreatedInException("El profesor ya tiene los 4 cursos permitidos en curso");
@@ -69,6 +71,12 @@ public class CursoImpRepositoryMySql implements CursoRepository {
         throw new NotFoundItemsInException("No se encontraron cursos asignados");
     }
 
+    @Override
+    public List<CursoEntity> listCursos(Materia materia){
+        return cursoRepositoryMySql.findByMateria(materia);
+    }
+
+
 
     private boolean esGrupoUnicoMateriaSemetre(Integer grupo, Materia materia, SemestreAcademicoEntity semestreAcademicoEntity){
         return cursoRepositoryMySql.countByGrupoAndMateriaAndSemestreAcademicoEntity
@@ -85,6 +93,7 @@ public class CursoImpRepositoryMySql implements CursoRepository {
             return true;
         }
 
-
     }
+
+
 }

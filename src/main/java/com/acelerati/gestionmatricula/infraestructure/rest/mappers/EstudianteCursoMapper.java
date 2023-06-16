@@ -8,16 +8,14 @@ import static com.acelerati.gestionmatricula.infraestructure.rest.mappers.CursoM
 
 public class EstudianteCursoMapper {
     public  static EstudianteCurso alEstudianteCurso(EstudianteCursoEntity estudianteCursoEntity){
-        return EstudianteCurso.builder()
-                .id(estudianteCursoEntity.getId())
-                .estudiante(estudianteCursoEntity.getEstudiante())
-                .curso(alCurso(estudianteCursoEntity.getCurso()))
-                .previo1(estudianteCursoEntity.getPrevio1())
-                .previo2(estudianteCursoEntity.getPrevio2())
-                .previo3(estudianteCursoEntity.getPrevio3())
-                .previo4(estudianteCursoEntity.getPrevio4())
-                .notaFinal(estudianteCursoEntity.getNotaFinal())
-                .build();
+           return new EstudianteCurso(estudianteCursoEntity.getId(),
+                estudianteCursoEntity.getEstudiante(),
+                alCurso(estudianteCursoEntity.getCurso()),
+                estudianteCursoEntity.getPrevio1(),
+                estudianteCursoEntity.getPrevio2(),
+                estudianteCursoEntity.getPrevio3(),
+                estudianteCursoEntity.getPrevio4(),
+                estudianteCursoEntity.getNotaFinal());
     }
 
     public static EstudianteCursoEntity alEstudianteCursoEntity(EstudianteCurso estudianteCurso){

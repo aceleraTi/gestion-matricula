@@ -9,11 +9,7 @@ import static com.acelerati.gestionmatricula.infraestructure.rest.mappers.CursoM
 public class TareaMapper {
 
     public static Tarea alaTarea(TareaEntity tareaEntity){
-        return Tarea.builder()
-                .id(tareaEntity.getId())
-                .curso(alCurso(tareaEntity.getCurso()))
-                .descripcion(tareaEntity.getDescripcion())
-                .build();
+        return new Tarea(tareaEntity.getId(), alCurso(tareaEntity.getCurso()), tareaEntity.getDescripcion());
     }
 
     public static TareaEntity alaTareaEntity(Tarea tarea){
