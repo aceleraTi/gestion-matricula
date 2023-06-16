@@ -9,24 +9,25 @@ import javax.validation.constraints.NotNull;
 public class Materia {
     @NotNull
     private Long id;
-    @NotNull
-    @Transient
-    private Pensum pensum;
     @Transient
     private String nombre;
     @Transient
     private String descripcion;
+    @NotNull
+    @Transient
+    private Pensum pensum;
+
     @Transient
     private Materia materiaPrerequisito;
 
     public Materia() {
     }
 
-    public Materia(Long id, Pensum pensum, String nombre, String descripcion, Materia materiaPrerequisito) {
+    public Materia(Long id, String nombre, String descripcion, Pensum pensum, Materia materiaPrerequisito) {
         this.id = id;
-        this.pensum = pensum;
         this.nombre = nombre;
         this.descripcion = descripcion;
+        this.pensum = pensum;
         this.materiaPrerequisito = materiaPrerequisito;
     }
 
@@ -36,14 +37,6 @@ public class Materia {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Pensum getPensum() {
-        return pensum;
-    }
-
-    public void setPensum(Pensum pensum) {
-        this.pensum = pensum;
     }
 
     public String getNombre() {
@@ -60,6 +53,14 @@ public class Materia {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public Pensum getPensum() {
+        return pensum;
+    }
+
+    public void setPensum(Pensum pensum) {
+        this.pensum = pensum;
     }
 
     public Materia getMateriaPrerequisito() {

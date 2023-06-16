@@ -13,8 +13,5 @@ public class ApiMatriculaApplication {
 	}
 
 
-	@Bean
-	public RestTemplate getRestTemplate() {
-		return new RestTemplate();
-	}
+
 }

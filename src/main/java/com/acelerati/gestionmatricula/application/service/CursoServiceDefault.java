@@ -2,8 +2,9 @@ package com.acelerati.gestionmatricula.application.service;
 
 import com.acelerati.gestionmatricula.application.service.interfaces.CursoService;
 import com.acelerati.gestionmatricula.domain.model.Curso;
+import com.acelerati.gestionmatricula.domain.model.Materia;
 import com.acelerati.gestionmatricula.domain.model.Profesor;
-import com.acelerati.gestionmatricula.infraestructure.driven_adapters.persistence.interfaces.jpa_repository.CursoRepository;
+import com.acelerati.gestionmatricula.infraestructure.driven_adapters.interfaces.jpa_repository.CursoRepository;
 import com.acelerati.gestionmatricula.infraestructure.entitys.CursoEntity;
 import com.acelerati.gestionmatricula.infraestructure.rest.mappers.CursoMapper;
 import org.springframework.data.domain.Page;
@@ -46,6 +47,13 @@ public class CursoServiceDefault implements CursoService {
                 .map(CursoMapper::alCurso)
                 .collect(Collectors.toList());
         return new PageImpl<>(cursoList,cursoEntityPage.getPageable(),cursoEntityPage.getTotalElements());
+    }
+
+    @Override
+    public List<Curso> listCursos(Materia materia) {
+        return cursoRepository.listCursos(materia).stream()
+                .map(CursoMapper::alCurso)
+                .collect(Collectors.toList());
     }
 
     @Override

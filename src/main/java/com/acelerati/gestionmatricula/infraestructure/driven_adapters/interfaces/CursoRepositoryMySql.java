@@ -1,4 +1,4 @@
-package com.acelerati.gestionmatricula.infraestructure.driven_adapters.persistence.interfaces;
+package com.acelerati.gestionmatricula.infraestructure.driven_adapters.interfaces;
 
 import com.acelerati.gestionmatricula.domain.model.Materia;
 import com.acelerati.gestionmatricula.domain.model.Profesor;
@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -22,10 +23,12 @@ public interface CursoRepositoryMySql  extends PagingAndSortingRepository<CursoE
 
    int countByProfesorAndEstado(Profesor profesor, String estado);
 
-  CursoEntity findByIdAndProfesorAndEstado(Long id,Profesor profesor,String estado);
+   CursoEntity findByIdAndProfesorAndEstado(Long id,Profesor profesor,String estado);
 
    Page<CursoEntity> findByProfesor(Profesor profesor, Pageable pageable);
 
    Optional<CursoEntity> findByIdAndMateria(Long id, Materia materia);
+
+   List<CursoEntity> findByMateria(Materia materia);
 
 }

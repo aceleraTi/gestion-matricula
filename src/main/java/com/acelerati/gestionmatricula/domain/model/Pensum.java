@@ -9,12 +9,12 @@ public class Pensum {
 
     private Long id;
     @Transient
-    private Integer año;
+    private Integer anio;
 
 
-    public Pensum(Long id, Integer año) {
+    public Pensum(Long id, Integer anio) {
         this.id = id;
-        this.año = año;
+        this.anio = anio;
     }
 
     public Pensum() {
@@ -30,11 +30,11 @@ public class Pensum {
         this.id = id;
     }
 
-    public Integer getAño() {
-        return año;
+    public Integer getAnio() {
+        return anio;
     }
 
-    public void setAño(Integer año) {
-        this.año = año;
+    public void setAnio(Integer anio) {
+        this.anio = anio;
     }
 }

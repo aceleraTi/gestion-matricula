@@ -1,7 +1,7 @@
-package com.acelerati.gestionmatricula.infraestructure.driven_adapters.persistence;
+package com.acelerati.gestionmatricula.infraestructure.driven_adapters;
 
-import com.acelerati.gestionmatricula.infraestructure.driven_adapters.persistence.interfaces.jpa_repository.SemestreAcademicoRepository;
-import com.acelerati.gestionmatricula.infraestructure.driven_adapters.persistence.interfaces.SemestreAcademicoRepositoryMySql;
+import com.acelerati.gestionmatricula.infraestructure.driven_adapters.interfaces.jpa_repository.SemestreAcademicoRepository;
+import com.acelerati.gestionmatricula.infraestructure.driven_adapters.interfaces.SemestreAcademicoRepositoryMySql;
 import com.acelerati.gestionmatricula.infraestructure.entitys.SemestreAcademicoEntity;
 
 public class SemestreAcademicoImpRepositoryMySql implements SemestreAcademicoRepository {

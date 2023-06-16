@@ -1,4 +1,4 @@
-package com.acelerati.gestionmatricula.infraestructure.driven_adapters.persistence.interfaces;
+package com.acelerati.gestionmatricula.infraestructure.driven_adapters.interfaces;
 
 import com.acelerati.gestionmatricula.infraestructure.entitys.CursoEntity;
 import com.acelerati.gestionmatricula.infraestructure.entitys.TareaEntity;

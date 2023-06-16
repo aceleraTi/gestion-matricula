@@ -1,6 +1,7 @@
 package com.acelerati.gestionmatricula.infraestructure.exceptions;
 
 
+import com.acelerati.gestionmatricula.domain.exceptions.ApiError;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -42,7 +43,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiError> handleNotApplicationProcessedInException(NotApplicationProcessed ex){
         List<String> errors=new ArrayList<>();
         errors.add(ex.getMessage());
+
         ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST.value(), ex.getMessage(), errors);
+
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
     }
 

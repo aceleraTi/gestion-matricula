@@ -2,7 +2,7 @@ package com.acelerati.gestionmatricula.application.service;
 
 import com.acelerati.gestionmatricula.application.service.interfaces.EstudiantePensumService;
 import com.acelerati.gestionmatricula.domain.model.EstudiantePensum;
-import com.acelerati.gestionmatricula.infraestructure.driven_adapters.persistence.interfaces.jpa_repository.EstudiantePensumRepository;
+import com.acelerati.gestionmatricula.infraestructure.driven_adapters.interfaces.jpa_repository.EstudiantePensumRepository;
 import com.acelerati.gestionmatricula.infraestructure.entitys.EstudiantePensumEntity;
 import org.springframework.stereotype.Service;
 
@@ -21,5 +21,10 @@ public class EstudiantePensumServiceDefault implements EstudiantePensumService {
     public EstudiantePensum registrar(EstudiantePensum estudiantePensum) {
         EstudiantePensumEntity estudiantePensumEntity=alEstudiantePensumEntity(estudiantePensum);
         return alEstudiantePensum(estudiantePensumRepository.registrar(estudiantePensumEntity));
+    }
+
+    @Override
+    public Boolean findByIdPensum(Long idPensum) {
+        return estudiantePensumRepository.findByIdPensum(idPensum);
     }
 }

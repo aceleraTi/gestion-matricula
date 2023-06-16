@@ -1,11 +1,11 @@
-package com.acelerati.gestionmatricula.infraestructure.driven_adapters.persistence;
+package com.acelerati.gestionmatricula.infraestructure.driven_adapters;
 
 import com.acelerati.gestionmatricula.domain.model.Estudiante;
 import com.acelerati.gestionmatricula.domain.model.Materia;
-import com.acelerati.gestionmatricula.infraestructure.driven_adapters.persistence.interfaces.jpa_repository.EstudianteCursoRepository;
-import com.acelerati.gestionmatricula.infraestructure.driven_adapters.persistence.interfaces.CursoRepositoryMySql;
-import com.acelerati.gestionmatricula.infraestructure.driven_adapters.persistence.interfaces.EstudianteCursoRepositoryMySql;
-import com.acelerati.gestionmatricula.infraestructure.driven_adapters.persistence.interfaces.EstudiantePensumRepositoryMySql;
+import com.acelerati.gestionmatricula.infraestructure.driven_adapters.interfaces.jpa_repository.EstudianteCursoRepository;
+import com.acelerati.gestionmatricula.infraestructure.driven_adapters.interfaces.CursoRepositoryMySql;
+import com.acelerati.gestionmatricula.infraestructure.driven_adapters.interfaces.EstudianteCursoRepositoryMySql;
+import com.acelerati.gestionmatricula.infraestructure.driven_adapters.interfaces.EstudiantePensumRepositoryMySql;
 import com.acelerati.gestionmatricula.infraestructure.entitys.CursoEntity;
 import com.acelerati.gestionmatricula.infraestructure.entitys.EstudianteCursoEntity;
 import com.acelerati.gestionmatricula.infraestructure.entitys.EstudiantePensumEntity;
@@ -18,33 +18,19 @@ import java.util.Optional;
 public class EstudianteCursoImpRepositoryMySql implements EstudianteCursoRepository {
 
     private final EstudianteCursoRepositoryMySql estudianteCursoRepositoryMysql;
-    private final EstudiantePensumRepositoryMySql estudiantePensumRepositoryMySql;
-    private final CursoRepositoryMySql cursoRepositoryMySql;
+ //   private final EstudiantePensumRepositoryMySql estudiantePensumRepositoryMySql;
+   // private final CursoRepositoryMySql cursoRepositoryMySql;
 
-    public EstudianteCursoImpRepositoryMySql(EstudianteCursoRepositoryMySql estudianteCursoRepositoryMysql,
-                                             EstudiantePensumRepositoryMySql estudiantePensumRepositoryMySql,
-                                             CursoRepositoryMySql cursoRepositoryMySql) {
+    public EstudianteCursoImpRepositoryMySql(EstudianteCursoRepositoryMySql estudianteCursoRepositoryMysql) {
         this.estudianteCursoRepositoryMysql = estudianteCursoRepositoryMysql;
-        this.estudiantePensumRepositoryMySql = estudiantePensumRepositoryMySql;
-        this.cursoRepositoryMySql = cursoRepositoryMySql;
+
+
     }
 
     @Override
-    public EstudianteCursoEntity registrarCurso(EstudianteCursoEntity estudianteCursoEntity, Materia materia) {
+    public EstudianteCursoEntity registrarCurso(EstudianteCursoEntity estudianteCursoEntity) {
 
-        List<EstudiantePensumEntity> estudiantePensums=estudiantePensumRepositoryMySql.findByEstudianteAndPensum
-                (estudianteCursoEntity.getEstudiante(),materia.getPensum());
 
-      if(estudiantePensums.size()==0){
-          throw new NotFoundItemsInException("No estas registrado en el pensum del curso que quieres matricular");
-      }
-
-        Optional<CursoEntity> cursoEntityOptional=cursoRepositoryMySql.findByIdAndMateria
-                (estudianteCursoEntity.getCurso().getId(),materia);
-
-      if(!cursoEntityOptional.isPresent()){
-          throw new NotFoundItemsInException("El curso y la materia no coinciden");
-      }
       if(estudianteCursoRepositoryMysql.countByCursoAndEstudiante
               (estudianteCursoEntity.getCurso(),estudianteCursoEntity.getEstudiante())>0){
           throw new NotCreatedInException("Ya estas matriculado en el curso");
@@ -83,5 +69,6 @@ public class EstudianteCursoImpRepositoryMySql implements EstudianteCursoReposit
     public List<EstudianteCursoEntity> guardarEstudiantesCursos(List<EstudianteCursoEntity> estudianteCursoEntities) {
         return (List<EstudianteCursoEntity>) estudianteCursoRepositoryMysql.saveAll(estudianteCursoEntities);
     }
+
 
 }

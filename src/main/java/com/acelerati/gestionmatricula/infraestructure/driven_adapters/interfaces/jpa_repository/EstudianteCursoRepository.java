@@ -1,4 +1,4 @@
-package com.acelerati.gestionmatricula.infraestructure.driven_adapters.persistence.interfaces.jpa_repository;
+package com.acelerati.gestionmatricula.infraestructure.driven_adapters.interfaces.jpa_repository;
 
 import com.acelerati.gestionmatricula.domain.model.Estudiante;
 import com.acelerati.gestionmatricula.domain.model.Materia;
@@ -8,7 +8,7 @@ import com.acelerati.gestionmatricula.infraestructure.entitys.EstudianteCursoEnt
 import java.util.List;
 
 public interface EstudianteCursoRepository {
-    EstudianteCursoEntity registrarCurso(EstudianteCursoEntity estudianteCurso, Materia materia);
+    EstudianteCursoEntity registrarCurso(EstudianteCursoEntity estudianteCurso);
     List<EstudianteCursoEntity> ListarCursosEstudiante(Estudiante estudiante);
 
     EstudianteCursoEntity findByEstudianteCursoEntityId(Long id);

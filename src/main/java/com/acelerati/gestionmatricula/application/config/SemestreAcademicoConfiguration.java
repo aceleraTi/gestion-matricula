@@ -1,8 +1,8 @@
 package com.acelerati.gestionmatricula.application.config;
 
-import com.acelerati.gestionmatricula.infraestructure.driven_adapters.persistence.interfaces.jpa_repository.SemestreAcademicoRepository;
-import com.acelerati.gestionmatricula.infraestructure.driven_adapters.persistence.SemestreAcademicoImpRepositoryMySql;
-import com.acelerati.gestionmatricula.infraestructure.driven_adapters.persistence.interfaces.SemestreAcademicoRepositoryMySql;
+import com.acelerati.gestionmatricula.infraestructure.driven_adapters.interfaces.jpa_repository.SemestreAcademicoRepository;
+import com.acelerati.gestionmatricula.infraestructure.driven_adapters.SemestreAcademicoImpRepositoryMySql;
+import com.acelerati.gestionmatricula.infraestructure.driven_adapters.interfaces.SemestreAcademicoRepositoryMySql;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

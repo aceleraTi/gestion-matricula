@@ -1,8 +1,8 @@
-package com.acelerati.gestionmatricula.infraestructure.driven_adapters.persistence;
+package com.acelerati.gestionmatricula.infraestructure.driven_adapters;
 
-import com.acelerati.gestionmatricula.infraestructure.driven_adapters.persistence.interfaces.jpa_repository.TareaRepository;
-import com.acelerati.gestionmatricula.infraestructure.driven_adapters.persistence.interfaces.CursoRepositoryMySql;
-import com.acelerati.gestionmatricula.infraestructure.driven_adapters.persistence.interfaces.TareaRepositoryMySql;
+import com.acelerati.gestionmatricula.infraestructure.driven_adapters.interfaces.jpa_repository.TareaRepository;
+import com.acelerati.gestionmatricula.infraestructure.driven_adapters.interfaces.CursoRepositoryMySql;
+import com.acelerati.gestionmatricula.infraestructure.driven_adapters.interfaces.TareaRepositoryMySql;
 import com.acelerati.gestionmatricula.infraestructure.entitys.TareaEntity;
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotCreatedInException;
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotFoundItemsInException;

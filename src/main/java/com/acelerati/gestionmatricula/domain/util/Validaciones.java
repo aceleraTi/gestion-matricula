@@ -5,13 +5,11 @@ import com.acelerati.gestionmatricula.domain.model.Profesor;
 import com.acelerati.gestionmatricula.domain.model.Usuario;
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotLoggedInException;
 
-import javax.servlet.http.HttpSession;
-
 public class Validaciones {
 
-    public static Usuario validarLogged(Long usuarioAut,HttpSession session){
+    public static Usuario validarLogged(Long usuarioAut,Usuario usuario){
         try {
-            Usuario usuario=(Usuario) session.getAttribute("usuario");
+
             System.out.println(usuario.getTipoUsuario());
             System.out.println("--"+usuarioAut);
             if(usuarioAut==usuario.getTipoUsuario()){

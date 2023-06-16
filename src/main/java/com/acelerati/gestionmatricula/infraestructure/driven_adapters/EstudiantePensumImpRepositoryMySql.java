@@ -1,7 +1,7 @@
-package com.acelerati.gestionmatricula.infraestructure.driven_adapters.persistence;
+package com.acelerati.gestionmatricula.infraestructure.driven_adapters;
 
-import com.acelerati.gestionmatricula.infraestructure.driven_adapters.persistence.interfaces.jpa_repository.EstudiantePensumRepository;
-import com.acelerati.gestionmatricula.infraestructure.driven_adapters.persistence.interfaces.EstudiantePensumRepositoryMySql;
+import com.acelerati.gestionmatricula.infraestructure.driven_adapters.interfaces.jpa_repository.EstudiantePensumRepository;
+import com.acelerati.gestionmatricula.infraestructure.driven_adapters.interfaces.EstudiantePensumRepositoryMySql;
 import com.acelerati.gestionmatricula.infraestructure.entitys.EstudiantePensumEntity;
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotCreatedInException;
 
@@ -19,6 +19,15 @@ public class EstudiantePensumImpRepositoryMySql implements EstudiantePensumRepos
             return estudiantePensumRepositoryMySql.save(estudiantePensumEntity);
         }
         throw new NotCreatedInException("Ya estas matriculado en los dos pensum permitidos por estudiante");
+    }
+
+    @Override
+    public Boolean findByIdPensum(Long idPensum) {
+        if(estudiantePensumRepositoryMySql.findByPensumId(idPensum).size()>0){
+            return true;
+        }
+        return false;
+
     }
 
     private boolean countEstudiantePensum(EstudiantePensumEntity estudiantePensum){

@@ -3,7 +3,7 @@ package com.acelerati.gestionmatricula.application.service;
 
 import com.acelerati.gestionmatricula.application.service.interfaces.CursoService;
 import com.acelerati.gestionmatricula.domain.model.Curso;
-import com.acelerati.gestionmatricula.infraestructure.driven_adapters.persistence.interfaces.jpa_repository.CursoRepository;
+import com.acelerati.gestionmatricula.infraestructure.driven_adapters.interfaces.jpa_repository.CursoRepository;
 import com.acelerati.gestionmatricula.infraestructure.entitys.CursoEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

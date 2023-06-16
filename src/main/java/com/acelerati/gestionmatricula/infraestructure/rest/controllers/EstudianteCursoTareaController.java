@@ -31,7 +31,8 @@ public class EstudianteCursoTareaController {
     public ResponseEntity<EstudianteCursoTarea> asignarProfesor(@RequestBody EstudianteCursoTarea estudianteCursoTarea,
                                                  HttpSession session){
 
-        Profesor profesor= validarProfesor(validarLogged(3L,session));
+        Usuario usuario=(Usuario) session.getAttribute("usuario");
+        Profesor profesor= validarProfesor(validarLogged(3L,usuario));
 
         Tarea tarea=tareaService.findByTareaId(estudianteCursoTarea.getTarea().getId());
         if(profesor.getId()!=tarea.getCurso().getProfesor().getId()){
