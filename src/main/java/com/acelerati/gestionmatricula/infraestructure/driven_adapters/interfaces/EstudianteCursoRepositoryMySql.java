@@ -7,6 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface EstudianteCursoRepositoryMySql extends CrudRepository<EstudianteCursoEntity,Long> {
@@ -16,5 +17,7 @@ public interface EstudianteCursoRepositoryMySql extends CrudRepository<Estudiant
     List<EstudianteCursoEntity> findByEstudiante(Estudiante estudiante);
 
     List<EstudianteCursoEntity> findByCurso(CursoEntity cursoEntity);
+
+    Optional<EstudianteCursoEntity> findByEstudianteIdAndCursoId(Long estudianteId, Long cursoId);
 
 }

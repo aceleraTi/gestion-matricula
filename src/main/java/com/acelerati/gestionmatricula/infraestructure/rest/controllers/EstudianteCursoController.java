@@ -55,16 +55,13 @@ public class EstudianteCursoController {
         try{
           Materia materia1=estudianteCursoRestTemplate.getForObject(URL_GESTION_ACADEMICA+"/materias/"+curso.getMateria().getId(),
                      Materia.class);
-
            materia=materia1;
 
         }catch (HttpServerErrorException exception){
             throw new NotFoundItemsInException("Materia no encontrada");
 
         }catch (HttpClientErrorException exception){
-            System.out.println("que paso");
-            System.out.println(exception.getMessage());
-        }
+                  }
         System.out.println("Passsssssssssss");
         try {
             assert materia != null;

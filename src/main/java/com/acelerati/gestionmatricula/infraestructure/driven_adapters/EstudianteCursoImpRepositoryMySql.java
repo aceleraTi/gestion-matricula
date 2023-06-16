@@ -18,8 +18,7 @@ import java.util.Optional;
 public class EstudianteCursoImpRepositoryMySql implements EstudianteCursoRepository {
 
     private final EstudianteCursoRepositoryMySql estudianteCursoRepositoryMysql;
- //   private final EstudiantePensumRepositoryMySql estudiantePensumRepositoryMySql;
-   // private final CursoRepositoryMySql cursoRepositoryMySql;
+
 
     public EstudianteCursoImpRepositoryMySql(EstudianteCursoRepositoryMySql estudianteCursoRepositoryMysql) {
         this.estudianteCursoRepositoryMysql = estudianteCursoRepositoryMysql;
@@ -68,6 +67,16 @@ public class EstudianteCursoImpRepositoryMySql implements EstudianteCursoReposit
     @Override
     public List<EstudianteCursoEntity> guardarEstudiantesCursos(List<EstudianteCursoEntity> estudianteCursoEntities) {
         return (List<EstudianteCursoEntity>) estudianteCursoRepositoryMysql.saveAll(estudianteCursoEntities);
+    }
+
+    @Override
+    public EstudianteCursoEntity findByEstudianteIdAndCursoId(Long idEstudiante, Long idCurso) {
+        Optional<EstudianteCursoEntity> optionalEstudianteCursoEntity=estudianteCursoRepositoryMysql
+                .findByEstudianteIdAndCursoId(idEstudiante,idCurso);
+        if (optionalEstudianteCursoEntity.isPresent()){
+            return  optionalEstudianteCursoEntity.get();
+        }
+        return null;
     }
 
 
