@@ -102,7 +102,6 @@ public class CursoController {
         }
         List<EstudianteCurso> estudianteCursos = estudianteCursoService.findByCurso(curso);
         for (EstudianteCurso estud : estudianteCursos) {
-
             if (estud.getPrevio1() == null ||
                     estud.getPrevio2() == null ||
                     estud.getPrevio4() == null) {
@@ -123,9 +122,6 @@ public class CursoController {
 
             estud.setNotaFinal(notaFinal);
         }
-
-
-
         List<EstudianteCurso> estudianteCursosCerrados =  estudianteCursoService.guardarEstudiantesCursos(estudianteCursos);
         curso.setEstado("Cerrado");
         cursoService.update(curso);

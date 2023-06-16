@@ -5,6 +5,8 @@ import com.acelerati.gestionmatricula.infraestructure.driven_adapters.interfaces
 import com.acelerati.gestionmatricula.infraestructure.entitys.EstudiantePensumEntity;
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotCreatedInException;
 
+import java.util.Optional;
+
 public class EstudiantePensumImpRepositoryMySql implements EstudiantePensumRepository {
 
     private final EstudiantePensumRepositoryMySql estudiantePensumRepositoryMySql;
@@ -28,6 +30,17 @@ public class EstudiantePensumImpRepositoryMySql implements EstudiantePensumRepos
         }
         return false;
 
+    }
+
+    @Override
+    public Boolean findByPensumIdAndEstudianteId(Long pensumId, Long estudianteId) {
+        Optional<EstudiantePensumEntity>estudiantePensumEntityOptional=estudiantePensumRepositoryMySql
+                .findByPensumIdAndEstudianteId(pensumId,estudianteId);
+        if (estudiantePensumEntityOptional.isPresent())
+        {
+            return true;
+        }
+        return false;
     }
 
     private boolean countEstudiantePensum(EstudiantePensumEntity estudiantePensum){
