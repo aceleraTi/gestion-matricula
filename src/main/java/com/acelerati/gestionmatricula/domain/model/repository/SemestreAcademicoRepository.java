@@ -1,4 +1,4 @@
-package com.acelerati.gestionmatricula.infraestructure.driven_adapters.interfaces.jpa_repository;
+package com.acelerati.gestionmatricula.domain.model.repository;
 
 import com.acelerati.gestionmatricula.infraestructure.entitys.SemestreAcademicoEntity;
 

@@ -1,6 +1,6 @@
 package com.acelerati.gestionmatricula.application.config;
 
-import com.acelerati.gestionmatricula.infraestructure.driven_adapters.interfaces.jpa_repository.TareaRepository;
+import com.acelerati.gestionmatricula.domain.model.repository.TareaRepository;
 import com.acelerati.gestionmatricula.infraestructure.driven_adapters.TareaImpRepositoryMySql;
 import com.acelerati.gestionmatricula.infraestructure.driven_adapters.interfaces.CursoRepositoryMySql;
 import com.acelerati.gestionmatricula.infraestructure.driven_adapters.interfaces.TareaRepositoryMySql;

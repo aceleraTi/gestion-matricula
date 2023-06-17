@@ -1,6 +1,6 @@
 package com.acelerati.gestionmatricula.infraestructure.driven_adapters;
 
-import com.acelerati.gestionmatricula.infraestructure.driven_adapters.interfaces.jpa_repository.EstudiantePensumRepository;
+import com.acelerati.gestionmatricula.domain.model.repository.EstudiantePensumRepository;
 import com.acelerati.gestionmatricula.infraestructure.driven_adapters.interfaces.EstudiantePensumRepositoryMySql;
 import com.acelerati.gestionmatricula.infraestructure.entitys.EstudiantePensumEntity;
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotCreatedInException;
