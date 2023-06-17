@@ -45,6 +45,13 @@ public class CursoServiceDefault implements CursoService {
         this.estudianteCursoTareaRepository = estudianteCursoTareaRepository;
         this.tareaRepository = tareaRepository;
     }
+
+    /**
+     * Este es el método principal de crear un curso, que se encarga de crear un curso. Recibe el objeto Curso y la sesión HTTP como parámetros.
+     * En primer lugar, se valida que el usuario haya iniciado sesión con el rol adecuado. Luego,
+     * se convierte el objeto Curso en un CursoEntity y se realizan las validaciones necesarias
+     * antes de guardar el curso en la base de datos.
+     */
     @Override
     public Curso create(Curso curso, HttpSession session) {
         validarLogged(2L, (Usuario) session.getAttribute("usuario"));
@@ -53,18 +60,48 @@ public class CursoServiceDefault implements CursoService {
         validarCantidadCursosProfesor(cursoEntity);
         return alCurso(cursoRepository.save(cursoEntity));
     }
+
+    /**
+     * Este método valida si ya existe un grupo único para la combinación de materia y semestre académico del curso.
+     * Si ya existe un curso con el mismo grupo, materia y semestre académico,
+     * se lanza una excepción NotCreatedInException.
+     *
+     * @param cursoEntity
+     */
     private void validarGrupoUnicoMateriaSemestre(CursoEntity cursoEntity) {
         if (!cursoRepository.esGrupoUnicoMateriaSemetre(cursoEntity.getGrupo(),
                 cursoEntity.getMateria(), cursoEntity.getSemestreAcademicoEntity())) {
             throw new NotCreatedInException("El grupo para el semestre y materia ya existe");
         }
     }
+
+    /**
+     * Este método verifica si el profesor ya tiene el número máximo permitido de cursos en curso.
+     * Si el profesor ya tiene los 4 cursos permitidos, se lanza una excepción NotCreatedInException.
+     *
+     * @param cursoEntity
+     */
     private void validarCantidadCursosProfesor(CursoEntity cursoEntity) {
         if (!cursoRepository.countProfesorCurso(cursoEntity)) {
             throw new NotCreatedInException("El profesor ya tiene los 4 cursos permitidos en curso");
         }
     }
+
     //---------------------------------------------------------------------------------------------------------
+
+    /**
+     * El metodo asignarProfesor
+     * Valida que el usuario esté autenticado y tenga el rol adecuado.
+     * Valida que el usuario con el ID proporcionado sea un profesor.
+     * Obtiene el curso correspondiente al ID proporcionado.
+     * Asigna el profesor al curso.
+     * Valida la cantidad de cursos que tiene asignados el profesor.
+     * Guarda los cambios en el repositorio del curso y retorna el curso actualizado.
+     * @param idCurso
+     * @param idProfesor
+     * @param session
+     * @return
+     */
     @Override
     public Curso asignarProfesor(Long idCurso, Long idProfesor, HttpSession session) {
         validarLogged(2L, (Usuario) session.getAttribute("usuario"));
@@ -74,6 +111,14 @@ public class CursoServiceDefault implements CursoService {
         validarCantidadCursosProfesor(cursoEntity);
         return alCurso(cursoRepository.update(cursoEntity));
     }
+
+    /**
+     * Hace una solicitud al microservicio (gestion de usuarios) para obtener información sobre el usuario con el ID proporcionado.
+     * Verifica si el usuario es nulo o si su tipo de usuario no es 3 (que corresponde al rol de profesor).
+     * Si alguna de estas condiciones se cumple, lanza una excepción indicando que el usuario no tiene el rol de profesor.
+     * @param idProfesor
+     */
+
     private void validarUsuarioEsProfesor(Long idProfesor) {
         try {
             Usuario validarUsuario = restTemplate.getForObject(URL_GESTION_USUARIO + "/api/1.0/usuarios/" + idProfesor, Usuario.class);
@@ -84,6 +129,13 @@ public class CursoServiceDefault implements CursoService {
             throw new NotLoggedInException("Error al obtener el usuario");
         }
     }
+
+    /**
+     * Obtiene el curso correspondiente al ID proporcionado consultando el repositorio de cursos.
+     * Si el curso es nulo, lanza una excepción indicando que el curso no se encontró.
+     * @param idCurso
+     * @return
+     */
     private CursoEntity obtenerCursoPorId(Long idCurso) {
         CursoEntity cursoEntity = cursoRepository.findById(idCurso);
         if (cursoEntity == null) {
@@ -92,12 +144,34 @@ public class CursoServiceDefault implements CursoService {
         return cursoEntity;
     }
 
+    /**
+     * Crea una instancia de la clase Profesor con el ID proporcionado.
+     * Asigna el profesor al curso estableciendo la instancia creada como el profesor del curso.
+     * @param idProfesor
+     * @param cursoEntity
+     */
     private void asignarProfesorACurso(Long idProfesor, CursoEntity cursoEntity) {
         Profesor profesor = new Profesor();
         profesor.setId(idProfesor);
         cursoEntity.setProfesor(profesor);
     }
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Este es el metodo principal de cerrar un curso
+     * Valida que el usuario sea un profesor autenticado.
+     * Obtiene el profesor autenticado y el curso correspondiente al ID proporcionado.
+     * Valida que el profesor tenga permisos para cerrar el curso.
+     * Obtiene la lista de entidades de EstudianteCurso correspondientes al curso.
+     * Actualiza las notas de los estudiantes del curso.
+     * Guarda las entidades de EstudianteCurso actualizadas en el repositorio.
+     * Establece el estado del curso como "Cerrado".
+     * Retorna el curso actualizado.
+     * @param idCurso
+     * @param session
+     * @return
+     */
     @Override
     public Curso cerrarCurso(Long idCurso, HttpSession session) {
 
@@ -105,11 +179,20 @@ public class CursoServiceDefault implements CursoService {
         CursoEntity cursoEntity = cursoRepository.findById(idCurso);
         validarPermisoCerrarCurso(cursoEntity, profesor);
         List<EstudianteCursoEntity> estudianteCursosCursoEntities = obtenerEstudiantesCursos(cursoEntity);
-        actualizarNotasEstudiantes( estudianteCursosCursoEntities,idCurso);
+        actualizarNotasEstudiantes(estudianteCursosCursoEntities, idCurso);
         guardarEstudiantesCursos(estudianteCursosCursoEntities);
         cursoEntity.setEstado("Cerrado");
         return alCurso(cursoRepository.update(cursoEntity));
     }
+
+    /**
+     * Recorre la lista de entidades de EstudianteCurso del curso.
+     * Valida que las notas previas  estén presentes.
+     * calcula la nota previa 3 utilizando el método calcularNotaPrevio3().
+     * Calcula la nota final del estudiante utilizando las notas previas y la asigna a estud.setNotaFinal().
+     * @param estudianteCursosEntities
+     * @param idCurso
+     */
     private void actualizarNotasEstudiantes(List<EstudianteCursoEntity> estudianteCursosEntities, Long idCurso) {
         for (EstudianteCursoEntity estud : estudianteCursosEntities) {
             validarNotasPrevias(estud);
@@ -120,14 +203,36 @@ public class CursoServiceDefault implements CursoService {
             }
         }
     }
+
+    /**
+     * Valida si el profesor autenticado tiene permisos para cerrar el curso.
+     * Si el profesor del curso no coincide con el profesor autenticado, lanza una excepción indicando que no tiene permisos.
+     *
+     * Obtiene la lista de entidades de EstudianteCurso correspondientes al curso proporcionado.
+     * @param cursoEntity
+     * @param profesor
+     */
     private void validarPermisoCerrarCurso(CursoEntity cursoEntity, Profesor profesor) {
         if (cursoEntity.getProfesor().getId() != profesor.getId()) {
             throw new NotLoggedInException("No tiene permisos para cerrar el curso");
         }
     }
+
+    /**
+     * Obtiene la lista de entidades de EstudianteCurso correspondientes al curso proporcionado.
+     * @param cursoEntity
+     * @return
+     */
     private List<EstudianteCursoEntity> obtenerEstudiantesCursos(CursoEntity cursoEntity) {
         return estudianteCursoRepository.findByCurso(cursoEntity);
     }
+
+    /**
+     * Valida si las notas previas (previo1, previo2 y previo4) del estudiante están presentes.
+     * Si alguna de las notas previas no está presente,
+     * lanza una excepción indicando que no se han subido todas las notas previas.
+     * @param estud
+     */
     private void validarNotasPrevias(EstudianteCursoEntity estud) {
         if (estud.getPrevio1() == null ||
                 estud.getPrevio2() == null ||
@@ -135,6 +240,16 @@ public class CursoServiceDefault implements CursoService {
             throw new NotCreatedInException("Aun no se han subido todas las notas de los previos");
         }
     }
+
+    /**
+     * Calcula la nota previa 3 de un estudiante en base a las tareas del curso.
+     * Obtiene las tareas del curso mediante el método findByCursoId().
+     * Para cada tarea, obtiene la nota del estudiante correspondiente utilizando el método notaTarea().
+     * Calcula el promedio de las notas de las tareas y lo retorna.
+     * @param idCurso
+     * @param idEstudiante
+     * @return
+     */
     private Double calcularNotaPrevio3(Long idCurso, Long idEstudiante) {
         return tareaRepository.findByCursoId(idCurso)
                 .stream()
@@ -142,11 +257,30 @@ public class CursoServiceDefault implements CursoService {
                 .average()
                 .orElse(0.0);
     }
+
+    /**
+     *
+     * Guarda las entidades de EstudianteCurso en el repositorio y retorna la lista actualizada.
+     * @param estudianteCursos
+     * @return
+     */
     private List<EstudianteCursoEntity> guardarEstudiantesCursos(List<EstudianteCursoEntity> estudianteCursos) {
         return estudianteCursoRepository.guardarEstudiantesCursos(estudianteCursos);
     }
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    /**
+     * Recibe un objeto Profesor y un objeto Pageable que define la paginación.
+     * Utiliza el repositorio cursoRepository para buscar los cursos asociados al profesor y paginar los resultados.
+     * Obtiene una página de entidades CursoEntity.
+     * Luego, utiliza el método map() junto con el CursoMapper para convertir cada CursoEntity en un objeto Curso.
+     * Recolecta los objetos Curso en una lista.
+     * Finalmente, crea una nueva página (PageImpl) utilizando la lista de cursos, la información de paginación original
+     * y el total de elementos de la página de entidades CursoEntity. Retorna esta nueva página de cursos.
+     * @param profesor
+     * @param pageable
+     * @return
+     */
     @Override
     public Page<Curso> findByProfesor(Profesor profesor, Pageable pageable) {
 
@@ -157,6 +291,14 @@ public class CursoServiceDefault implements CursoService {
                 .collect(Collectors.toList());
         return new PageImpl<>(cursoList, cursoEntityPage.getPageable(), cursoEntityPage.getTotalElements());
     }
+
+    /**
+     * Recibe un ID de curso como parámetro.
+     * Utiliza el repositorio cursoRepository para buscar un curso por su ID.
+     * Retorna el curso encontrado convertido en un objeto Curso utilizando el método alaCurso().
+     * @param id
+     * @return
+     */
     @Override
     public Curso findById(Long id) {
         return alCurso(cursoRepository.findById(id));
