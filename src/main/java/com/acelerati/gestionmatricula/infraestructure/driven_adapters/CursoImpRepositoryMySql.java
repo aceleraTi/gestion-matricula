@@ -6,7 +6,6 @@ import com.acelerati.gestionmatricula.domain.model.repository.CursoRepository;
 import com.acelerati.gestionmatricula.infraestructure.driven_adapters.interfaces.CursoRepositoryMySql;
 import com.acelerati.gestionmatricula.infraestructure.entitys.CursoEntity;
 import com.acelerati.gestionmatricula.infraestructure.entitys.SemestreAcademicoEntity;
-import com.acelerati.gestionmatricula.infraestructure.exceptions.NotFoundItemsInException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -31,24 +30,15 @@ public class CursoImpRepositoryMySql implements CursoRepository {
     public CursoEntity update(CursoEntity cursoEntity) {
         return cursoRepositoryMySql.save(cursoEntity);
     }
-
     @Override
-    public CursoEntity findById(Long id) {
-        Optional<CursoEntity> cursoEntityOptional=cursoRepositoryMySql.findById(id);
+    public Optional<CursoEntity> findById(Long id) {
+        return cursoRepositoryMySql.findById(id);
 
-        if (cursoEntityOptional.isPresent()){
-            return cursoEntityOptional.get();
-        }
-        throw new NotFoundItemsInException("El curso no existe");
     }
 
     @Override
     public Page<CursoEntity> findByProfesor(Profesor profesor, Pageable pageable) {
-        Page<CursoEntity> pageCursoEntity=cursoRepositoryMySql.findByProfesor(profesor,pageable);
-        if(pageCursoEntity.getSize()>0){
-            return pageCursoEntity;
-        }
-        throw new NotFoundItemsInException("No se encontraron cursos asignados");
+      return cursoRepositoryMySql.findByProfesor(profesor,pageable);
     }
 
     @Override
@@ -64,15 +54,8 @@ public class CursoImpRepositoryMySql implements CursoRepository {
     }
 
     public boolean countProfesorCurso(CursoEntity cursoEntity){
-
-        if(cursoEntity.getProfesor()!=null){
-            return cursoRepositoryMySql.countByProfesorAndEstado(cursoEntity.getProfesor(),"En Curso")<4;
-        }
-        else
-        {
-            return true;
-        }
-
+        return (cursoEntity.getProfesor() != null)
+                ? cursoRepositoryMySql.countByProfesorAndEstado(cursoEntity.getProfesor(), "En Curso") < 4: true;
     }
 
 

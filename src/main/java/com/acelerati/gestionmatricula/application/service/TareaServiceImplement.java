@@ -89,7 +89,7 @@ public class TareaServiceImplement implements TareaService {
      * @return
      */
     private CursoEntity obtenerCursoPorId(Long idCurso) {
-        Optional<CursoEntity> cursoOptional = Optional.ofNullable(cursoRepository.findById(idCurso));
+        Optional<CursoEntity> cursoOptional = cursoRepository.findById(idCurso);
         if (cursoOptional.isEmpty()) {
             throw new NotFoundItemsInException("El curso no existe");
         }

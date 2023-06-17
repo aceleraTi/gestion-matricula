@@ -9,6 +9,7 @@ import com.acelerati.gestionmatricula.domain.model.repository.TareaRepository;
 import com.acelerati.gestionmatricula.infraestructure.entitys.CursoEntity;
 import com.acelerati.gestionmatricula.infraestructure.entitys.EstudianteCursoEntity;
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotCreatedInException;
+import com.acelerati.gestionmatricula.infraestructure.exceptions.NotFoundItemsInException;
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotLoggedInException;
 import com.acelerati.gestionmatricula.infraestructure.rest.mappers.CursoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.acelerati.gestionmatricula.domain.util.Validaciones.validarLogged;
@@ -137,11 +139,11 @@ public class CursoServiceImplement implements CursoService {
      * @return
      */
     private CursoEntity obtenerCursoPorId(Long idCurso) {
-        CursoEntity cursoEntity = cursoRepository.findById(idCurso);
-        if (cursoEntity == null) {
+        Optional<CursoEntity> cursoEntityOptional = cursoRepository.findById(idCurso);
+        if (cursoEntityOptional.isEmpty()) {
             throw new NotLoggedInException("Curso no encontrado");
         }
-        return cursoEntity;
+        return cursoEntityOptional.get();
     }
 
     /**
@@ -176,7 +178,7 @@ public class CursoServiceImplement implements CursoService {
     public Curso cerrarCurso(Long idCurso, HttpSession session) {
 
         Profesor profesor = validarProfesor(validarLogged(3L, (Usuario) session.getAttribute("usuario")));
-        CursoEntity cursoEntity = cursoRepository.findById(idCurso);
+        CursoEntity cursoEntity = cursoRepository.findById(idCurso).orElseThrow();
         validarPermisoCerrarCurso(cursoEntity, profesor);
         List<EstudianteCursoEntity> estudianteCursosCursoEntities = obtenerEstudiantesCursos(cursoEntity);
         actualizarNotasEstudiantes(estudianteCursosCursoEntities, idCurso);
@@ -273,6 +275,7 @@ public class CursoServiceImplement implements CursoService {
      * Recibe un objeto Profesor y un objeto Pageable que define la paginación.
      * Utiliza el repositorio cursoRepository para buscar los cursos asociados al profesor y paginar los resultados.
      * Obtiene una página de entidades CursoEntity.
+     * se verifica si hay cursos asignados de lo contrario se retorna una exepcion
      * Luego, utiliza el método map() junto con el CursoMapper para convertir cada CursoEntity en un objeto Curso.
      * Recolecta los objetos Curso en una lista.
      * Finalmente, crea una nueva página (PageImpl) utilizando la lista de cursos, la información de paginación original
@@ -285,11 +288,23 @@ public class CursoServiceImplement implements CursoService {
     public Page<Curso> findByProfesor(Profesor profesor, Pageable pageable) {
 
         Page<CursoEntity> cursoEntityPage = cursoRepository.findByProfesor(profesor, pageable);
+        verificarCurso(cursoEntityPage);
         List<Curso> cursoList = cursoEntityPage.getContent()
                 .stream()
                 .map(CursoMapper::alCurso)
                 .collect(Collectors.toList());
         return new PageImpl<>(cursoList, cursoEntityPage.getPageable(), cursoEntityPage.getTotalElements());
+    }
+
+    /**
+     * valida si hay cursas asignados al profesor.
+     * @param cursoEntityPage
+     */
+
+    private void verificarCurso(Page<CursoEntity> cursoEntityPage) {
+        if(cursoEntityPage.getSize()==0){
+            throw new NotFoundItemsInException("No se encontraron cursos asignados");
+        }
     }
 
     /**
@@ -301,7 +316,7 @@ public class CursoServiceImplement implements CursoService {
      */
     @Override
     public Curso findById(Long id) {
-        return alCurso(cursoRepository.findById(id));
+        return alCurso(cursoRepository.findById(id).orElseThrow());
     }
 
 
