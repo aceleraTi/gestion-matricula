@@ -10,11 +10,11 @@ import static com.acelerati.gestionmatricula.infraestructure.rest.mappers.Semest
 import static com.acelerati.gestionmatricula.infraestructure.rest.mappers.SemestreAcademicoMapper.alSemestreAcademicoEntity;
 
 @Service
-public class SemestreAcademicoServiceDefault implements SemestreAcademicoService {
+public class SemestreAcademicoServiceImplement implements SemestreAcademicoService {
 
     private final SemestreAcademicoRepository semestreAcademicoRepository;
 
-    public SemestreAcademicoServiceDefault(SemestreAcademicoRepository semestreAcademicoRepository) {
+    public SemestreAcademicoServiceImplement(SemestreAcademicoRepository semestreAcademicoRepository) {
         this.semestreAcademicoRepository = semestreAcademicoRepository;
     }
 

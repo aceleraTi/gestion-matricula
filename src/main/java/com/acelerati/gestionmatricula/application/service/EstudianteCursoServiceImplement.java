@@ -29,7 +29,7 @@ import static com.acelerati.gestionmatricula.infraestructure.rest.mappers.Estudi
 import static com.acelerati.gestionmatricula.infraestructure.settings.Url.URL_GESTION_ACADEMICA;
 
 @Service
-public class EstudianteCursoServiceDefault implements EstudianteCursoService {
+public class EstudianteCursoServiceImplement implements EstudianteCursoService {
     private final EstudianteCursoRepository estudianteCursoRepository;
     private final CursoRepository cursoRepository;
     private final EstudiantePensumRepository estudiantePensumRepository;
@@ -37,7 +37,7 @@ public class EstudianteCursoServiceDefault implements EstudianteCursoService {
     @Autowired
     private RestTemplate restTemplate;
 
-    public EstudianteCursoServiceDefault(EstudianteCursoRepository estudianteCursoRepository, CursoRepository cursoRepository, EstudiantePensumRepository estudiantePensumRepository, HorarioRepository horarioRepository) {
+    public EstudianteCursoServiceImplement(EstudianteCursoRepository estudianteCursoRepository, CursoRepository cursoRepository, EstudiantePensumRepository estudiantePensumRepository, HorarioRepository horarioRepository) {
         this.estudianteCursoRepository = estudianteCursoRepository;
         this.cursoRepository = cursoRepository;
         this.estudiantePensumRepository = estudiantePensumRepository;

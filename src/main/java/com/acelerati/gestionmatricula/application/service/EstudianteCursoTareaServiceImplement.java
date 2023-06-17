@@ -21,12 +21,12 @@ import static com.acelerati.gestionmatricula.domain.util.Validaciones.validarPro
 import static com.acelerati.gestionmatricula.infraestructure.rest.mappers.EstudianteCursoTareaMapper.alEstudianteCursoTarea;
 
 @Service
-public class EstudianteCursoTareaServiceDefault implements EstudianteCursoTareaService {
+public class EstudianteCursoTareaServiceImplement implements EstudianteCursoTareaService {
 
     private final EstudianteCursoTareaRepository estudianteCursoTareaRepository;
     private final TareaRepository tareaRepository;
     private final EstudianteCursoRepository estudianteCursoRepository;
-    public EstudianteCursoTareaServiceDefault(EstudianteCursoTareaRepository estudianteCursoTareaRepository, TareaRepository tareaRepository, EstudianteCursoRepository estudianteCursoRepository) {
+    public EstudianteCursoTareaServiceImplement(EstudianteCursoTareaRepository estudianteCursoTareaRepository, TareaRepository tareaRepository, EstudianteCursoRepository estudianteCursoRepository) {
         this.estudianteCursoTareaRepository = estudianteCursoTareaRepository;
         this.tareaRepository = tareaRepository;
         this.estudianteCursoRepository = estudianteCursoRepository;
