@@ -56,7 +56,7 @@ public class HorarioServiceImplement implements HorarioService {
     @Override
     public Horario asignarHorario(Horario horario, HttpSession session) {
         validarLogged(2L,(Usuario) session.getAttribute("usuario"));
-        CursoEntity cursoEntity=cursoRepository.findById(horario.getCurso().getId());
+        CursoEntity cursoEntity=cursoRepository.findById(horario.getCurso().getId()).orElseThrow();
 
         HorarioEntity horarioEntity=alHorarioEntity(horario);
         horarioEntity.setCurso(cursoEntity);

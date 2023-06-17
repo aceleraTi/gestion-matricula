@@ -111,7 +111,7 @@ public class EstudianteCursoServiceImplement implements EstudianteCursoService {
      * @return
      */
     private CursoEntity obtenerCursoPorId(Long idCurso) {
-        Optional<CursoEntity> cursoOptional = Optional.ofNullable(cursoRepository.findById(idCurso));
+        Optional<CursoEntity> cursoOptional = cursoRepository.findById(idCurso);
         if (cursoOptional.isEmpty()) {
             throw new NotFoundItemsInException("El curso no existe");
         }

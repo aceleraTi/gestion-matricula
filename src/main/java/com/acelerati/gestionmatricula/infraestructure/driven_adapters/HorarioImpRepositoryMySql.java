@@ -32,8 +32,6 @@ public class HorarioImpRepositoryMySql implements HorarioRepository {
             return horarioRepositoryMySql.save(horarioEntity);
         }
         else{
-            System.out.println("supera la cantidad de dias a la semana");
-
             throw new NotCreatedInException("Este curso ya cuenta con los 5 horarios permitidos");
         }
     }

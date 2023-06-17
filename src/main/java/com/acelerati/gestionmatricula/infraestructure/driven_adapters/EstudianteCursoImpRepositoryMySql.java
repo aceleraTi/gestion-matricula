@@ -25,13 +25,10 @@ public class EstudianteCursoImpRepositoryMySql implements EstudianteCursoReposit
     @Override
     public EstudianteCursoEntity registrarCurso(EstudianteCursoEntity estudianteCursoEntity) {
 
-
       if(estudianteCursoRepositoryMysql.countByCursoAndEstudiante
               (estudianteCursoEntity.getCurso(),estudianteCursoEntity.getEstudiante())>0){
           throw new NotCreatedInException("Ya estas matriculado en el curso");
       }
-
-
         return estudianteCursoRepositoryMysql.save(estudianteCursoEntity);
     }
 
