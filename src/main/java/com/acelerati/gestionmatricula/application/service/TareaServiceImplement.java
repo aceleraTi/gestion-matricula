@@ -60,8 +60,6 @@ public class TareaServiceImplement implements TareaService {
     @Override
     public Tarea crearTarea(Tarea tarea, Profesor profesor) {
 
-
-
         CursoEntity cursoEntity = obtenerCursoPorId(tarea.getCurso().getId());
         validarAutorizacionCrearTarea(cursoEntity, profesor);
 
