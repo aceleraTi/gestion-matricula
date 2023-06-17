@@ -10,7 +10,6 @@ import com.acelerati.gestionmatricula.domain.model.repository.EstudianteCursoRep
 import com.acelerati.gestionmatricula.domain.model.repository.EstudiantePensumRepository;
 import com.acelerati.gestionmatricula.infraestructure.entitys.CursoEntity;
 import com.acelerati.gestionmatricula.infraestructure.entitys.EstudianteCursoEntity;
-import com.acelerati.gestionmatricula.infraestructure.entitys.EstudiantePensumEntity;
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotFoundItemsInException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -33,14 +32,14 @@ import static com.acelerati.gestionmatricula.infraestructure.rest.mappers.Estudi
 import static com.acelerati.gestionmatricula.infraestructure.settings.Url.URL_GESTION_ACADEMICA;
 
 @Service
-public class EstudiantePensumServiceDefault implements EstudiantePensumService {
+public class EstudiantePensumServiceImplement implements EstudiantePensumService {
 
     private final EstudiantePensumRepository estudiantePensumRepository;
     private final CursoRepository cursoRepository;
     private final EstudianteCursoRepository estudianteCursoRepository;
     @Autowired
     private RestTemplate restTemplate;
-    public EstudiantePensumServiceDefault(EstudiantePensumRepository estudiantePensumRepository, CursoRepository cursoRepository, EstudianteCursoRepository estudianteCursoRepository) {
+    public EstudiantePensumServiceImplement(EstudiantePensumRepository estudiantePensumRepository, CursoRepository cursoRepository, EstudianteCursoRepository estudianteCursoRepository) {
         this.estudiantePensumRepository = estudiantePensumRepository;
         this.cursoRepository = cursoRepository;
         this.estudianteCursoRepository = estudianteCursoRepository;

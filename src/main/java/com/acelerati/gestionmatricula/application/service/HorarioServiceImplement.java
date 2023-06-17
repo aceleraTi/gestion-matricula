@@ -21,11 +21,11 @@ import static com.acelerati.gestionmatricula.infraestructure.rest.mappers.Horari
 import static com.acelerati.gestionmatricula.infraestructure.rest.mappers.HorarioMapper.alHorarioEntity;
 
 @Service
-public class HorarioServiceDefault implements HorarioService {
+public class HorarioServiceImplement implements HorarioService {
     private final HorarioRepository horarioRepository;
     private final CursoRepository cursoRepository;
 
-    public HorarioServiceDefault(HorarioRepository horarioRepository, CursoRepository cursoRepository) {
+    public HorarioServiceImplement(HorarioRepository horarioRepository, CursoRepository cursoRepository) {
         this.horarioRepository = horarioRepository;
         this.cursoRepository = cursoRepository;
     }

@@ -22,11 +22,11 @@ import static com.acelerati.gestionmatricula.infraestructure.rest.mappers.TareaM
 import static com.acelerati.gestionmatricula.infraestructure.rest.mappers.TareaMapper.alaTareaEntity;
 
 @Service
-public class TareaServiceDefault implements TareaService {
+public class TareaServiceImplement implements TareaService {
     private final TareaRepository tareaRepository;
     private final CursoRepository cursoRepository;
 
-    public TareaServiceDefault(TareaRepository tareaRepository, CursoRepository cursoRepository) {
+    public TareaServiceImplement(TareaRepository tareaRepository, CursoRepository cursoRepository) {
         this.tareaRepository = tareaRepository;
         this.cursoRepository = cursoRepository;
     }

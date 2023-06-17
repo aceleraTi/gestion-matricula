@@ -30,7 +30,7 @@ import static com.acelerati.gestionmatricula.infraestructure.rest.mappers.CursoM
 import static com.acelerati.gestionmatricula.infraestructure.settings.Url.URL_GESTION_USUARIO;
 
 @Service
-public class CursoServiceDefault implements CursoService {
+public class CursoServiceImplement implements CursoService {
 
     private final CursoRepository cursoRepository;
     private final EstudianteCursoRepository estudianteCursoRepository;
@@ -39,7 +39,7 @@ public class CursoServiceDefault implements CursoService {
     @Autowired
     private RestTemplate restTemplate;
 
-    public CursoServiceDefault(CursoRepository cursoRepository, EstudianteCursoRepository estudianteCursoRepository, RestTemplate restTemplate, EstudianteCursoTareaRepository estudianteCursoTareaRepository, TareaRepository tareaRepository) {
+    public CursoServiceImplement(CursoRepository cursoRepository, EstudianteCursoRepository estudianteCursoRepository, RestTemplate restTemplate, EstudianteCursoTareaRepository estudianteCursoTareaRepository, TareaRepository tareaRepository) {
         this.cursoRepository = cursoRepository;
         this.estudianteCursoRepository = estudianteCursoRepository;
         this.estudianteCursoTareaRepository = estudianteCursoTareaRepository;
@@ -207,7 +207,7 @@ public class CursoServiceDefault implements CursoService {
     /**
      * Valida si el profesor autenticado tiene permisos para cerrar el curso.
      * Si el profesor del curso no coincide con el profesor autenticado, lanza una excepción indicando que no tiene permisos.
-     *
+
      * Obtiene la lista de entidades de EstudianteCurso correspondientes al curso proporcionado.
      * @param cursoEntity
      * @param profesor
