@@ -18,7 +18,7 @@ public class SemestreAcademicoMapper {
     public static SemestreAcademicoEntity alSemestreAcademicoEntity(SemestreAcademico semestreAcademico){
 
         return SemestreAcademicoEntity.builder()
-                .id(Optional.ofNullable(semestreAcademico.getId()).orElse(0L))
+                .id(semestreAcademico.getId())
                 .numero(semestreAcademico.getNumero())
                 .año(semestreAcademico.getAño())
                 .fechaInicio(semestreAcademico.getFechaInicio())

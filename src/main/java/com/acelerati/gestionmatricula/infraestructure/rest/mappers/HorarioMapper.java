@@ -20,7 +20,7 @@ public class HorarioMapper {
 
     public static HorarioEntity alHorarioEntity(Horario horario){
         return HorarioEntity.builder()
-                .id(Optional.ofNullable(horario.getId()).orElse(0L))
+                .id(horario.getId())
                 .curso(alCursoEntity(horario.getCurso()))
                 .horaInicio(horario.getHoraInicio())
                 .horaFin(horario.getHoraFin())

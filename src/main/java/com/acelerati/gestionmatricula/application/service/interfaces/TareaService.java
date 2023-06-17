@@ -9,8 +9,4 @@ public interface TareaService {
 
     Tarea crearTarea(Tarea tarea, HttpSession session);
 
-   // Tarea findByTareaId(Long id);
-
- //   List<Tarea> findByCursoId(Long id);
-
 }

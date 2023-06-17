@@ -22,7 +22,7 @@ public class EstudianteCursoMapper {
 
     public static EstudianteCursoEntity alEstudianteCursoEntity(EstudianteCurso estudianteCurso){
         return EstudianteCursoEntity.builder()
-                .id(Optional.ofNullable(estudianteCurso.getId()).orElse(0L))
+                .id(estudianteCurso.getId())
                 .estudiante(estudianteCurso.getEstudiante())
                 .curso(alCursoEntity(estudianteCurso.getCurso()))
                 .previo1(estudianteCurso.getPrevio1())

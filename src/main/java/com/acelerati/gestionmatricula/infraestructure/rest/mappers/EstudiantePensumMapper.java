@@ -17,7 +17,7 @@ public class EstudiantePensumMapper {
 
     public static EstudiantePensumEntity alEstudiantePensumEntity(EstudiantePensum estudiantePensum){
         return EstudiantePensumEntity.builder()
-                .id(Optional.ofNullable(estudiantePensum.getId()).orElse(0L))
+                .id(estudiantePensum.getId())
                 .estudiante(estudiantePensum.getEstudiante())
                 .pensum(estudiantePensum.getPensum())
                 .build();

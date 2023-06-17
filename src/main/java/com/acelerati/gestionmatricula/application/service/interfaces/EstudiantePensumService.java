@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface EstudiantePensumService {
     EstudiantePensum registrar(EstudiantePensum estudiantePensum,HttpSession session);
-  //  Boolean findByIdPensum(Long idPensum);
+
     List<Materia> materiaList(Long idPensum, HttpSession session);
 }

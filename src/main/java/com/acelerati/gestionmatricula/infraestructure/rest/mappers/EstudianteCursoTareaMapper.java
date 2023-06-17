@@ -13,7 +13,7 @@ import static com.acelerati.gestionmatricula.infraestructure.rest.mappers.TareaM
 public class EstudianteCursoTareaMapper {
     public static EstudianteCursoTareaEntity alEstudianteCursoTareaEntity(EstudianteCursoTarea estudianteCursoTarea){
         return EstudianteCursoTareaEntity.builder()
-                .id(Optional.ofNullable(estudianteCursoTarea.getId()).orElse(0L))
+                .id(estudianteCursoTarea.getId())
                 .estudianteCurso(alEstudianteCursoEntity(estudianteCursoTarea.getEstudianteCurso()))
                 .tarea(alaTareaEntity(estudianteCursoTarea.getTarea()))
                 .nota(estudianteCursoTarea.getNota())

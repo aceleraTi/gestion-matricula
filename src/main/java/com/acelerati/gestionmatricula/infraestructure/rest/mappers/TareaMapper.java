@@ -16,7 +16,7 @@ public class TareaMapper {
 
     public static TareaEntity alaTareaEntity(Tarea tarea){
         return TareaEntity.builder()
-                .id(Optional.ofNullable(tarea.getId()).orElse(0L))
+                .id(tarea.getId())
                 .curso(alCursoEntity(tarea.getCurso()))
                 .descripcion(tarea.getDescripcion())
                 .build();

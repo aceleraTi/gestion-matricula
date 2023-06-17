@@ -1,6 +1,7 @@
 package com.acelerati.gestionmatricula.application.service;
 
 import com.acelerati.gestionmatricula.application.service.interfaces.EstudiantePensumService;
+import com.acelerati.gestionmatricula.domain.model.Estudiante;
 import com.acelerati.gestionmatricula.domain.model.EstudiantePensum;
 import com.acelerati.gestionmatricula.domain.model.Materia;
 import com.acelerati.gestionmatricula.domain.model.Usuario;
@@ -16,11 +17,13 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.acelerati.gestionmatricula.domain.util.Validaciones.validarEstudiante;
@@ -46,39 +49,64 @@ public class EstudiantePensumServiceDefault implements EstudiantePensumService {
     @Override
     public EstudiantePensum registrar(EstudiantePensum estudiantePensum,HttpSession session) {
         validarEstudiante(validarLogged(4L,(Usuario) session.getAttribute("usuario")));
-        EstudiantePensumEntity estudiantePensumEntity=alEstudiantePensumEntity(estudiantePensum);
-        return alEstudiantePensum(estudiantePensumRepository.registrar(estudiantePensumEntity));
+        return alEstudiantePensum(estudiantePensumRepository.registrar(alEstudiantePensumEntity(estudiantePensum)));
     }
 
-  /*  @Override
-    public Boolean findByIdPensum(Long idPensum) {
-        return estudiantePensumRepository.findByIdPensum(idPensum);
-    }
-*/
+
     @Override
-    public List<Materia> materiaList(Long idPensum, HttpSession session){
-        Usuario usuario=(Usuario) session.getAttribute("usuario");
-        validarEstudiante(validarLogged(4L, usuario));
+    public List<Materia> materiaList(Long idPensum, HttpSession session) {
 
-        if(estudiantePensumRepository.findByPensumIdAndEstudianteId(idPensum,usuario.getUsuarioId())){
-            List<Materia> materiasReturn=new ArrayList<>();
-            ResponseEntity<List<Materia>> response = restTemplate.exchange(URL_GESTION_ACADEMICA + "/materias/pensum/" + idPensum,
-                    HttpMethod.GET,null,new ParameterizedTypeReference<List<Materia>>() {});
-            List<Materia> materias = response.getBody();
-            for (Materia materia: materias) {
-                List<CursoEntity> cursoEntityList=cursoRepository.listCursos(materia)
-                        .stream().filter(p->p.getEstado().equalsIgnoreCase("Cerrado"))
-                        .collect(Collectors.toList());
-                for (CursoEntity cur: cursoEntityList) {
-                  EstudianteCursoEntity estudianteCursoEntity=estudianteCursoRepository.findByEstudianteIdAndCursoId(usuario.getUsuarioId(),cur.getId());
-                    if(estudianteCursoEntity!=null){
-                        materiasReturn.add(materia);
-                    }
-                }
-            }
-            return  materiasReturn;
-        }
-        throw new NotFoundItemsInException("No esta matriculado en este pensum");
+       Estudiante estudiante= validarEstudiante(validarLogged(4L, (Usuario) session.getAttribute("usuario")));
+       validarMatriculacionEnPensum(idPensum, estudiante);
+
+        List<Materia> materiasReturn = new ArrayList<>();
+        ResponseEntity<List<Materia>> response = obtenerMateriasPensum(idPensum);
+        List<Materia> materias = response.getBody();
+
+        materias.stream()
+                .filter(materia -> existeEstudianteEnCursosCerrados(estudiante, materia))
+                .forEach(materiasReturn::add);
+
+        return materiasReturn;
     }
+
+    private boolean existeEstudianteEnCursosCerrados(Estudiante estudiante, Materia materia) {
+        List<CursoEntity> cursoEntityList = obtenerCursosCerrados(materia);
+        return cursoEntityList.stream()
+                .map(curso -> obtenerEstudianteCurso(estudiante.getId(), curso.getId()))
+                .anyMatch(Objects::nonNull);
+    }
+
+    private void validarMatriculacionEnPensum(Long idPensum, Estudiante estudiante) {
+        if (!estudiantePensumRepository.findByPensumIdAndEstudianteId(idPensum, estudiante.getId())) {
+            throw new NotFoundItemsInException("No está matriculado en este pensum");
+        }
+    }
+
+    private ResponseEntity<List<Materia>> obtenerMateriasPensum(Long idPensum) {
+        try {
+            return restTemplate.exchange(
+                    URL_GESTION_ACADEMICA + "/materias/pensum/" + idPensum,
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<List<Materia>>() {}
+            );
+        } catch (HttpServerErrorException exception) {
+            throw new NotFoundItemsInException("No se pudieron obtener las materias del pensum");
+        }
+    }
+
+    private List<CursoEntity> obtenerCursosCerrados(Materia materia) {
+        return cursoRepository.listCursos(materia)
+                .stream()
+                .filter(p -> p.getEstado().equalsIgnoreCase("Cerrado"))
+                .collect(Collectors.toList());
+    }
+
+    private EstudianteCursoEntity obtenerEstudianteCurso(Long idEstudiante, Long idCurso) {
+        return estudianteCursoRepository.findByEstudianteIdAndCursoId(idEstudiante, idCurso);
+    }
+
+
 
 }
