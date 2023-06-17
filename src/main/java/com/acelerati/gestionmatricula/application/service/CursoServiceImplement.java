@@ -55,8 +55,7 @@ public class CursoServiceImplement implements CursoService {
      * antes de guardar el curso en la base de datos.
      */
     @Override
-    public Curso create(Curso curso, HttpSession session) {
-        validarLogged(2L, (Usuario) session.getAttribute("usuario"));
+    public Curso create(Curso curso) {
         CursoEntity cursoEntity = alCursoEntity(curso);
         validarGrupoUnicoMateriaSemestre(cursoEntity);
         validarCantidadCursosProfesor(cursoEntity);
@@ -101,12 +100,11 @@ public class CursoServiceImplement implements CursoService {
      * Guarda los cambios en el repositorio del curso y retorna el curso actualizado.
      * @param idCurso
      * @param idProfesor
-     * @param session
+     *
      * @return
      */
     @Override
-    public Curso asignarProfesor(Long idCurso, Long idProfesor, HttpSession session) {
-        validarLogged(2L, (Usuario) session.getAttribute("usuario"));
+    public Curso asignarProfesor(Long idCurso, Long idProfesor) {
         validarUsuarioEsProfesor(idProfesor);
         CursoEntity cursoEntity = obtenerCursoPorId(idCurso);
         asignarProfesorACurso(idProfesor, cursoEntity);
@@ -171,13 +169,13 @@ public class CursoServiceImplement implements CursoService {
      * Establece el estado del curso como "Cerrado".
      * Retorna el curso actualizado.
      * @param idCurso
-     * @param session
+     *
      * @return
      */
     @Override
-    public Curso cerrarCurso(Long idCurso, HttpSession session) {
+    public Curso cerrarCurso(Long idCurso,Profesor profesor) {
 
-        Profesor profesor = validarProfesor(validarLogged(3L, (Usuario) session.getAttribute("usuario")));
+
         CursoEntity cursoEntity = cursoRepository.findById(idCurso).orElseThrow();
         validarPermisoCerrarCurso(cursoEntity, profesor);
         List<EstudianteCursoEntity> estudianteCursosCursoEntities = obtenerEstudiantesCursos(cursoEntity);

@@ -50,12 +50,11 @@ public class HorarioServiceImplement implements HorarioService {
      * asignarHorario(horarioEntity), y se devuelve el horario asignado como resultado tras convertirlo
      * a un objeto Horario utilizando el método alHorario.
      * @param horario
-     * @param session
+
      * @return
      */
     @Override
-    public Horario asignarHorario(Horario horario, HttpSession session) {
-        validarLogged(2L,(Usuario) session.getAttribute("usuario"));
+    public Horario asignarHorario(Horario horario) {
         CursoEntity cursoEntity=cursoRepository.findById(horario.getCurso().getId()).orElseThrow();
 
         HorarioEntity horarioEntity=alHorarioEntity(horario);
@@ -79,12 +78,12 @@ public class HorarioServiceImplement implements HorarioService {
      * @param curso
      * @return
      */
-    @Override
+  /*  @Override
     public List<Horario> findByCurso(Curso curso) {
         CursoEntity cursoEntity=alCursoEntity(curso);
-         return horarioRepository.findByCursoEntity(cursoEntity).stream()
+        return horarioRepository.findByCursoEntity(cursoEntity).stream()
                 .map(HorarioMapper::alHorario)
                 .collect(Collectors.toList());
 
-    }
+    }*/
 }

@@ -54,13 +54,13 @@ public class TareaServiceImplement implements TareaService {
      * Finalmente, se guarda la tarea creada en el repositorio utilizando tareaRepository.crearTarea(tareaEntity),
      * y se devuelve la tarea creada como resultado tras convertirla a un objeto Tarea utilizando el método alaTarea.
      * @param tarea
-     * @param session
+     *
      * @return
      */
     @Override
-    public Tarea crearTarea(Tarea tarea, HttpSession session) {
+    public Tarea crearTarea(Tarea tarea, Profesor profesor) {
 
-        Profesor profesor=validarProfesor(validarLogged(3L,(Usuario) session.getAttribute("usuario")));
+
 
         CursoEntity cursoEntity = obtenerCursoPorId(tarea.getCurso().getId());
         validarAutorizacionCrearTarea(cursoEntity, profesor);

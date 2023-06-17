@@ -88,12 +88,12 @@ public class EstudianteCursoServiceImplement implements EstudianteCursoService {
      * Finalmente, se utiliza el repositorio estudianteCursoRepository para registrar el curso del estudiante
      * y se retorna la entidad EstudianteCurso correspondiente mediante alEstudianteCurso().
      * @param idCurso
-     * @param session
+
      * @return
      */
     @Override
-    public EstudianteCurso registrarseEstudianteCurso(Long idCurso, HttpSession session) {
-        Estudiante estudiante = validarEstudiante(validarLogged(4L, (Usuario) session.getAttribute("usuario")));
+    public EstudianteCurso registrarseEstudianteCurso(Long idCurso,Estudiante estudiante) {
+
         CursoEntity cursoEntity = obtenerCursoPorId(idCurso);
         Materia materia = obtenerMateria(cursoEntity.getMateria().getId());
         validarMatriculaEnProgramaAcademico(materia, estudiante);
@@ -304,12 +304,11 @@ public class EstudianteCursoServiceImplement implements EstudianteCursoService {
      * Se verifica que los previos ya asignados no tengan notas asignadas previamente.
      * Si alguno de los previos ya tiene nota asignada, se lanza una excepción NotCreatedInException.
      * @param estudianteCurso
-     * @param session
+
      * @return
      */
     @Override
-    public EstudianteCurso subirNota(EstudianteCurso estudianteCurso, HttpSession session) {
-        Profesor profesor = validarProfesor(validarLogged(3L, (Usuario) session.getAttribute("usuario")));
+    public EstudianteCurso subirNota(EstudianteCurso estudianteCurso, Profesor profesor) {
         EstudianteCursoEntity estudianteCursoEntity = estudianteCursoRepository.findByEstudianteCursoEntityId(estudianteCurso.getId());
         validarPrevio3(estudianteCurso);
         validarAsignacionCurso(profesor, estudianteCursoEntity);
