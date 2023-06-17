@@ -10,6 +10,6 @@ public interface HorarioRepository {
     HorarioEntity asignarHorario(HorarioEntity horarioEntity);
     HorarioEntity findById(Long id);
     List<HorarioEntity> findByCursoEntity(CursoEntity cursoEntity);
-
+    int countHorariosCurso(HorarioEntity horarioEntity);
 
 }

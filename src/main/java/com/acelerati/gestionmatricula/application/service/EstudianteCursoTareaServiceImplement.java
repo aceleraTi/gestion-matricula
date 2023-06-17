@@ -59,12 +59,12 @@ public class EstudianteCursoTareaServiceImplement implements EstudianteCursoTare
      * Finalmente, se convierte el resultado a un objeto EstudianteCursoTarea utilizando el método
      * alEstudianteCursoTarea y se devuelve como resultado.
      * @param estudianteCursoTarea
-     * @param session
+     *
      * @return
      */
     @Override
-    public EstudianteCursoTarea subirNotaTarea(EstudianteCursoTarea estudianteCursoTarea, HttpSession session) {
-        Profesor profesor = validarProfesor(validarLogged(3L, (Usuario) session.getAttribute("usuario")));
+    public EstudianteCursoTarea subirNotaTarea(EstudianteCursoTarea estudianteCursoTarea, Profesor profesor) {
+
         TareaEntity tareaEntity = obtenerTarea(estudianteCursoTarea);
         validarAsignacionCurso(profesor, tareaEntity);
         EstudianteCursoEntity estudianteCursoEntity = obtenerEstudianteCurso(estudianteCursoTarea);

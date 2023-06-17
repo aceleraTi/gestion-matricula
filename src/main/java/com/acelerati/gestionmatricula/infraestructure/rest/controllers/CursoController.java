@@ -1,9 +1,6 @@
 package com.acelerati.gestionmatricula.infraestructure.rest.controllers;
 
 import com.acelerati.gestionmatricula.application.service.interfaces.CursoService;
-import com.acelerati.gestionmatricula.application.service.interfaces.EstudianteCursoService;
-import com.acelerati.gestionmatricula.application.service.interfaces.EstudianteCursoTareaService;
-import com.acelerati.gestionmatricula.application.service.interfaces.TareaService;
 import com.acelerati.gestionmatricula.domain.model.Curso;
 import com.acelerati.gestionmatricula.domain.model.Profesor;
 import com.acelerati.gestionmatricula.domain.model.Usuario;
@@ -22,6 +19,8 @@ import javax.servlet.http.HttpSession;
 
 import static com.acelerati.gestionmatricula.domain.util.Validaciones.validarLogged;
 import static com.acelerati.gestionmatricula.domain.util.Validaciones.validarProfesor;
+import static com.acelerati.gestionmatricula.infraestructure.settings.Tipo_Usuarios.DIRECTOR;
+import static com.acelerati.gestionmatricula.infraestructure.settings.Tipo_Usuarios.PROFESOR;
 import static com.acelerati.gestionmatricula.infraestructure.settings.Url.URL_GESTION_USUARIO;
 
 
@@ -35,15 +34,17 @@ public class CursoController {
 
     @PostMapping("/created")
     public ResponseEntity<Curso> crear(@RequestBody Curso curso, HttpSession session) {
-        return new ResponseEntity<>(cursoService.create(curso,session), HttpStatus.CREATED);
+        validarLogged(DIRECTOR, (Usuario) session.getAttribute("usuario"));
+        return new ResponseEntity<>(cursoService.create(curso), HttpStatus.CREATED);
     }
 
     @PutMapping("/asignarProfesor/{idCurso}/{idProfesor}")
     public ResponseEntity<Curso> asignarProfesor(@PathVariable("idCurso") Long idCurso,
                                                  @PathVariable("idProfesor") Long idProfesor,
                                                  HttpSession session) {
+        validarLogged(DIRECTOR, (Usuario) session.getAttribute("usuario"));
 
-        return new ResponseEntity<>(cursoService.asignarProfesor(idCurso,idProfesor,session), HttpStatus.OK);
+        return new ResponseEntity<>(cursoService.asignarProfesor(idCurso,idProfesor), HttpStatus.OK);
     }
 
     @GetMapping("/listar")
@@ -51,7 +52,7 @@ public class CursoController {
                                                             HttpSession session) {
 
         Usuario usuario=(Usuario) session.getAttribute("usuario");
-        Profesor profesor = validarProfesor(validarLogged(3L,usuario));
+        Profesor profesor = validarProfesor(validarLogged(PROFESOR,usuario));
         Pageable pageRequest = PageRequest.of(page, 2);
         Page<Curso> cursoPage = cursoService.findByProfesor(profesor, pageRequest);
         return new ResponseEntity<>(cursoPage, HttpStatus.OK);
@@ -60,7 +61,8 @@ public class CursoController {
 
     @PutMapping("/cerrarCurso/{idCurso}")
     public ResponseEntity<Curso> cerrarCurso(@PathVariable("idCurso") Long idCurso, HttpSession session) {
-        return new ResponseEntity<>(cursoService.cerrarCurso(idCurso,session), HttpStatus.OK);
+        Profesor profesor = validarProfesor(validarLogged(PROFESOR, (Usuario) session.getAttribute("usuario")));
+        return new ResponseEntity<>(cursoService.cerrarCurso(idCurso,profesor), HttpStatus.OK);
     }
 
 

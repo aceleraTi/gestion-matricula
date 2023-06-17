@@ -28,15 +28,10 @@ public class HorarioImpRepositoryMySql implements HorarioRepository {
 
     @Override
     public HorarioEntity asignarHorario(HorarioEntity horarioEntity) {
-        if(countHorariosCurso(horarioEntity)){
-            return horarioRepositoryMySql.save(horarioEntity);
-        }
-        else{
-            throw new NotCreatedInException("Este curso ya cuenta con los 5 horarios permitidos");
-        }
+        return horarioRepositoryMySql.save(horarioEntity);
     }
 
-    private boolean countHorariosCurso(HorarioEntity horarioEntity){
-       return horarioRepositoryMySql.countByCurso(horarioEntity.getCurso())<5;
+    public int countHorariosCurso(HorarioEntity horarioEntity){
+       return horarioRepositoryMySql.countByCurso(horarioEntity.getCurso());
     }
 }
