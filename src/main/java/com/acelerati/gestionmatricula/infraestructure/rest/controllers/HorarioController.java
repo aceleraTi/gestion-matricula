@@ -21,16 +21,12 @@ public class HorarioController {
 
     @Autowired
     private HorarioService horarioService;
-    @Autowired
-    private CursoService cursoService;
+
     @PostMapping("/asignar")
     public ResponseEntity<Horario>asignar(@RequestBody Horario horario, HttpSession session) {
-        Usuario usuario=(Usuario) session.getAttribute("usuario");
-                validarLogged(2L,usuario);
-                Curso curso=cursoService.findById(horario.getCurso().getId());
-                horario.setCurso(curso);
 
-                Horario horarioAsignado = horarioService.asignarHorario(horario);
+        System.out.println("ddd"+horario.getCurso().getSemestreAcademico().getId());
+                Horario horarioAsignado = horarioService.asignarHorario(horario, session);
                 return new ResponseEntity<>(horarioAsignado, HttpStatus.OK);
     }
 

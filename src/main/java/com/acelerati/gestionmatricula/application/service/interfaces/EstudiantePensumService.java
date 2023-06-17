@@ -7,7 +7,7 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 public interface EstudiantePensumService {
-    EstudiantePensum registrar(EstudiantePensum estudiantePensum);
-    Boolean findByIdPensum(Long idPensum);
+    EstudiantePensum registrar(EstudiantePensum estudiantePensum,HttpSession session);
+  //  Boolean findByIdPensum(Long idPensum);
     List<Materia> materiaList(Long idPensum, HttpSession session);
 }

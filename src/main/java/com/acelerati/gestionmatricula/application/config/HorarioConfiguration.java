@@ -1,6 +1,6 @@
 package com.acelerati.gestionmatricula.application.config;
 
-import com.acelerati.gestionmatricula.infraestructure.driven_adapters.interfaces.jpa_repository.HorarioRepository;
+import com.acelerati.gestionmatricula.domain.model.repository.HorarioRepository;
 import com.acelerati.gestionmatricula.infraestructure.driven_adapters.HorarioImpRepositoryMySql;
 import com.acelerati.gestionmatricula.infraestructure.driven_adapters.interfaces.HorarioRepositoryMySql;
 import org.springframework.context.annotation.Bean;

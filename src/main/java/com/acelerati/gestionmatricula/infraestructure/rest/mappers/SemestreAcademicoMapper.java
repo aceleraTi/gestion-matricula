@@ -3,6 +3,8 @@ package com.acelerati.gestionmatricula.infraestructure.rest.mappers;
 import com.acelerati.gestionmatricula.domain.model.SemestreAcademico;
 import com.acelerati.gestionmatricula.infraestructure.entitys.SemestreAcademicoEntity;
 
+import java.util.Optional;
+
 public class SemestreAcademicoMapper {
 
     public static SemestreAcademico alSemestreAcademico(SemestreAcademicoEntity semestreAcademicoEntity){
@@ -16,7 +18,7 @@ public class SemestreAcademicoMapper {
     public static SemestreAcademicoEntity alSemestreAcademicoEntity(SemestreAcademico semestreAcademico){
 
         return SemestreAcademicoEntity.builder()
-                .id(semestreAcademico.getId())
+                .id(Optional.ofNullable(semestreAcademico.getId()).orElse(0L))
                 .numero(semestreAcademico.getNumero())
                 .año(semestreAcademico.getAño())
                 .fechaInicio(semestreAcademico.getFechaInicio())

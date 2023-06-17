@@ -4,9 +4,9 @@ import com.acelerati.gestionmatricula.application.service.interfaces.EstudianteP
 import com.acelerati.gestionmatricula.domain.model.EstudiantePensum;
 import com.acelerati.gestionmatricula.domain.model.Materia;
 import com.acelerati.gestionmatricula.domain.model.Usuario;
-import com.acelerati.gestionmatricula.infraestructure.driven_adapters.interfaces.jpa_repository.CursoRepository;
-import com.acelerati.gestionmatricula.infraestructure.driven_adapters.interfaces.jpa_repository.EstudianteCursoRepository;
-import com.acelerati.gestionmatricula.infraestructure.driven_adapters.interfaces.jpa_repository.EstudiantePensumRepository;
+import com.acelerati.gestionmatricula.domain.model.repository.CursoRepository;
+import com.acelerati.gestionmatricula.domain.model.repository.EstudianteCursoRepository;
+import com.acelerati.gestionmatricula.domain.model.repository.EstudiantePensumRepository;
 import com.acelerati.gestionmatricula.infraestructure.entitys.CursoEntity;
 import com.acelerati.gestionmatricula.infraestructure.entitys.EstudianteCursoEntity;
 import com.acelerati.gestionmatricula.infraestructure.entitys.EstudiantePensumEntity;
@@ -44,16 +44,17 @@ public class EstudiantePensumServiceDefault implements EstudiantePensumService {
     }
 
     @Override
-    public EstudiantePensum registrar(EstudiantePensum estudiantePensum) {
+    public EstudiantePensum registrar(EstudiantePensum estudiantePensum,HttpSession session) {
+        validarEstudiante(validarLogged(4L,(Usuario) session.getAttribute("usuario")));
         EstudiantePensumEntity estudiantePensumEntity=alEstudiantePensumEntity(estudiantePensum);
         return alEstudiantePensum(estudiantePensumRepository.registrar(estudiantePensumEntity));
     }
 
-    @Override
+  /*  @Override
     public Boolean findByIdPensum(Long idPensum) {
         return estudiantePensumRepository.findByIdPensum(idPensum);
     }
-
+*/
     @Override
     public List<Materia> materiaList(Long idPensum, HttpSession session){
         Usuario usuario=(Usuario) session.getAttribute("usuario");
@@ -61,15 +62,9 @@ public class EstudiantePensumServiceDefault implements EstudiantePensumService {
 
         if(estudiantePensumRepository.findByPensumIdAndEstudianteId(idPensum,usuario.getUsuarioId())){
             List<Materia> materiasReturn=new ArrayList<>();
-            System.out.println("llega");
-            ResponseEntity<List<Materia>> response = restTemplate.exchange(
-                    URL_GESTION_ACADEMICA + "/materias/pensum/" + idPensum,
-                    HttpMethod.GET,
-                    null,
-                    new ParameterizedTypeReference<List<Materia>>() {}
-            );
+            ResponseEntity<List<Materia>> response = restTemplate.exchange(URL_GESTION_ACADEMICA + "/materias/pensum/" + idPensum,
+                    HttpMethod.GET,null,new ParameterizedTypeReference<List<Materia>>() {});
             List<Materia> materias = response.getBody();
-
             for (Materia materia: materias) {
                 List<CursoEntity> cursoEntityList=cursoRepository.listCursos(materia)
                         .stream().filter(p->p.getEstado().equalsIgnoreCase("Cerrado"))
@@ -80,14 +75,10 @@ public class EstudiantePensumServiceDefault implements EstudiantePensumService {
                         materiasReturn.add(materia);
                     }
                 }
-
             }
-
-            System.out.println("llegar");
             return  materiasReturn;
         }
         throw new NotFoundItemsInException("No esta matriculado en este pensum");
-
     }
 
 }

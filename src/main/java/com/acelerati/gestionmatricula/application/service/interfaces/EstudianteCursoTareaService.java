@@ -2,8 +2,14 @@ package com.acelerati.gestionmatricula.application.service.interfaces;
 
 import com.acelerati.gestionmatricula.domain.model.EstudianteCursoTarea;
 
-public interface EstudianteCursoTareaService {
-    EstudianteCursoTarea subirNota(EstudianteCursoTarea estudianteCursoTarea);
+import javax.servlet.http.HttpSession;
 
-    Double notaTarea(Long idTarea,Long idEstudianteCurso);
+public interface EstudianteCursoTareaService {
+   // EstudianteCursoTarea subirNota(EstudianteCursoTarea estudianteCursoTarea);
+
+   // Double notaTarea(Long idTarea,Long idEstudianteCurso);
+
+    EstudianteCursoTarea subirNotaTarea(EstudianteCursoTarea estudianteCursoTarea, HttpSession session);
+
+
 }

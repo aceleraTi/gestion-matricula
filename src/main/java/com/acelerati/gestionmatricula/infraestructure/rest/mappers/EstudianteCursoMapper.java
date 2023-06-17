@@ -3,6 +3,8 @@ package com.acelerati.gestionmatricula.infraestructure.rest.mappers;
 import com.acelerati.gestionmatricula.domain.model.EstudianteCurso;
 import com.acelerati.gestionmatricula.infraestructure.entitys.EstudianteCursoEntity;
 
+import java.util.Optional;
+
 import static com.acelerati.gestionmatricula.infraestructure.rest.mappers.CursoMapper.alCurso;
 import static com.acelerati.gestionmatricula.infraestructure.rest.mappers.CursoMapper.alCursoEntity;
 
@@ -20,7 +22,7 @@ public class EstudianteCursoMapper {
 
     public static EstudianteCursoEntity alEstudianteCursoEntity(EstudianteCurso estudianteCurso){
         return EstudianteCursoEntity.builder()
-                .id(estudianteCurso.getId())
+                .id(Optional.ofNullable(estudianteCurso.getId()).orElse(0L))
                 .estudiante(estudianteCurso.getEstudiante())
                 .curso(alCursoEntity(estudianteCurso.getCurso()))
                 .previo1(estudianteCurso.getPrevio1())

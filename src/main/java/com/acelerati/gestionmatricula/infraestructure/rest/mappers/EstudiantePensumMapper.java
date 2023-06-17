@@ -3,6 +3,8 @@ package com.acelerati.gestionmatricula.infraestructure.rest.mappers;
 import com.acelerati.gestionmatricula.domain.model.EstudiantePensum;
 import com.acelerati.gestionmatricula.infraestructure.entitys.EstudiantePensumEntity;
 
+import java.util.Optional;
+
 public class EstudiantePensumMapper {
 
     public static EstudiantePensum alEstudiantePensum(EstudiantePensumEntity estudiantePensumEntity){
@@ -15,7 +17,7 @@ public class EstudiantePensumMapper {
 
     public static EstudiantePensumEntity alEstudiantePensumEntity(EstudiantePensum estudiantePensum){
         return EstudiantePensumEntity.builder()
-                .id(estudiantePensum.getId())
+                .id(Optional.ofNullable(estudiantePensum.getId()).orElse(0L))
                 .estudiante(estudiantePensum.getEstudiante())
                 .pensum(estudiantePensum.getPensum())
                 .build();

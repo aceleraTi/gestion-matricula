@@ -1,7 +1,7 @@
 package com.acelerati.gestionmatricula.application.config;
 
 
-import com.acelerati.gestionmatricula.infraestructure.driven_adapters.interfaces.jpa_repository.EstudianteCursoTareaRepository;
+import com.acelerati.gestionmatricula.domain.model.repository.EstudianteCursoTareaRepository;
 import com.acelerati.gestionmatricula.infraestructure.driven_adapters.EstudianteCursoTareaImpRepositoryMySql;
 import com.acelerati.gestionmatricula.infraestructure.driven_adapters.interfaces.EstudianteCursoTareaRepositoryMySql;
 import org.springframework.context.annotation.Bean;

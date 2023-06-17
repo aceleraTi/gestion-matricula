@@ -1,6 +1,6 @@
 package com.acelerati.gestionmatricula.infraestructure.driven_adapters;
 
-import com.acelerati.gestionmatricula.infraestructure.driven_adapters.interfaces.jpa_repository.SemestreAcademicoRepository;
+import com.acelerati.gestionmatricula.domain.model.repository.SemestreAcademicoRepository;
 import com.acelerati.gestionmatricula.infraestructure.driven_adapters.interfaces.SemestreAcademicoRepositoryMySql;
 import com.acelerati.gestionmatricula.infraestructure.entitys.SemestreAcademicoEntity;
 
