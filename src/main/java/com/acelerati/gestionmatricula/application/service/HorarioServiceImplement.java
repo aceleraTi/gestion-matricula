@@ -8,6 +8,7 @@ import com.acelerati.gestionmatricula.domain.model.repository.CursoRepository;
 import com.acelerati.gestionmatricula.domain.model.repository.HorarioRepository;
 import com.acelerati.gestionmatricula.infraestructure.entitys.CursoEntity;
 import com.acelerati.gestionmatricula.infraestructure.entitys.HorarioEntity;
+import com.acelerati.gestionmatricula.infraestructure.exceptions.NotCreatedInException;
 import com.acelerati.gestionmatricula.infraestructure.rest.mappers.HorarioMapper;
 import org.springframework.stereotype.Service;
 
@@ -56,10 +57,16 @@ public class HorarioServiceImplement implements HorarioService {
     @Override
     public Horario asignarHorario(Horario horario) {
         CursoEntity cursoEntity=cursoRepository.findById(horario.getCurso().getId()).orElseThrow();
-
         HorarioEntity horarioEntity=alHorarioEntity(horario);
         horarioEntity.setCurso(cursoEntity);
+        validarHorariosPermitidosCurso(horarioEntity);
         return alHorario(horarioRepository.asignarHorario(horarioEntity));
+    }
+
+    private void validarHorariosPermitidosCurso(HorarioEntity horarioEntity){
+        if(!(horarioRepository.countHorariosCurso(horarioEntity)<5)){
+            throw new NotCreatedInException("Este curso ya cuenta con los 5 horarios permitidos");
+        }
     }
 
     /**
