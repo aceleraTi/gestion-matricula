@@ -21,10 +21,6 @@ public class SemestreAcademicoController {
 
     @PostMapping("/created")
     public ResponseEntity<SemestreAcademico> crear(@RequestBody SemestreAcademico semestreAcademico){
-
-
-        SemestreAcademico semestreAcademicoCreado=semestreAcademicoService.create(semestreAcademico);
-
-        return new ResponseEntity<>(semestreAcademicoCreado, HttpStatus.CREATED);
+        return new ResponseEntity<>(semestreAcademicoService.create(semestreAcademico), HttpStatus.CREATED);
     }
 }

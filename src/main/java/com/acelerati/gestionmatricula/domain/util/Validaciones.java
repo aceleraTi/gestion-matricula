@@ -15,7 +15,7 @@ public class Validaciones {
             if(usuarioAut==usuario.getTipoUsuario()){
                 return usuario;
             }
-                throw new NotLoggedInException("Usuario no autorizado");
+                throw new NotLoggedInException("Usuario no autorizado.");
 
        } catch (NullPointerException e) {
             throw new NotLoggedInException();
@@ -30,7 +30,7 @@ public class Validaciones {
             profesor.setNombre(usuario.getNombre());
             return profesor;
         }
-        throw new NotLoggedInException("Usuario no autorizado");
+        throw new NotLoggedInException("Usuario no autorizado..");
     }
 
     public static Estudiante validarEstudiante(Usuario usuario){
@@ -38,10 +38,9 @@ public class Validaciones {
             Estudiante estudiante=new Estudiante();
             estudiante.setId(usuario.getUsuarioId());
             estudiante.setNombre(usuario.getNombre());
-
             return estudiante;
         }
-        throw new NotLoggedInException("Usuario no autorizado");
+        throw new NotLoggedInException("Usuario no autorizado....");
     }
 
 }

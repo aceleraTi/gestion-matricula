@@ -1,7 +1,7 @@
-package com.acelerati.gestionmatricula.infraestructure.driven_adapters.interfaces.jpa_repository;
+package com.acelerati.gestionmatricula.domain.model.repository;
 
 import com.acelerati.gestionmatricula.domain.model.Estudiante;
-import com.acelerati.gestionmatricula.domain.model.Materia;
+
 import com.acelerati.gestionmatricula.infraestructure.entitys.CursoEntity;
 import com.acelerati.gestionmatricula.infraestructure.entitys.EstudianteCursoEntity;
 

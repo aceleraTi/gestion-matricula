@@ -3,6 +3,8 @@ package com.acelerati.gestionmatricula.infraestructure.rest.mappers;
 import com.acelerati.gestionmatricula.domain.model.EstudianteCurso;
 import com.acelerati.gestionmatricula.infraestructure.entitys.EstudianteCursoEntity;
 
+import java.util.Optional;
+
 import static com.acelerati.gestionmatricula.infraestructure.rest.mappers.CursoMapper.alCurso;
 import static com.acelerati.gestionmatricula.infraestructure.rest.mappers.CursoMapper.alCursoEntity;
 

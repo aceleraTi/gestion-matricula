@@ -1,21 +1,17 @@
 package com.acelerati.gestionmatricula.application.service.interfaces;
 
 import com.acelerati.gestionmatricula.domain.model.Curso;
-import com.acelerati.gestionmatricula.domain.model.Materia;
 import com.acelerati.gestionmatricula.domain.model.Profesor;
-import com.acelerati.gestionmatricula.infraestructure.entitys.CursoEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.List;
+import javax.servlet.http.HttpSession;
 
 public interface CursoService {
 
-    Curso create(Curso curso);
+    Curso create(Curso curso, HttpSession session);
     Curso findById(Long id);
-    Curso update(Curso curso);
+    Curso asignarProfesor(Long idCurso, Long idProfesor , HttpSession session);
     Page<Curso> findByProfesor(Profesor profesor, Pageable pageable);
-
-    List<Curso> listCursos(Materia materia);
-
+    Curso cerrarCurso(Long idCurso, HttpSession session);
 }
