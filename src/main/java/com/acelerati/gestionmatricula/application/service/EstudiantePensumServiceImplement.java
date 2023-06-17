@@ -65,12 +65,12 @@ public class EstudiantePensumServiceImplement implements EstudiantePensumService
      * Finalmente, se convierte el resultado a un objeto EstudiantePensum utilizando el método alEstudiantePensum y
      * se devuelve como resultado.
      * @param estudiantePensum
-     * @param session
+
      * @return
      */
     @Override
-    public EstudiantePensum registrar(EstudiantePensum estudiantePensum,HttpSession session) {
-        validarEstudiante(validarLogged(4L,(Usuario) session.getAttribute("usuario")));
+    public EstudiantePensum registrar(EstudiantePensum estudiantePensum) {
+
         return alEstudiantePensum(estudiantePensumRepository.registrar(alEstudiantePensumEntity(estudiantePensum)));
     }
 
@@ -98,14 +98,14 @@ public class EstudiantePensumServiceImplement implements EstudiantePensumService
      *
      * Se devuelve la lista materiasReturn como resultado.
      * @param idPensum
-     * @param session
+     *
      * @return
      */
 
     @Override
-    public List<Materia> materiaList(Long idPensum, HttpSession session) {
+    public List<Materia> materiaList(Long idPensum,Estudiante estudiante) {
 
-       Estudiante estudiante= validarEstudiante(validarLogged(4L, (Usuario) session.getAttribute("usuario")));
+
        validarMatriculacionEnPensum(idPensum, estudiante);
 
         List<Materia> materiasReturn = new ArrayList<>();
