@@ -1,7 +1,9 @@
 package com.acelerati.gestionmatricula.application.service;
 
 import com.acelerati.gestionmatricula.application.service.interfaces.CursoService;
-import com.acelerati.gestionmatricula.domain.model.*;
+import com.acelerati.gestionmatricula.domain.model.Curso;
+import com.acelerati.gestionmatricula.domain.model.Profesor;
+import com.acelerati.gestionmatricula.domain.model.Usuario;
 import com.acelerati.gestionmatricula.domain.model.repository.CursoRepository;
 import com.acelerati.gestionmatricula.domain.model.repository.EstudianteCursoRepository;
 import com.acelerati.gestionmatricula.domain.model.repository.EstudianteCursoTareaRepository;
@@ -18,9 +20,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 import static com.acelerati.gestionmatricula.infraestructure.rest.mappers.CursoMapper.alCurso;
 import static com.acelerati.gestionmatricula.infraestructure.rest.mappers.CursoMapper.alCursoEntity;
 import static com.acelerati.gestionmatricula.infraestructure.settings.Url.URL_GESTION_USUARIO;

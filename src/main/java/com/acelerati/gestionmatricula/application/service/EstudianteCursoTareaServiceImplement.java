@@ -58,6 +58,7 @@ public class EstudianteCursoTareaServiceImplement implements EstudianteCursoTare
     public EstudianteCursoTarea subirNotaTarea(EstudianteCursoTarea estudianteCursoTarea, Profesor profesor) {
 
         TareaEntity tareaEntity = obtenerTarea(estudianteCursoTarea);
+        validarRangoNotaTarea(estudianteCursoTarea);
         validarAsignacionCurso(profesor, tareaEntity);
         EstudianteCursoEntity estudianteCursoEntity = obtenerEstudianteCurso(estudianteCursoTarea.getEstudianteCurso().getId());
         EstudianteCursoTareaEntity estudianteCursoTareaEntity = crearEstudianteCursoTareaEntity(estudianteCursoEntity, tareaEntity, estudianteCursoTarea.getNota());
@@ -77,12 +78,24 @@ public class EstudianteCursoTareaServiceImplement implements EstudianteCursoTare
      * @return
      */
 
+
     private TareaEntity obtenerTarea(EstudianteCursoTarea estudianteCursoTarea) {
         TareaEntity tareaEntity = tareaRepository.findByTareaId(estudianteCursoTarea.getTarea().getId());
         if (tareaEntity == null) {
             throw new NotFoundItemsInException("La tarea no existe");
         }
         return tareaEntity;
+    }
+
+    /**
+     *
+     * Valida que la nota de la tarea este dentro del rango de 0 a 5
+     * @param estudianteCursoTarea
+     */
+    private void validarRangoNotaTarea(EstudianteCursoTarea estudianteCursoTarea){
+        if(estudianteCursoTarea.getNota()>5 || estudianteCursoTarea.getNota()<0){
+            throw new NotCreatedInException("La nota de la tarea debe estar entre el rango de 0 a 5");
+        }
     }
 
     /**

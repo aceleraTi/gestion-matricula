@@ -20,6 +20,6 @@ public interface EstudianteCursoRepository {
 
     List<EstudianteCursoEntity> guardarEstudiantesCursos(List<EstudianteCursoEntity> estudianteCursoEntities);
 
-    EstudianteCursoEntity findByEstudianteIdAndCursoId(Long idEstudiante, Long idCurso);
+    Optional<EstudianteCursoEntity> findByEstudianteIdAndCursoId(Long idEstudiante, Long idCurso);
 
 }

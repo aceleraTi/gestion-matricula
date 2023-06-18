@@ -26,13 +26,15 @@ public class EstudiantePensumController {
     private EstudiantePensumService estudiantePensumService;
     @PostMapping("/registrar")
     public ResponseEntity<EstudiantePensum> registrar(@RequestBody EstudiantePensum estudiantePensum, HttpSession session) {
-        validarEstudiante(validarLogged(ESTUDIANTE,(Usuario) session.getAttribute("usuario")));
+        Estudiante estudiante= validarEstudiante(validarLogged(ESTUDIANTE,(Usuario) session.getAttribute("usuario")));
+        estudiantePensum.setEstudiante(estudiante);
         return new ResponseEntity<>(estudiantePensumService.registrar(estudiantePensum), HttpStatus.OK);
     }
 
     @GetMapping("/consultarMaterias/{idPensum}")
     public ResponseEntity<List<Materia>> consultarListaMaterias(@PathVariable("idPensum")Long idPensum,HttpSession session){
         Estudiante estudiante= validarEstudiante(validarLogged(ESTUDIANTE, (Usuario) session.getAttribute("usuario")));
+
         return new ResponseEntity<>(estudiantePensumService.materiaList(idPensum, estudiante),HttpStatus.OK);
     }
 }
