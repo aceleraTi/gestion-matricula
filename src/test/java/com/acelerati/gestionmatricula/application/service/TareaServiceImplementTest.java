@@ -47,7 +47,7 @@ public class TareaServiceImplementTest {
         tareaIn.setDescripcion("En esta tarea de Matemáticas, se explorarán los conceptos de proporciones y se resolverán problemas relacionados." +
                 " Las proporciones son una herramienta fundamental para comparar magnitudes y establecer relaciones entre ellas");
 
-        CursoEntity cursoEntity = CursoEntity.builder()
+        CursoEntity cursoEntityOut = CursoEntity.builder()
                 .id(1L)
                 .materia(new Materia())
                 .profesor(new Profesor())
@@ -55,19 +55,19 @@ public class TareaServiceImplementTest {
                 .grupo(10)
                 .estado("En curso")
                 .build();
-        cursoEntity.setProfesor(profesor);
+        cursoEntityOut.setProfesor(profesor);
         TareaEntity tareaEntityOut=TareaEntity.builder()
                 .id(100L)
-                .curso(cursoEntity)
+                .curso(cursoEntityOut)
                 .descripcion("En esta tarea de Matemáticas, se explorarán los conceptos de proporciones y se resolverán problemas relacionados." +
                         " Las proporciones son una herramienta fundamental para comparar magnitudes y establecer relaciones entre ellas")
                 .build();
 
         MockitoAnnotations.openMocks(this);
         when(tareaRepository.crearTarea(any(TareaEntity.class))).thenReturn(tareaEntityOut);
-        when(cursoRepository.findById(any(Long.class))).thenReturn(Optional.of(cursoEntity));
+        when(cursoRepository.findById(any(Long.class))).thenReturn(Optional.of(cursoEntityOut));
         when(cursoRepository.findByIdAndProfesorAndEstado(any(Long.class),any(Profesor.class),any(String.class)))
-                .thenReturn(Optional.of(cursoEntity));
+                .thenReturn(Optional.of(cursoEntityOut));
         tareaService = new TareaServiceImplement(tareaRepository, cursoRepository);
     }
     @Nested
