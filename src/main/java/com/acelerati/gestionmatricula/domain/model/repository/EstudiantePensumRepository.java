@@ -10,4 +10,6 @@ public interface EstudiantePensumRepository {
 
     Boolean findByPensumIdAndEstudianteId(Long pensumId,Long estudianteId);
 
+    int countEstudiantePensum(EstudiantePensumEntity estudiantePensum);
+
 }

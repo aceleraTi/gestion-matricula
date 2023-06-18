@@ -4,29 +4,28 @@ import com.acelerati.gestionmatricula.application.service.interfaces.EstudianteP
 import com.acelerati.gestionmatricula.domain.model.Estudiante;
 import com.acelerati.gestionmatricula.domain.model.EstudiantePensum;
 import com.acelerati.gestionmatricula.domain.model.Materia;
-import com.acelerati.gestionmatricula.domain.model.Usuario;
+import com.acelerati.gestionmatricula.domain.model.Pensum;
 import com.acelerati.gestionmatricula.domain.model.repository.CursoRepository;
 import com.acelerati.gestionmatricula.domain.model.repository.EstudianteCursoRepository;
 import com.acelerati.gestionmatricula.domain.model.repository.EstudiantePensumRepository;
 import com.acelerati.gestionmatricula.infraestructure.entitys.CursoEntity;
 import com.acelerati.gestionmatricula.infraestructure.entitys.EstudianteCursoEntity;
+import com.acelerati.gestionmatricula.infraestructure.entitys.EstudiantePensumEntity;
+import com.acelerati.gestionmatricula.infraestructure.exceptions.NotCreatedInException;
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotFoundItemsInException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static com.acelerati.gestionmatricula.domain.util.Validaciones.validarEstudiante;
-import static com.acelerati.gestionmatricula.domain.util.Validaciones.validarLogged;
 import static com.acelerati.gestionmatricula.infraestructure.rest.mappers.EstudiantePensumMapper.alEstudiantePensum;
 import static com.acelerati.gestionmatricula.infraestructure.rest.mappers.EstudiantePensumMapper.alEstudiantePensumEntity;
 import static com.acelerati.gestionmatricula.infraestructure.settings.Url.URL_GESTION_ACADEMICA;
@@ -37,12 +36,13 @@ public class EstudiantePensumServiceImplement implements EstudiantePensumService
     private final EstudiantePensumRepository estudiantePensumRepository;
     private final CursoRepository cursoRepository;
     private final EstudianteCursoRepository estudianteCursoRepository;
-    @Autowired
-    private RestTemplate restTemplate;
-    public EstudiantePensumServiceImplement(EstudiantePensumRepository estudiantePensumRepository, CursoRepository cursoRepository, EstudianteCursoRepository estudianteCursoRepository) {
+
+    private final RestTemplate restTemplate;
+    public EstudiantePensumServiceImplement(EstudiantePensumRepository estudiantePensumRepository, CursoRepository cursoRepository, EstudianteCursoRepository estudianteCursoRepository, RestTemplate restTemplate) {
         this.estudiantePensumRepository = estudiantePensumRepository;
         this.cursoRepository = cursoRepository;
         this.estudianteCursoRepository = estudianteCursoRepository;
+        this.restTemplate = restTemplate;
     }
 
     /**
@@ -70,9 +70,47 @@ public class EstudiantePensumServiceImplement implements EstudiantePensumService
      */
     @Override
     public EstudiantePensum registrar(EstudiantePensum estudiantePensum) {
-
-        return alEstudiantePensum(estudiantePensumRepository.registrar(alEstudiantePensumEntity(estudiantePensum)));
+        EstudiantePensumEntity estudiantePensumEntity=alEstudiantePensumEntity(estudiantePensum);
+        validarExistenciaPensum(estudiantePensum.getPensum().getId());
+        validarPensumEstudiante(estudiantePensumEntity);
+        return alEstudiantePensum(estudiantePensumRepository.registrar(estudiantePensumEntity));
     }
+
+    /**
+     * valida si el estudiante tiene matriculados  ya los dos pensums permitidos.
+     * @param estudiantePensumEntity
+     */
+    private void validarPensumEstudiante(EstudiantePensumEntity estudiantePensumEntity){
+        if(estudiantePensumRepository.countEstudiantePensum(estudiantePensumEntity)>=2) {
+            throw new NotCreatedInException("Ya estas matriculado en los dos pensum permitidos por estudiante");
+        }
+
+    }
+
+    /**
+     * Valida que el pensum en el que se esta tratando de matricular si exista en la base de datos.
+     * realiza la validacion por medio de una peticion al micro servicio academia.
+     * @param idPensum
+     */
+    private void validarExistenciaPensum(Long idPensum)
+    {
+        try {
+            Pensum pensum= restTemplate.getForObject(URL_GESTION_ACADEMICA + "/pensums/" + idPensum, Pensum.class);
+
+            if(pensum.getId() == null){
+                throw new NotCreatedInException("El pensum no existe...");
+            }
+
+        }catch (HttpServerErrorException exception){
+            throw new NotCreatedInException("El pensum no existe");
+        }
+        catch (HttpClientErrorException exception){
+            throw new NotCreatedInException("El pensum no existe.");
+        }
+
+    }
+
+
 
     /**
      * Este método obtiene la lista de materias asociadas a un pensum para un estudiante.

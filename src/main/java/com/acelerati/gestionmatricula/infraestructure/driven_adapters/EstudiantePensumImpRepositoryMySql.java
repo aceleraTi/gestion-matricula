@@ -17,10 +17,7 @@ public class EstudiantePensumImpRepositoryMySql implements EstudiantePensumRepos
 
     @Override
     public EstudiantePensumEntity registrar(EstudiantePensumEntity estudiantePensumEntity) {
-        if(countEstudiantePensum(estudiantePensumEntity)) {
-            return estudiantePensumRepositoryMySql.save(estudiantePensumEntity);
-        }
-        throw new NotCreatedInException("Ya estas matriculado en los dos pensum permitidos por estudiante");
+         return estudiantePensumRepositoryMySql.save(estudiantePensumEntity);
     }
 
     @Override
@@ -43,9 +40,7 @@ public class EstudiantePensumImpRepositoryMySql implements EstudiantePensumRepos
         return false;
     }
 
-    private boolean countEstudiantePensum(EstudiantePensumEntity estudiantePensum){
-
-        return estudiantePensumRepositoryMySql.countByEstudiante(estudiantePensum.getEstudiante())<2;
-
+    public int countEstudiantePensum(EstudiantePensumEntity estudiantePensum){
+        return estudiantePensumRepositoryMySql.countByEstudiante(estudiantePensum.getEstudiante());
     }
 }
