@@ -39,12 +39,9 @@ public class EstudianteCursoImpRepositoryMySql implements EstudianteCursoReposit
     }
 
     @Override
-    public EstudianteCursoEntity findByEstudianteCursoEntityId(Long id) {
-        Optional<EstudianteCursoEntity> optionalEstudianteCursoEntity=estudianteCursoRepositoryMysql.findById(id);
-        if (!optionalEstudianteCursoEntity.isPresent()){
-            throw new NotFoundItemsInException("El id del estudiante curso no existe existe.");
-        }
-        return optionalEstudianteCursoEntity.get();
+    public Optional<EstudianteCursoEntity> findByEstudianteCursoEntityId(Long id) {
+        return estudianteCursoRepositoryMysql.findById(id);
+
     }
 
     @Override

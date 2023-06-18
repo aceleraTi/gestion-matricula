@@ -11,5 +11,6 @@ public interface TareaRepository {
     TareaEntity findByTareaId(Long id);
 
     public List<TareaEntity> findByCursoId(Long id);
+    int countTareaCurso(TareaEntity tareaEntity);
 
 }
