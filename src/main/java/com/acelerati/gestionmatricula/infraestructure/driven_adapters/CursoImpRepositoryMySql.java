@@ -53,6 +53,11 @@ public class CursoImpRepositoryMySql implements CursoRepository {
                 (grupo,materia,semestreAcademicoEntity)==0;
     }
 
+    @Override
+    public Optional<CursoEntity> findByIdAndProfesorAndEstado(Long id, Profesor profesor, String estado) {
+        return cursoRepositoryMySql.findByIdAndProfesorAndEstado(id,profesor,estado);
+    }
+
     public boolean countProfesorCurso(CursoEntity cursoEntity){
         return (cursoEntity.getProfesor() != null)
                 ? cursoRepositoryMySql.countByProfesorAndEstado(cursoEntity.getProfesor(), "En Curso") < 4: true;
