@@ -71,8 +71,8 @@ public class TareaServiceImplementTest {
         tareaService = new TareaServiceImplement(tareaRepository, cursoRepository);
     }
     @Nested
-    @DisplayName("Test Cuando se asigna el horario")
-    class CuandoCreaCurso {
+    @DisplayName("Test Cuando se crea una tarea")
+    class CuandoCreaTarea {
         @Test
         void deberiaCrearUnaTareaExitosa() {
             Profesor profesor=new Profesor();
