@@ -23,7 +23,7 @@ public interface CursoRepositoryMySql  extends PagingAndSortingRepository<CursoE
 
    int countByProfesorAndEstado(Profesor profesor, String estado);
 
-   CursoEntity findByIdAndProfesorAndEstado(Long id,Profesor profesor,String estado);
+   Optional<CursoEntity> findByIdAndProfesorAndEstado(Long id,Profesor profesor,String estado);
 
    Page<CursoEntity> findByProfesor(Profesor profesor, Pageable pageable);
 

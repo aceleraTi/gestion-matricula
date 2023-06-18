@@ -22,5 +22,5 @@ public interface CursoRepository {
     boolean countProfesorCurso(CursoEntity cursoEntity);
     boolean esGrupoUnicoMateriaSemetre(Integer grupo, Materia materia, SemestreAcademicoEntity semestreAcademicoEntity);
 
-
+    Optional<CursoEntity> findByIdAndProfesorAndEstado(Long id,Profesor profesor,String estado);
 }

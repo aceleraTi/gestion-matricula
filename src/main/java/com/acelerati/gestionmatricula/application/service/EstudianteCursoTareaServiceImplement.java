@@ -3,7 +3,6 @@ package com.acelerati.gestionmatricula.application.service;
 import com.acelerati.gestionmatricula.application.service.interfaces.EstudianteCursoTareaService;
 import com.acelerati.gestionmatricula.domain.model.EstudianteCursoTarea;
 import com.acelerati.gestionmatricula.domain.model.Profesor;
-import com.acelerati.gestionmatricula.domain.model.Usuario;
 import com.acelerati.gestionmatricula.domain.model.repository.EstudianteCursoRepository;
 import com.acelerati.gestionmatricula.domain.model.repository.EstudianteCursoTareaRepository;
 import com.acelerati.gestionmatricula.domain.model.repository.TareaRepository;
@@ -14,10 +13,8 @@ import com.acelerati.gestionmatricula.infraestructure.exceptions.NotCreatedInExc
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotFoundItemsInException;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpSession;
+import java.util.Optional;
 
-import static com.acelerati.gestionmatricula.domain.util.Validaciones.validarLogged;
-import static com.acelerati.gestionmatricula.domain.util.Validaciones.validarProfesor;
 import static com.acelerati.gestionmatricula.infraestructure.rest.mappers.EstudianteCursoTareaMapper.alEstudianteCursoTarea;
 
 @Service
@@ -26,7 +23,8 @@ public class EstudianteCursoTareaServiceImplement implements EstudianteCursoTare
     private final EstudianteCursoTareaRepository estudianteCursoTareaRepository;
     private final TareaRepository tareaRepository;
     private final EstudianteCursoRepository estudianteCursoRepository;
-    public EstudianteCursoTareaServiceImplement(EstudianteCursoTareaRepository estudianteCursoTareaRepository, TareaRepository tareaRepository, EstudianteCursoRepository estudianteCursoRepository) {
+    public EstudianteCursoTareaServiceImplement(EstudianteCursoTareaRepository estudianteCursoTareaRepository,
+                       TareaRepository tareaRepository, EstudianteCursoRepository estudianteCursoRepository) {
         this.estudianteCursoTareaRepository = estudianteCursoTareaRepository;
         this.tareaRepository = tareaRepository;
         this.estudianteCursoRepository = estudianteCursoRepository;
@@ -34,13 +32,7 @@ public class EstudianteCursoTareaServiceImplement implements EstudianteCursoTare
 
     /**
      * Este método se encarga de subir la nota de una tarea para un estudiante en un curso específico.
-     * Recibe el objeto EstudianteCursoTarea que contiene la información de la tarea y la nota,
-     * y la sesión HTTP para obtener el profesor que realiza la acción.
-     *
-     * Se valida que el usuario actualmente logueado sea un profesor mediante el método validarLogged
-     * y se verifica su rol utilizando el ID correspondiente (3L) para profesor.
-     * Luego se obtiene el objeto Profesor a partir de la sesión HTTP.
-     *
+
      * Se utiliza el método obtenerTarea para obtener la entidad TareaEntity asociada a la tarea proporcionada
      * en el objeto EstudianteCursoTarea.
      *
@@ -67,7 +59,7 @@ public class EstudianteCursoTareaServiceImplement implements EstudianteCursoTare
 
         TareaEntity tareaEntity = obtenerTarea(estudianteCursoTarea);
         validarAsignacionCurso(profesor, tareaEntity);
-        EstudianteCursoEntity estudianteCursoEntity = obtenerEstudianteCurso(estudianteCursoTarea);
+        EstudianteCursoEntity estudianteCursoEntity = obtenerEstudianteCurso(estudianteCursoTarea.getEstudianteCurso().getId());
         EstudianteCursoTareaEntity estudianteCursoTareaEntity = crearEstudianteCursoTareaEntity(estudianteCursoEntity, tareaEntity, estudianteCursoTarea.getNota());
         return alEstudianteCursoTarea(estudianteCursoTareaRepository.subirNota(estudianteCursoTareaEntity));
     }
@@ -111,22 +103,22 @@ public class EstudianteCursoTareaServiceImplement implements EstudianteCursoTare
 
     /**
      * Este método se encarga de obtener la entidad EstudianteCursoEntity correspondiente al estudiante y
-     * curso proporcionados en el objeto EstudianteCursoTarea. Recibe el objeto EstudianteCursoTarea y devuelve
-     * la entidad EstudianteCursoEntity.
+     * curso proporcionados en el objeto idEstudianteCursoEntity.
      *
      * Se utiliza el método findByEstudianteCursoEntityId del repositorio estudianteCursoRepository para
      * buscar la entidad EstudianteCursoEntity por su ID. Si no se encuentra, se lanza una
      * excepción NotFoundItemsInException indicando que el estudiante no está matriculado en ese curso.
      * En caso contrario, se devuelve la entidad EstudianteCursoEntity encontrada.
-     * @param estudianteCursoTarea
+     * @param idEstudianteCursoEntity
      * @return
      */
-    private EstudianteCursoEntity obtenerEstudianteCurso(EstudianteCursoTarea estudianteCursoTarea) {
-        EstudianteCursoEntity estudianteCursoEntity = estudianteCursoRepository.findByEstudianteCursoEntityId(estudianteCursoTarea.getEstudianteCurso().getId());
-        if (estudianteCursoEntity == null) {
+    private EstudianteCursoEntity obtenerEstudianteCurso(Long idEstudianteCursoEntity) {
+      Optional<EstudianteCursoEntity> estudianteCursoEntityOptional = estudianteCursoRepository.findByEstudianteCursoEntityId
+                (idEstudianteCursoEntity);
+        if (estudianteCursoEntityOptional.isEmpty()) {
             throw new NotFoundItemsInException("El estudiante no esta matriculado en este curso");
         }
-        return estudianteCursoEntity;
+        return estudianteCursoEntityOptional.get();
     }
 
     /**

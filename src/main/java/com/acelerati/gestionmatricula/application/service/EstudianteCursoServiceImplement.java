@@ -309,7 +309,7 @@ public class EstudianteCursoServiceImplement implements EstudianteCursoService {
      */
     @Override
     public EstudianteCurso subirNota(EstudianteCurso estudianteCurso, Profesor profesor) {
-        EstudianteCursoEntity estudianteCursoEntity = estudianteCursoRepository.findByEstudianteCursoEntityId(estudianteCurso.getId());
+        EstudianteCursoEntity estudianteCursoEntity = obtenerEstudianteCurso(estudianteCurso.getId());
         validarPrevio3(estudianteCurso);
         validarAsignacionCurso(profesor, estudianteCursoEntity);
         validarPreviosAsignados(estudianteCurso, estudianteCursoEntity);
@@ -317,6 +317,25 @@ public class EstudianteCursoServiceImplement implements EstudianteCursoService {
         return alEstudianteCurso(estudianteCursoRepository.actualizarCursoEstudiante(estudianteCursoEntity));
     }
 
+    /**
+     * Este método se encarga de obtener la entidad EstudianteCursoEntity correspondiente al estudiante y
+     * curso proporcionados en el objeto idEstudianteCursoEntity.
+     *
+     * Se utiliza el método findByEstudianteCursoEntityId del repositorio estudianteCursoRepository para
+     * buscar la entidad EstudianteCursoEntity por su ID. Si no se encuentra, se lanza una
+     * excepción NotFoundItemsInException indicando que el estudiante no está matriculado en ese curso.
+     * En caso contrario, se devuelve la entidad EstudianteCursoEntity encontrada.
+     * @param idEstudianteCursoEntity
+     * @return
+     */
+    private EstudianteCursoEntity obtenerEstudianteCurso(Long idEstudianteCursoEntity) {
+        Optional<EstudianteCursoEntity> estudianteCursoEntityOptional = estudianteCursoRepository.findByEstudianteCursoEntityId
+                (idEstudianteCursoEntity);
+        if (estudianteCursoEntityOptional.isEmpty()) {
+            throw new NotFoundItemsInException("El estudiante no esta matriculado en este curso");
+        }
+        return estudianteCursoEntityOptional.get();
+    }
     /**
      * Este método se encarga de validar que el previo 3 no haya sido asignado aún. Recibe el objeto EstudianteCurso.
      *
