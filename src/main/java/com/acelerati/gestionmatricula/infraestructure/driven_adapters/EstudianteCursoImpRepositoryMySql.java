@@ -60,13 +60,9 @@ public class EstudianteCursoImpRepositoryMySql implements EstudianteCursoReposit
     }
 
     @Override
-    public EstudianteCursoEntity findByEstudianteIdAndCursoId(Long idEstudiante, Long idCurso) {
-        Optional<EstudianteCursoEntity> optionalEstudianteCursoEntity=estudianteCursoRepositoryMysql
+    public Optional<EstudianteCursoEntity> findByEstudianteIdAndCursoId(Long idEstudiante, Long idCurso) {
+        return estudianteCursoRepositoryMysql
                 .findByEstudianteIdAndCursoId(idEstudiante,idCurso);
-        if (optionalEstudianteCursoEntity.isPresent()){
-            return  optionalEstudianteCursoEntity.get();
-        }
-        return null;
     }
 
 
