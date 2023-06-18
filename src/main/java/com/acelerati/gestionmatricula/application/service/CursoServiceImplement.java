@@ -12,21 +12,15 @@ import com.acelerati.gestionmatricula.infraestructure.exceptions.NotCreatedInExc
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotFoundItemsInException;
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotLoggedInException;
 import com.acelerati.gestionmatricula.infraestructure.rest.mappers.CursoMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
-
-import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static com.acelerati.gestionmatricula.domain.util.Validaciones.validarLogged;
-import static com.acelerati.gestionmatricula.domain.util.Validaciones.validarProfesor;
 import static com.acelerati.gestionmatricula.infraestructure.rest.mappers.CursoMapper.alCurso;
 import static com.acelerati.gestionmatricula.infraestructure.rest.mappers.CursoMapper.alCursoEntity;
 import static com.acelerati.gestionmatricula.infraestructure.settings.Url.URL_GESTION_USUARIO;
@@ -38,14 +32,15 @@ public class CursoServiceImplement implements CursoService {
     private final EstudianteCursoRepository estudianteCursoRepository;
     private final EstudianteCursoTareaRepository estudianteCursoTareaRepository;
     private final TareaRepository tareaRepository;
-    @Autowired
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
 
-    public CursoServiceImplement(CursoRepository cursoRepository, EstudianteCursoRepository estudianteCursoRepository, RestTemplate restTemplate, EstudianteCursoTareaRepository estudianteCursoTareaRepository, TareaRepository tareaRepository) {
+    public CursoServiceImplement(CursoRepository cursoRepository, EstudianteCursoRepository estudianteCursoRepository,
+            EstudianteCursoTareaRepository estudianteCursoTareaRepository, TareaRepository tareaRepository, RestTemplate restTemplate) {
         this.cursoRepository = cursoRepository;
         this.estudianteCursoRepository = estudianteCursoRepository;
         this.estudianteCursoTareaRepository = estudianteCursoTareaRepository;
         this.tareaRepository = tareaRepository;
+        this.restTemplate = restTemplate;
     }
 
     /**
