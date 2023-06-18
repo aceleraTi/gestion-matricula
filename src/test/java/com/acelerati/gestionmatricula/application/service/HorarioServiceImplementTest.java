@@ -73,7 +73,7 @@ public class HorarioServiceImplementTest {
     }
     @Nested
     @DisplayName("Test Cuando se asigna el horario")
-    class CuandoCreaCurso {
+    class CuandoAsignaHorario {
         @Test
         void deberiaAsignarHorarioExitoso() {
             Horario horario = horarioService.asignarHorario(horarioIn);
