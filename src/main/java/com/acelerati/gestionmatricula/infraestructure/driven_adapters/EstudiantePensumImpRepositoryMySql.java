@@ -30,14 +30,9 @@ public class EstudiantePensumImpRepositoryMySql implements EstudiantePensumRepos
     }
 
     @Override
-    public Boolean findByPensumIdAndEstudianteId(Long pensumId, Long estudianteId) {
-        Optional<EstudiantePensumEntity>estudiantePensumEntityOptional=estudiantePensumRepositoryMySql
+    public Optional<EstudiantePensumEntity> findByPensumIdAndEstudianteId(Long pensumId, Long estudianteId) {
+        return estudiantePensumRepositoryMySql
                 .findByPensumIdAndEstudianteId(pensumId,estudianteId);
-        if (estudiantePensumEntityOptional.isPresent())
-        {
-            return true;
-        }
-        return false;
     }
 
     public int countEstudiantePensum(EstudiantePensumEntity estudiantePensum){

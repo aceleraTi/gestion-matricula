@@ -24,6 +24,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.acelerati.gestionmatricula.infraestructure.rest.mappers.EstudiantePensumMapper.alEstudiantePensum;
@@ -110,8 +111,6 @@ public class EstudiantePensumServiceImplement implements EstudiantePensumService
 
     }
 
-
-
     /**
      * Este método obtiene la lista de materias asociadas a un pensum para un estudiante.
      * Recibe el ID del pensum y la sesión HTTP para obtener el estudiante que realiza la acción.
@@ -144,12 +143,11 @@ public class EstudiantePensumServiceImplement implements EstudiantePensumService
     public List<Materia> materiaList(Long idPensum,Estudiante estudiante) {
 
 
-       validarMatriculacionEnPensum(idPensum, estudiante);
+        validarMatriculacionEnPensum(idPensum, estudiante);
 
         List<Materia> materiasReturn = new ArrayList<>();
         ResponseEntity<List<Materia>> response = obtenerMateriasPensum(idPensum);
         List<Materia> materias = response.getBody();
-
         materias.stream()
                 .filter(materia -> existeEstudianteEnCursosCerrados(estudiante, materia))
                 .forEach(materiasReturn::add);
@@ -193,7 +191,9 @@ public class EstudiantePensumServiceImplement implements EstudiantePensumService
      * @param estudiante
      */
     private void validarMatriculacionEnPensum(Long idPensum, Estudiante estudiante) {
-        if (!estudiantePensumRepository.findByPensumIdAndEstudianteId(idPensum, estudiante.getId())) {
+        Optional<EstudiantePensumEntity> optionalEstudiantePensumEntity=estudiantePensumRepository.findByPensumIdAndEstudianteId
+                (idPensum, estudiante.getId());
+        if (optionalEstudiantePensumEntity.isEmpty()) {
             throw new NotFoundItemsInException("No está matriculado en este pensum");
         }
     }
@@ -263,7 +263,14 @@ public class EstudiantePensumServiceImplement implements EstudiantePensumService
      * @return
      */
     private EstudianteCursoEntity obtenerEstudianteCurso(Long idEstudiante, Long idCurso) {
-        return estudianteCursoRepository.findByEstudianteIdAndCursoId(idEstudiante, idCurso);
+
+        Optional<EstudianteCursoEntity> optionalEstudianteCursoEntity=estudianteCursoRepository.
+                findByEstudianteIdAndCursoId(idEstudiante, idCurso);
+
+       return optionalEstudianteCursoEntity.orElseThrow(() -> new NotFoundItemsInException("No se encontró el curso"));
+
+
+
     }
 
 
