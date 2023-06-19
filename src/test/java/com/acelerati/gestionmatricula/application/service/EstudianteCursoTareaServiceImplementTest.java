@@ -6,15 +6,21 @@ import com.acelerati.gestionmatricula.domain.model.repository.EstudianteCursoRep
 import com.acelerati.gestionmatricula.domain.model.repository.EstudianteCursoTareaRepository;
 import com.acelerati.gestionmatricula.domain.model.repository.TareaRepository;
 import com.acelerati.gestionmatricula.infraestructure.entitys.*;
+import com.acelerati.gestionmatricula.infraestructure.exceptions.NotCreatedInException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.time.LocalTime;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @DisplayName("Test Unitario para EstudianteCursoTareaServiceImplement")
 public class EstudianteCursoTareaServiceImplementTest {
@@ -54,6 +60,7 @@ public class EstudianteCursoTareaServiceImplementTest {
         tarea.setDescripcion("En esta tarea de Matemáticas, se explorarán los conceptos de proporciones y se resolverán problemas relacionados." +
                 " Las proporciones son una herramienta fundamental para comparar magnitudes y establecer relaciones entre ellas");
         //*********************************************
+        estudianteCursoTareaIn=new EstudianteCursoTarea();
         estudianteCursoTareaIn.setEstudianteCurso(estudianteCurso);
         estudianteCursoTareaIn.setTarea(tarea);
         estudianteCursoTareaIn.setNota(4.5);
@@ -99,5 +106,42 @@ public class EstudianteCursoTareaServiceImplementTest {
         estudianteCursoTareaService=new EstudianteCursoTareaServiceImplement(estudianteCursoTareaRepository,
                 tareaRepository, estudianteCursoRepository );
     }
+    @Nested
+    @DisplayName("Test cuando un profesor sube nota de una tarea")
+    class CuandoProfesorSubeNotaTarea {
+
+
+        @Test
+        void deberiaSubirNotaExitosa() {
+            Profesor profesor = new Profesor();
+            profesor.setId(2L);
+            EstudianteCursoTarea estudianteCursoTarea=estudianteCursoTareaService.subirNotaTarea(estudianteCursoTareaIn,profesor);
+            assertEquals(10, estudianteCursoTarea.getId());
+            assertEquals(3, estudianteCursoTarea.getEstudianteCurso().getId());
+            assertEquals(1, estudianteCursoTarea.getTarea().getId());
+            assertEquals(4.5, estudianteCursoTarea.getNota());
+            verify(estudianteCursoTareaRepository, times(1)).subirNota(any(EstudianteCursoTareaEntity.class));
+        }
+
+        @Test
+        void deberiaFallarNotaMenorCero() {
+            Profesor profesor = new Profesor();
+            profesor.setId(2L);
+            estudianteCursoTareaIn.setNota(-1.0);
+            assertThrows(NotCreatedInException.class, () -> estudianteCursoTareaService.subirNotaTarea(estudianteCursoTareaIn,profesor));
+            verify(estudianteCursoTareaRepository, never()).subirNota(any(EstudianteCursoTareaEntity.class));
+        }
+
+        @Test
+        void deberiaFallarNotaMayorCinco() {
+            Profesor profesor = new Profesor();
+            profesor.setId(2L);
+            estudianteCursoTareaIn.setNota(5.1);
+            assertThrows(NotCreatedInException.class, () -> estudianteCursoTareaService.subirNotaTarea(estudianteCursoTareaIn,profesor));
+            verify(estudianteCursoTareaRepository, never()).subirNota(any(EstudianteCursoTareaEntity.class));
+        }
+
+    }
+
 
 }

@@ -20,7 +20,6 @@ public class CursoMapper {
     }
 
     public static CursoEntity alCursoEntity(Curso curso){
-
         return CursoEntity.builder()
                 .id(curso.getId())
                 .materia(curso.getMateria())

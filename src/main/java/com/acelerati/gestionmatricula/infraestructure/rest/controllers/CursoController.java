@@ -1,10 +1,24 @@
 package com.acelerati.gestionmatricula.infraestructure.rest.controllers;
 
 import com.acelerati.gestionmatricula.application.service.interfaces.CursoService;
+
+import com.acelerati.gestionmatricula.domain.exceptions.ApiError;
 import com.acelerati.gestionmatricula.domain.model.Curso;
 import com.acelerati.gestionmatricula.domain.model.Profesor;
+import com.acelerati.gestionmatricula.domain.model.Tarea;
 import com.acelerati.gestionmatricula.domain.model.Usuario;
+
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotLoggedInException;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,12 +40,19 @@ import static com.acelerati.gestionmatricula.infraestructure.settings.Url.URL_GE
 
 @RestController
 @RequestMapping("/cursos")
+@Tag(name = "Gestion Matricula", description = "Agrupacion de las operaciones de curso")
 public class CursoController {
     @Autowired
     private CursoService cursoService;
     @Autowired
     private RestTemplate cursoRestTemplate;
 
+    @Operation(description ="Hace referencia a que consume", summary = "Crea un nuevo curso")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Operación exitosa", content = @Content(schema = @Schema(implementation = Curso.class))),
+            @ApiResponse(responseCode = "400", description = "Error de validación", content = @Content(schema = @Schema(implementation = Tarea.class))),
+
+    })
     @PostMapping("/created")
     public ResponseEntity<Curso> crear(@RequestBody Curso curso, HttpSession session) {
         validarLogged(DIRECTOR, (Usuario) session.getAttribute("usuario"));

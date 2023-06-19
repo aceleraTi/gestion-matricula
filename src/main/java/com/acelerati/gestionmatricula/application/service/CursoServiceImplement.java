@@ -1,7 +1,9 @@
 package com.acelerati.gestionmatricula.application.service;
 
 import com.acelerati.gestionmatricula.application.service.interfaces.CursoService;
-import com.acelerati.gestionmatricula.domain.model.*;
+import com.acelerati.gestionmatricula.domain.model.Curso;
+import com.acelerati.gestionmatricula.domain.model.Profesor;
+import com.acelerati.gestionmatricula.domain.model.Usuario;
 import com.acelerati.gestionmatricula.domain.model.repository.CursoRepository;
 import com.acelerati.gestionmatricula.domain.model.repository.EstudianteCursoRepository;
 import com.acelerati.gestionmatricula.domain.model.repository.EstudianteCursoTareaRepository;

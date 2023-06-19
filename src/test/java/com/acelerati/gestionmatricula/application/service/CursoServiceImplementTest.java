@@ -1,30 +1,27 @@
 package com.acelerati.gestionmatricula.application.service;
 
-import com.acelerati.gestionmatricula.domain.model.Curso;
-import com.acelerati.gestionmatricula.domain.model.Materia;
-import com.acelerati.gestionmatricula.domain.model.Profesor;
-import com.acelerati.gestionmatricula.domain.model.SemestreAcademico;
-import com.acelerati.gestionmatricula.domain.model.Usuario;
+import com.acelerati.gestionmatricula.domain.model.*;
 import com.acelerati.gestionmatricula.domain.model.repository.CursoRepository;
 import com.acelerati.gestionmatricula.infraestructure.entitys.CursoEntity;
 import com.acelerati.gestionmatricula.infraestructure.entitys.SemestreAcademicoEntity;
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotCreatedInException;
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotLoggedInException;
-import java.util.Optional;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import static org.mockito.ArgumentMatchers.any;
-import org.mockito.Mock;
 import org.mockito.InjectMocks;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+
+
 
 
 
