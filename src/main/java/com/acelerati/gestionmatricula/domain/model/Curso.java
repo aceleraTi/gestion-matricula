@@ -1,16 +1,20 @@
 package com.acelerati.gestionmatricula.domain.model;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 
-@Schema(name = "curso",description = "objeto del dominio que mapea el entity")
+
 public class Curso {
 
-    @Schema(name = "id",description = "identificador del curso")
+
+
     private Long id;
+
+
     private Materia materia;
     private Profesor profesor;
     private SemestreAcademico semestreAcademico;
+
     private Integer grupo;
+
     private String estado;
 
     public Curso() {

@@ -12,7 +12,6 @@ import com.acelerati.gestionmatricula.infraestructure.entitys.HorarioEntity;
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotCreatedInException;
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotFoundItemsInException;
 import com.acelerati.gestionmatricula.infraestructure.rest.mappers.EstudianteCursoMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
@@ -34,14 +33,15 @@ public class EstudianteCursoServiceImplement implements EstudianteCursoService {
     private final CursoRepository cursoRepository;
     private final EstudiantePensumRepository estudiantePensumRepository;
     private final HorarioRepository horarioRepository;
-    @Autowired
-    private RestTemplate restTemplate;
 
-    public EstudianteCursoServiceImplement(EstudianteCursoRepository estudianteCursoRepository, CursoRepository cursoRepository, EstudiantePensumRepository estudiantePensumRepository, HorarioRepository horarioRepository) {
+    private final RestTemplate restTemplate;
+
+    public EstudianteCursoServiceImplement(EstudianteCursoRepository estudianteCursoRepository, CursoRepository cursoRepository, EstudiantePensumRepository estudiantePensumRepository, HorarioRepository horarioRepository, RestTemplate restTemplate) {
         this.estudianteCursoRepository = estudianteCursoRepository;
         this.cursoRepository = cursoRepository;
         this.estudiantePensumRepository = estudiantePensumRepository;
         this.horarioRepository = horarioRepository;
+        this.restTemplate = restTemplate;
     }
 
     /**
@@ -144,9 +144,13 @@ public class EstudianteCursoServiceImplement implements EstudianteCursoService {
      * @param estudiante
      */
     private void validarMatriculaEnProgramaAcademico(Materia materia, Estudiante estudiante) {
-        if (Boolean.FALSE.equals(estudiantePensumRepository.findByPensumIdAndEstudianteId(materia.getPensum().getId(),estudiante.getId()))) {
+      if (estudiantePensumRepository.findByPensumIdAndEstudianteId(materia.getPensum().getId(),
+                estudiante.getId()).isEmpty()) {
             throw new NotFoundItemsInException("No estás matriculado en el programa académico de esta materia");
+
         }
+
+
     }
 
     /**
