@@ -464,7 +464,7 @@ public class CursoServiceImplementTest {
                 .grupo(curso.getGrupo())
                 .estado(curso.getEstado())
                 .build();
-        
+
         List<CursoEntity> lstCursoEntitys = new ArrayList<>();
         lstCursoEntitys.add(cursoEntityOut);
         Page<CursoEntity> cursoEntityPage = new PageImpl(lstCursoEntitys);
@@ -477,8 +477,8 @@ public class CursoServiceImplementTest {
         assertEquals(result.getSize(), cursoEntityPage.getSize());
 
     }
-    
-    
+
+
     @Test
     @DisplayName("Operacion de listar los cursos de un profesor caso nohay cursos.")
     void cursosPorProfesorCasoNoHayCursos() {
@@ -491,12 +491,12 @@ public class CursoServiceImplementTest {
         int page = 0;
         Pageable pageRequest = PageRequest.of(page, 2);
         when(cursoRepository.findByProfesor(profesor, pageRequest)).thenReturn(cursoEntityPage);
-        
+
         assertThrows(NotFoundItemsInException.class, () -> cursoService
                 .findByProfesor(profesor, pageRequest));
     }
-    
-    
+
+
     @Test
     @DisplayName("Operacion de encontrar un curso caso exitoso.")
     void encontrarUnCursoExitoso() {
@@ -531,7 +531,7 @@ public class CursoServiceImplementTest {
         Curso cursoExi = cursoService.findById(idCurso);
         assertEquals(idCurso, cursoExi.getId());
     }
-    
+
     @Test
     @DisplayName("Operacion de encontrar un curso caso no existe.")
     void encontrarUnCursoCasoNoExiste() {

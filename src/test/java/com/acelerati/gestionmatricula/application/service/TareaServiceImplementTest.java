@@ -8,6 +8,7 @@ import com.acelerati.gestionmatricula.infraestructure.entitys.CursoEntity;
 import com.acelerati.gestionmatricula.infraestructure.entitys.SemestreAcademicoEntity;
 import com.acelerati.gestionmatricula.infraestructure.entitys.TareaEntity;
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotCreatedInException;
+import com.acelerati.gestionmatricula.infraestructure.exceptions.NotFoundItemsInException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -117,6 +118,14 @@ public class TareaServiceImplementTest {
             when(cursoRepository.findByIdAndProfesorAndEstado(any(Long.class),any(Profesor.class),any(String.class)))
                  .thenReturn(Optional.empty());
             assertThrows(NotCreatedInException.class, () -> tareaService.crearTarea(tareaIn,profesor));
+            verify(tareaRepository, never()).crearTarea(any(TareaEntity.class));
+        }
+
+        @Test
+        void deberiaFallarCuandoCursoNoExiste(){
+
+            when(cursoRepository.findById(any(Long.class))).thenThrow(NotFoundItemsInException.class);
+            assertThrows(NotFoundItemsInException.class, () -> cursoRepository.findById(tareaIn.getCurso().getId()));
             verify(tareaRepository, never()).crearTarea(any(TareaEntity.class));
         }
 

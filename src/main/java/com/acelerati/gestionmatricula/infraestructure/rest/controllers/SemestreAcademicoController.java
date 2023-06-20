@@ -1,9 +1,8 @@
 package com.acelerati.gestionmatricula.infraestructure.rest.controllers;
 
-import com.acelerati.gestionmatricula.application.service.interfaces.CursoService;
 import com.acelerati.gestionmatricula.application.service.interfaces.SemestreAcademicoService;
-import com.acelerati.gestionmatricula.domain.model.Curso;
 import com.acelerati.gestionmatricula.domain.model.SemestreAcademico;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/semestreAc")
+@Api(tags = "Gestion de Semestre Academico",description = "Permite Crear un semestre academico")
 public class SemestreAcademicoController {
 
     @Autowired

@@ -4,6 +4,8 @@ import com.acelerati.gestionmatricula.application.service.interfaces.EstudianteC
 import com.acelerati.gestionmatricula.domain.model.EstudianteCursoTarea;
 import com.acelerati.gestionmatricula.domain.model.Profesor;
 import com.acelerati.gestionmatricula.domain.model.Usuario;
+import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,7 @@ import static com.acelerati.gestionmatricula.infraestructure.settings.Tipo_Usuar
 
 @RestController
 @RequestMapping("/cursoTareas")
+@Api(tags = "Gestion de Notas Tareas",description = "Permite a un profesor subir notas de las tareas")
 public class EstudianteCursoTareaController {
 
     @Autowired
@@ -27,6 +30,7 @@ public class EstudianteCursoTareaController {
 
 
     @PostMapping("/subirNota")
+    @Operation(summary = "Subir nota de una tarea", description ="Permite a un profesor subir notas de las tareas de un curso")
     public ResponseEntity<EstudianteCursoTarea> subirnNotaTarea(@RequestBody EstudianteCursoTarea estudianteCursoTarea,
                                                 HttpSession session){
        Profesor profesor = validarProfesor(validarLogged(PROFESOR, (Usuario) session.getAttribute("usuario")));

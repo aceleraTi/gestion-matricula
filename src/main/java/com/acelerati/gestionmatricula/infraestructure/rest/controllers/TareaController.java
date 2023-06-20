@@ -4,6 +4,9 @@ import com.acelerati.gestionmatricula.application.service.interfaces.TareaServic
 import com.acelerati.gestionmatricula.domain.model.Profesor;
 import com.acelerati.gestionmatricula.domain.model.Tarea;
 import com.acelerati.gestionmatricula.domain.model.Usuario;
+import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +23,15 @@ import static com.acelerati.gestionmatricula.infraestructure.settings.Tipo_Usuar
 
 @RestController
 @RequestMapping("/tareas")
+@Api(tags = "Gestion de Tareas",description = "Permite a un profesor crear una tarea")
 public class TareaController {
 
     @Autowired
     private TareaService tareaService;
+
+
     @PostMapping("crearTarea")
+    @Operation(summary = "Crea una tarea", description ="Permite a un profesor crear una tarea para un curso.")
     public ResponseEntity<Tarea> crearTarea(@RequestBody Tarea tarea, HttpSession session){
         Profesor profesor=validarProfesor(validarLogged(PROFESOR,(Usuario) session.getAttribute("usuario")));
         return new ResponseEntity<>(tareaService.crearTarea(tarea,profesor), HttpStatus.CREATED);

@@ -1,24 +1,20 @@
 package com.acelerati.gestionmatricula.infraestructure.rest.controllers;
 
 import com.acelerati.gestionmatricula.application.service.interfaces.CursoService;
-
-import com.acelerati.gestionmatricula.domain.exceptions.ApiError;
 import com.acelerati.gestionmatricula.domain.model.Curso;
 import com.acelerati.gestionmatricula.domain.model.Profesor;
 import com.acelerati.gestionmatricula.domain.model.Tarea;
 import com.acelerati.gestionmatricula.domain.model.Usuario;
-
+import com.acelerati.gestionmatricula.infraestructure.exceptions.NotCreatedInException;
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotLoggedInException;
-
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -40,26 +36,26 @@ import static com.acelerati.gestionmatricula.infraestructure.settings.Url.URL_GE
 
 @RestController
 @RequestMapping("/cursos")
-@Tag(name = "Gestion Matricula", description = "Agrupacion de las operaciones de curso")
+@Api(tags = "Gestion de Curso",description = "Permite, Crear un curso, Asignar un profesor a un curso," +
+        "Listar los cursos de un profesor y cerrar un curso.")
 public class CursoController {
     @Autowired
     private CursoService cursoService;
     @Autowired
     private RestTemplate cursoRestTemplate;
 
-    @Operation(description ="Hace referencia a que consume", summary = "Crea un nuevo curso")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Operación exitosa", content = @Content(schema = @Schema(implementation = Curso.class))),
-            @ApiResponse(responseCode = "400", description = "Error de validación", content = @Content(schema = @Schema(implementation = Tarea.class))),
 
-    })
+
     @PostMapping("/created")
+    @Operation(summary = "Crea un nuevo curso", description ="Permite a un director crear un nuevo curso")
     public ResponseEntity<Curso> crear(@RequestBody Curso curso, HttpSession session) {
         validarLogged(DIRECTOR, (Usuario) session.getAttribute("usuario"));
         return new ResponseEntity<>(cursoService.create(curso), HttpStatus.CREATED);
     }
 
     @PutMapping("/asignarProfesor/{idCurso}/{idProfesor}")
+    @Operation(summary = "Asigna un profesor a un curso"
+            , description ="Permite a un director asignar un profesor a un curso")
     public ResponseEntity<Curso> asignarProfesor(@PathVariable("idCurso") Long idCurso,
                                                  @PathVariable("idProfesor") Long idProfesor,
                                                  HttpSession session) {
@@ -69,6 +65,7 @@ public class CursoController {
     }
 
     @GetMapping("/listar")
+    @Operation(summary = "Lista cursos de un profesor", description ="Permite a un profesor listar los cursos asignados")
     public ResponseEntity<Page<Curso>> listarCursosProfesor(@RequestParam(name = "page", defaultValue = "0") int page,
                                                             HttpSession session) {
 
@@ -81,6 +78,7 @@ public class CursoController {
     }
 
     @PutMapping("/cerrarCurso/{idCurso}")
+    @Operation(summary = "Cerrar un curso", description ="Permite a un profesor cerrar un curso")
     public ResponseEntity<Curso> cerrarCurso(@PathVariable("idCurso") Long idCurso, HttpSession session) {
         Profesor profesor = validarProfesor(validarLogged(PROFESOR, (Usuario) session.getAttribute("usuario")));
         return new ResponseEntity<>(cursoService.cerrarCurso(idCurso,profesor), HttpStatus.OK);
@@ -88,6 +86,7 @@ public class CursoController {
 
 
     @PostMapping("/usuario/{idUsuario}")
+    @Operation(summary = "Iniciar Sesion", description ="Permite a un usuario iniciar sesion")
     public ResponseEntity<Usuario> setSession(@PathVariable("idUsuario") Long idUsuario, HttpSession session) {
 
         try{

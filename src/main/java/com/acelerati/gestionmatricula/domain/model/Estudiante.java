@@ -1,12 +1,15 @@
 package com.acelerati.gestionmatricula.domain.model;
 
 
+
+
 import javax.persistence.Transient;
 
 
 
 
 public class Estudiante {
+
     private Long id;
     @Transient
     private String nombre;

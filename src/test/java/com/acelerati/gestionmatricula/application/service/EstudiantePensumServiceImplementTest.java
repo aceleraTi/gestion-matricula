@@ -7,6 +7,7 @@ import com.acelerati.gestionmatricula.domain.model.repository.EstudianteCursoRep
 import com.acelerati.gestionmatricula.domain.model.repository.EstudiantePensumRepository;
 import com.acelerati.gestionmatricula.infraestructure.entitys.*;
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotCreatedInException;
+import com.acelerati.gestionmatricula.infraestructure.exceptions.NotFoundItemsInException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -18,6 +19,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
@@ -27,6 +29,7 @@ import java.util.List;
 import java.util.Optional;
 
 
+import static com.acelerati.gestionmatricula.infraestructure.settings.Url.URL_GESTION_ACADEMICA;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -224,12 +227,28 @@ public class EstudiantePensumServiceImplementTest {
                     (any(Long.class),any(Long.class));
 
         }
+
+        @Test
+        void deberiaFallarSiNoObtieneMateriasDeConsulta(){
+            when(restTemplate.exchange(any(String.class), eq(HttpMethod.GET), eq(null),
+                    eq(new ParameterizedTypeReference<List<Materia>>() {})))
+                    .thenThrow(NotFoundItemsInException.class);
+            assertThrows(NotFoundItemsInException.class, () -> restTemplate.
+                    exchange(URL_GESTION_ACADEMICA + "/materias/pensum/" + estudiantePensumIn.getPensum().getId(),
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<List<Materia>>() {}));
+            verify(estudianteCursoRepository, never()).findByEstudianteIdAndCursoId
+                    (any(Long.class),any(Long.class));
+
+        }
+
         @Test
         void deberiaFallarSiNoEstaMatriculadoEnPensum(){
             when(estudiantePensumRepository.findByPensumIdAndEstudianteId(any(Long.class),any(Long.class)))
-                    .thenThrow(NotCreatedInException.class);
+                    .thenThrow(HttpServerErrorException.class);
 
-            assertThrows(NotCreatedInException.class, () -> estudiantePensumService.materiaList
+            assertThrows(HttpServerErrorException.class, () -> estudiantePensumService.materiaList
                     (estudiantePensumIn.getPensum().getId(),estudiantePensumIn.getEstudiante()));
             verify(restTemplate,never()).exchange(any(String.class), eq(HttpMethod.GET), eq(null),
                     eq(new ParameterizedTypeReference<List<Materia>>() {}));
