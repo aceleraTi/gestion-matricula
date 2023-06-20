@@ -11,7 +11,7 @@ import java.util.List;
 public interface EstudianteCursoService {
 
 
-    List<EstudianteCurso> findByCurso(Curso curso);
+//    List<EstudianteCurso> findByCurso(Curso curso);
 
     EstudianteCurso registrarseEstudianteCurso(Long idCurso, Estudiante estudiante);
 
