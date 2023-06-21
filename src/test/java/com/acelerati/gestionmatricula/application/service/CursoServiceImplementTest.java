@@ -172,7 +172,7 @@ public class CursoServiceImplementTest {
 
         Long idProfesor = 1L;
         Long idCurso = 1L;
-        String fooResourceUrl = "http://localhost:9080//api/1.0/usuarios/" + idProfesor;
+        String fooResourceUrl = "http://localhost:9080//api/v1/usuarios/" + idProfesor;
 
         Usuario user = new Usuario();
         user.setUsuarioId(1L);
@@ -195,7 +195,7 @@ public class CursoServiceImplementTest {
     void asignarProfesorCasoValidarUsuarioEsProfesor() {
         Long idProfesor = 1L;
         Long idCurso = 1L;
-        String fooResourceUrl = "http://localhost:9080//api/1.0/usuarios/" + idProfesor;
+        String fooResourceUrl = "http://localhost:9080//api/v1/usuarios/" + idProfesor;
 
         Usuario user = new Usuario();
         user.setUsuarioId(1L);
@@ -214,7 +214,7 @@ public class CursoServiceImplementTest {
 
         Long idProfesor = 1L;
         Long idCurso = 1L;
-        String fooResourceUrl = "http://localhost:9080//api/1.0/usuarios/" + idProfesor;
+        String fooResourceUrl = "http://localhost:9080//api/v1/usuarios/" + idProfesor;
 
         Usuario user = new Usuario();
         user.setUsuarioId(1L);
@@ -258,7 +258,7 @@ public class CursoServiceImplementTest {
 
         Long idProfesor = 1L;
         Long idCurso = 1L;
-        String fooResourceUrl = "http://localhost:9080//api/1.0/usuarios/" + idProfesor;
+        String fooResourceUrl = "http://localhost:9080//api/v1/usuarios/" + idProfesor;
 
         Usuario user = new Usuario();
         user.setUsuarioId(1L);
