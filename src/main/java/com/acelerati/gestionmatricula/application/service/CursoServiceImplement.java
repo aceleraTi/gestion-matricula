@@ -7,9 +7,11 @@ import com.acelerati.gestionmatricula.domain.model.Usuario;
 import com.acelerati.gestionmatricula.domain.model.repository.CursoRepository;
 import com.acelerati.gestionmatricula.domain.model.repository.EstudianteCursoRepository;
 import com.acelerati.gestionmatricula.domain.model.repository.EstudianteCursoTareaRepository;
+import com.acelerati.gestionmatricula.domain.model.repository.SemestreAcademicoRepository;
 import com.acelerati.gestionmatricula.domain.model.repository.TareaRepository;
 import com.acelerati.gestionmatricula.infraestructure.entitys.CursoEntity;
 import com.acelerati.gestionmatricula.infraestructure.entitys.EstudianteCursoEntity;
+import com.acelerati.gestionmatricula.infraestructure.entitys.SemestreAcademicoEntity;
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotCreatedInException;
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotFoundItemsInException;
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotLoggedInException;
@@ -35,14 +37,17 @@ public class CursoServiceImplement implements CursoService {
     private final EstudianteCursoTareaRepository estudianteCursoTareaRepository;
     private final TareaRepository tareaRepository;
     private final RestTemplate restTemplate;
+    private final SemestreAcademicoRepository semestreAcademicoRepository;
 
     public CursoServiceImplement(CursoRepository cursoRepository, EstudianteCursoRepository estudianteCursoRepository,
-                                 EstudianteCursoTareaRepository estudianteCursoTareaRepository, TareaRepository tareaRepository, RestTemplate restTemplate) {
+                                 EstudianteCursoTareaRepository estudianteCursoTareaRepository, 
+                                 TareaRepository tareaRepository, RestTemplate restTemplate, SemestreAcademicoRepository semestreAcademicoRepository) {
         this.cursoRepository = cursoRepository;
         this.estudianteCursoRepository = estudianteCursoRepository;
         this.estudianteCursoTareaRepository = estudianteCursoTareaRepository;
         this.tareaRepository = tareaRepository;
         this.restTemplate = restTemplate;
+        this.semestreAcademicoRepository = semestreAcademicoRepository;
     }
 
     /**
@@ -60,6 +65,7 @@ public class CursoServiceImplement implements CursoService {
         CursoEntity cursoEntity = alCursoEntity(curso);
         validarGrupoUnicoMateriaSemestre(cursoEntity);
         validarCantidadCursosProfesor(cursoEntity);
+        validarSemestreAcademico(cursoEntity);
         return alCurso(cursoRepository.save(cursoEntity));
     }
 
@@ -86,6 +92,19 @@ public class CursoServiceImplement implements CursoService {
     private void validarCantidadCursosProfesor(CursoEntity cursoEntity) {
         if (!cursoRepository.countProfesorCurso(cursoEntity)) {
             throw new NotCreatedInException("El profesor ya tiene los 4 cursos permitidos en curso");
+        }
+    }
+    
+    
+    /**
+     * Metodo que valida si existe un semestre academico
+     *
+     * @param cursoEntity CursoEntity
+     */
+    private void validarSemestreAcademico(CursoEntity cursoEntity) {
+
+        if (semestreAcademicoRepository.findById(cursoEntity.getSemestreAcademicoEntity().getId()).isEmpty()) {
+            throw new NotCreatedInException("No existe Semestre academico con id: " + cursoEntity.getSemestreAcademicoEntity().getId() + "");
         }
     }
 
@@ -122,7 +141,7 @@ public class CursoServiceImplement implements CursoService {
 
     private void validarUsuarioEsProfesor(Long idProfesor) {
         try {
-            Usuario validarUsuario = restTemplate.getForObject(URL_GESTION_USUARIO + "/api/1.0/usuarios/" + idProfesor, Usuario.class);
+            Usuario validarUsuario = restTemplate.getForObject(URL_GESTION_USUARIO + "/api/v1/usuarios/" + idProfesor, Usuario.class);
             if (validarUsuario == null || validarUsuario.getTipoUsuario() != 3) {
                 throw new NotLoggedInException("Este usuario no tiene rol de profesor");
             }
