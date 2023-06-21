@@ -19,7 +19,7 @@ import static com.acelerati.gestionmatricula.domain.util.Validaciones.validarLog
 import static com.acelerati.gestionmatricula.infraestructure.settings.Tipo_Usuarios.DIRECTOR;
 
 @RestController
-@RequestMapping("/horarios")
+@RequestMapping("/api/v1/horarios")
 @Api(tags = "Gestion de Horario",description = "Permite a un director crearle un horario a un curso.")
 public class HorarioController {
 

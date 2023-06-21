@@ -22,7 +22,7 @@ import static com.acelerati.gestionmatricula.domain.util.Validaciones.validarLog
 import static com.acelerati.gestionmatricula.infraestructure.settings.Tipo_Usuarios.ESTUDIANTE;
 
 @RestController
-@RequestMapping("/estudiantesPensum")
+@RequestMapping("/api/v1/estudiantesPensum")
 @Api(tags = "Gestion de Pensum",description = "Permite a un estudiante registrarse en un pensum, consultar la lista de materias " +
         "vistas en un pensum.")
 public class EstudiantePensumController {

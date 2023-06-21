@@ -5,11 +5,8 @@ import com.acelerati.gestionmatricula.domain.model.Estudiante;
 import com.acelerati.gestionmatricula.domain.model.EstudianteCurso;
 import com.acelerati.gestionmatricula.domain.model.Profesor;
 import com.acelerati.gestionmatricula.domain.model.Usuario;
-
-
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +20,7 @@ import static com.acelerati.gestionmatricula.infraestructure.settings.Tipo_Usuar
 import static com.acelerati.gestionmatricula.infraestructure.settings.Tipo_Usuarios.PROFESOR;
 
 @RestController
-@RequestMapping("/estudianteCursos")
+@RequestMapping("/api/v1/estudianteCursos")
 @Api(tags = "Gestion de Estudiante en Curso",description = "Permite a un estudiante registrarse en un curso, consultar un horario," +
         "y a un profesor subri notas de previos.")
 public class EstudianteCursoController {

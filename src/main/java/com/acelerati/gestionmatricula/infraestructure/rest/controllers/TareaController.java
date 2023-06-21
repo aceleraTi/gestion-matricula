@@ -6,7 +6,6 @@ import com.acelerati.gestionmatricula.domain.model.Tarea;
 import com.acelerati.gestionmatricula.domain.model.Usuario;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +21,7 @@ import static com.acelerati.gestionmatricula.domain.util.Validaciones.validarPro
 import static com.acelerati.gestionmatricula.infraestructure.settings.Tipo_Usuarios.PROFESOR;
 
 @RestController
-@RequestMapping("/tareas")
+@RequestMapping("/api/v1/tareas")
 @Api(tags = "Gestion de Tareas",description = "Permite a un profesor crear una tarea")
 public class TareaController {
 

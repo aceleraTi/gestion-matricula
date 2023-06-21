@@ -3,18 +3,10 @@ package com.acelerati.gestionmatricula.infraestructure.rest.controllers;
 import com.acelerati.gestionmatricula.application.service.interfaces.CursoService;
 import com.acelerati.gestionmatricula.domain.model.Curso;
 import com.acelerati.gestionmatricula.domain.model.Profesor;
-import com.acelerati.gestionmatricula.domain.model.Tarea;
 import com.acelerati.gestionmatricula.domain.model.Usuario;
-import com.acelerati.gestionmatricula.infraestructure.exceptions.NotCreatedInException;
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotLoggedInException;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -35,7 +27,7 @@ import static com.acelerati.gestionmatricula.infraestructure.settings.Url.URL_GE
 
 
 @RestController
-@RequestMapping("/cursos")
+@RequestMapping("/api/v1/cursos")
 @Api(tags = "Gestion de Curso",description = "Permite, Crear un curso, Asignar un profesor a un curso," +
         "Listar los cursos de un profesor y cerrar un curso.")
 public class CursoController {

@@ -21,7 +21,7 @@ import static com.acelerati.gestionmatricula.domain.util.Validaciones.validarPro
 import static com.acelerati.gestionmatricula.infraestructure.settings.Tipo_Usuarios.PROFESOR;
 
 @RestController
-@RequestMapping("/cursoTareas")
+@RequestMapping("/api/v1/cursoTareas")
 @Api(tags = "Gestion de Notas Tareas",description = "Permite a un profesor subir notas de las tareas")
 public class EstudianteCursoTareaController {
 

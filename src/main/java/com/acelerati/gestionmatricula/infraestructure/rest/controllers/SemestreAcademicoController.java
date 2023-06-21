@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/semestreAc")
+@RequestMapping("/api/v1/semestreAc")
 @Api(tags = "Gestion de Semestre Academico",description = "Permite Crear un semestre academico")
 public class SemestreAcademicoController {
 

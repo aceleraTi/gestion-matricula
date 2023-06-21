@@ -20,10 +20,7 @@ public class SemestreAcademicoServiceImplement implements SemestreAcademicoServi
 
     @Override
     public SemestreAcademico create(SemestreAcademico semestreAcademico) {
-
         SemestreAcademicoEntity semestreAcademicoEntity=alSemestreAcademicoEntity(semestreAcademico);
         return alSemestreAcademico(semestreAcademicoRepository.save(semestreAcademicoEntity));
-
-
     }
 }
