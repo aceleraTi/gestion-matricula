@@ -4,10 +4,8 @@ import com.acelerati.gestionmatricula.domain.model.*;
 import com.acelerati.gestionmatricula.domain.model.repository.CursoRepository;
 import com.acelerati.gestionmatricula.domain.model.repository.EstudianteCursoRepository;
 import com.acelerati.gestionmatricula.domain.model.repository.EstudiantePensumRepository;
-import com.acelerati.gestionmatricula.infraestructure.entitys.CursoEntity;
-import com.acelerati.gestionmatricula.infraestructure.entitys.EstudianteCursoEntity;
-import com.acelerati.gestionmatricula.infraestructure.entitys.EstudiantePensumEntity;
-import com.acelerati.gestionmatricula.infraestructure.entitys.SemestreAcademicoEntity;
+import com.acelerati.gestionmatricula.domain.model.repository.HorarioRepository;
+import com.acelerati.gestionmatricula.infraestructure.entitys.*;
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotCreatedInException;
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotFoundItemsInException;
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotLoggedInException;
@@ -30,6 +28,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,6 +51,10 @@ class EstudianteCursoServiceImplementTest {
     @Mock
     private EstudiantePensumRepository estudiantePensumRepository;
 
+    @Mock
+    private HorarioRepository horarioRepository;
+
+
     @Spy
     private RestTemplate restTemplate;
 
@@ -61,7 +64,6 @@ class EstudianteCursoServiceImplementTest {
 
         MockitoAnnotations.openMocks(this);
     }
-
 
     @Test
     void cuandoSeRegistraUnEstudianteEnUnCursoQueNoExiste() {
@@ -461,13 +463,18 @@ class EstudianteCursoServiceImplementTest {
         estudianteCursoEntity.setNotaFinal(3.9);
         estudianteCursoEntity.setCurso(cursoEntity);
 
+        HorarioEntity horario = new HorarioEntity();
+//        horario.setHoraFin();
+        horario.setCurso(cursoEntity);
 
         when(this.estudianteCursoRepository.ListarCursosEstudiante(any()))
                 .thenReturn(List.of(estudianteCursoEntity));
 
+        when(this.horarioRepository.findByCursoEntity(any()))
+                .thenReturn(List.of(horario));
 
-        List<String> horario = this.estudianteCursoCasoUso.listaHorario(session);
-        assertNotNull(horario);
+        List<String> horarios = this.estudianteCursoCasoUso.listaHorario(session);
+        assertNotNull(horarios);
     }
 
     @Test
