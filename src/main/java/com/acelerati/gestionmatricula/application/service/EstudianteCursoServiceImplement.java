@@ -44,26 +44,6 @@ public class EstudianteCursoServiceImplement implements EstudianteCursoService {
         this.restTemplate = restTemplate;
     }
 
-    /**
-     * se utiliza para buscar y obtener una lista de objetos EstudianteCurso asociados a un curso específico. Aquí tienes una explicación de su funcionamiento:
-
-     * Recibe un objeto Curso como parámetro.
-     * Utiliza el repositorio estudianteCursoRepository para buscar las entidades EstudianteCursoEntity asociadas al curso proporcionado.
-     * Obtiene una lista de entidades EstudianteCursoEntity que representan la relación entre estudiantes y el curso.
-     * Luego, utiliza el método map() junto con EstudianteCursoMapper para convertir cada EstudianteCursoEntity en un objeto EstudianteCurso.
-     * Recolecta los objetos EstudianteCurso en una lista.
-     * Finalmente, retorna la lista de objetos EstudianteCurso.
-     * @param curso
-     * @return
-     */
-    @Override
-    public List<EstudianteCurso> findByCurso(Curso curso) {
-
-        List<EstudianteCursoEntity> estudianteCursoEntities = estudianteCursoRepository.findByCurso(alCursoEntity(curso));
-        return estudianteCursoEntities.stream()
-                .map(EstudianteCursoMapper::alEstudianteCurso)
-                .collect(Collectors.toList());
-    }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

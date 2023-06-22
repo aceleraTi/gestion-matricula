@@ -27,4 +27,14 @@ public class EstudianteCursoTareaImpRepositoryMySql implements EstudianteCursoTa
        }
         return 0.0;
     }
+
+    @Override
+    public Optional<EstudianteCursoTareaEntity> existeEstudianteCursoNotaTarea(Long idTarea, Long idEstudianteCurso) {
+
+        return estudianteCursoTareaRepositoryMySql.findByTareaIdAndEstudianteCursoId(idTarea,idEstudianteCurso);
+
+    }
+
+
+
 }

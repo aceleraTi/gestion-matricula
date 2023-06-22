@@ -3,6 +3,7 @@ package com.acelerati.gestionmatricula.application.service;
 import com.acelerati.gestionmatricula.domain.model.*;
 import com.acelerati.gestionmatricula.domain.model.repository.CursoRepository;
 import com.acelerati.gestionmatricula.domain.model.repository.EstudianteCursoRepository;
+import com.acelerati.gestionmatricula.domain.model.repository.SemestreAcademicoRepository;
 import com.acelerati.gestionmatricula.domain.model.repository.TareaRepository;
 import com.acelerati.gestionmatricula.infraestructure.entitys.CursoEntity;
 import com.acelerati.gestionmatricula.infraestructure.entitys.EstudianteCursoEntity;
@@ -10,28 +11,25 @@ import com.acelerati.gestionmatricula.infraestructure.entitys.SemestreAcademicoE
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotCreatedInException;
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotFoundItemsInException;
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotLoggedInException;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.web.client.RestTemplate;
-
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.client.RestTemplate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class CursoServiceImplementTest {
@@ -46,6 +44,8 @@ public class CursoServiceImplementTest {
     TareaRepository tareaRepository;
     @Mock
     RestTemplate restTemplate;
+    @Mock
+    SemestreAcademicoRepository semestreAcademicoRepository;
 
     private Curso curso;
 
@@ -81,6 +81,8 @@ public class CursoServiceImplementTest {
                 SemestreAcademicoEntity.builder().id(curso.getSemestreAcademico().getId()).build())).thenReturn(true);
 
         when(cursoRepository.countProfesorCurso(cursoEntityOut)).thenReturn(true);
+        when(semestreAcademicoRepository.findById(cursoEntityOut.getSemestreAcademicoEntity().getId())).
+                thenReturn(Optional.of((SemestreAcademicoEntity.builder().id(curso.getSemestreAcademico().getId()).build())));
         when(cursoRepository.save(any(CursoEntity.class))).thenReturn(cursoEntityOut);
         Curso cursoExi = cursoService.create(curso);
         assertEquals(1L, cursoExi.getId());
@@ -170,15 +172,12 @@ public class CursoServiceImplementTest {
                 .estado(curso.getEstado())
                 .build();
 
-        Long idProfesor = 1L;
         Long idCurso = 1L;
-        String fooResourceUrl = "http://localhost:9080//api/v1/usuarios/" + idProfesor;
 
         Usuario user = new Usuario();
         user.setUsuarioId(1L);
         user.setTipoUsuario(3L);
-
-        when(this.restTemplate.getForObject(fooResourceUrl, Usuario.class)).thenReturn(user);
+        when(restTemplate.getForObject(any(String.class),eq(Usuario.class))).thenReturn(user);
         when(cursoRepository.findById(idCurso)).thenReturn(Optional.of(cursoEntityOut));
         when(cursoRepository.countProfesorCurso(cursoEntityOut)).thenReturn(true);
 
@@ -195,13 +194,11 @@ public class CursoServiceImplementTest {
     void asignarProfesorCasoValidarUsuarioEsProfesor() {
         Long idProfesor = 1L;
         Long idCurso = 1L;
-        String fooResourceUrl = "http://localhost:9080//api/v1/usuarios/" + idProfesor;
-
+ 
         Usuario user = new Usuario();
         user.setUsuarioId(1L);
         user.setTipoUsuario(2L);
-
-        when(this.restTemplate.getForObject(fooResourceUrl, Usuario.class)).thenReturn(user);
+        when(restTemplate.getForObject(any(String.class),eq(Usuario.class))).thenReturn(user);
         assertThrows(NotLoggedInException.class, () -> cursoService
                 .asignarProfesor(idCurso, idProfesor));
         verify(cursoRepository, never()).update(any(CursoEntity.class));
@@ -214,14 +211,11 @@ public class CursoServiceImplementTest {
 
         Long idProfesor = 1L;
         Long idCurso = 1L;
-        String fooResourceUrl = "http://localhost:9080//api/v1/usuarios/" + idProfesor;
 
         Usuario user = new Usuario();
         user.setUsuarioId(1L);
         user.setTipoUsuario(3L);
-
-        when(this.restTemplate.getForObject(fooResourceUrl, Usuario.class)).thenReturn(user);
-
+        when(restTemplate.getForObject(any(String.class),eq(Usuario.class))).thenReturn(user);
         assertThrows(NotLoggedInException.class, () -> cursoService
                 .asignarProfesor(idCurso, idProfesor));
         verify(cursoRepository, never()).update(any(CursoEntity.class));
@@ -258,13 +252,11 @@ public class CursoServiceImplementTest {
 
         Long idProfesor = 1L;
         Long idCurso = 1L;
-        String fooResourceUrl = "http://localhost:9080//api/v1/usuarios/" + idProfesor;
 
         Usuario user = new Usuario();
         user.setUsuarioId(1L);
         user.setTipoUsuario(3L);
-
-        when(this.restTemplate.getForObject(fooResourceUrl, Usuario.class)).thenReturn(user);
+        when(restTemplate.getForObject(any(String.class),eq(Usuario.class))).thenReturn(user);
         when(cursoRepository.findById(idCurso)).thenReturn(Optional.of(cursoEntityOut));
         when(cursoRepository.countProfesorCurso(cursoEntityOut)).thenReturn(false);
 
