@@ -91,7 +91,7 @@ public class EstudiantePensumServiceImplement implements EstudiantePensumService
      * "No está matriculado en este pensum
      *
      * @param idPensum
-     * @param estudiante
+     * @param idEstudiante
      */
     private void validarEstudianteInPensum(Long idPensum, Long idEstudiante) {
         Optional<EstudiantePensumEntity> optionalEstudiantePensumEntity=estudiantePensumRepository.findByPensumIdAndEstudianteId
@@ -176,6 +176,7 @@ public class EstudiantePensumServiceImplement implements EstudiantePensumService
                 .forEach(materiasReturn::add);
 
         return materiasReturn;
+
     }
 
     /**

@@ -191,7 +191,10 @@ public class EstudiantePensumServiceImplementTest {
     class CuandoSeRegitraEnPensum {
         @Test
         void deberiaRegistrarseExitosamenteEnPensum(){
+            when(estudiantePensumRepository.findByPensumIdAndEstudianteId(any(Long.class),any(Long.class)))
+                    .thenReturn(Optional.empty());
             EstudiantePensum estudiantePensum=estudiantePensumService.registrar(estudiantePensumIn);
+
             assertEquals(564L, estudiantePensum.getId());
             assertEquals(425187L, estudiantePensum.getEstudiante().getId());
             assertEquals(15L, estudiantePensum.getPensum().getId());
@@ -199,6 +202,8 @@ public class EstudiantePensumServiceImplementTest {
         }
         @Test
         void deberiaFallarSiExcedeMasDosPensum(){
+            when(estudiantePensumRepository.findByPensumIdAndEstudianteId(any(Long.class),any(Long.class)))
+                    .thenReturn(Optional.empty());
             when(estudiantePensumRepository.countEstudiantePensum(any(EstudiantePensumEntity.class))).thenReturn(2);
             assertThrows(NotCreatedInException.class, () -> estudiantePensumService.registrar(estudiantePensumIn));
             verify(estudiantePensumRepository, never()).registrar(any(EstudiantePensumEntity.class));
@@ -209,6 +214,14 @@ public class EstudiantePensumServiceImplementTest {
             assertThrows(NotCreatedInException.class, () -> estudiantePensumService.registrar(estudiantePensumIn));
             verify(estudiantePensumRepository, never()).registrar(any(EstudiantePensumEntity.class));
 
+        }
+
+        @Test
+        void deberiaFallarSiPensumYaEstaMatriculado(){
+            when(estudiantePensumRepository.findByPensumIdAndEstudianteId(any(Long.class),any(Long.class)))
+                    .thenThrow(NotFoundItemsInException.class);
+            assertThrows(NotFoundItemsInException.class, () -> estudiantePensumService.registrar(estudiantePensumIn));
+            verify(estudiantePensumRepository, never()).registrar(any(EstudiantePensumEntity.class));
         }
     }
     @Nested
