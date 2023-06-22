@@ -73,8 +73,32 @@ public class EstudiantePensumServiceImplement implements EstudiantePensumService
     public EstudiantePensum registrar(EstudiantePensum estudiantePensum) {
         EstudiantePensumEntity estudiantePensumEntity=alEstudiantePensumEntity(estudiantePensum);
         validarExistenciaPensum(estudiantePensum.getPensum().getId());
+        validarEstudianteInPensum(estudiantePensum.getPensum().getId(),
+                estudiantePensum.getEstudiante().getId());
         validarPensumEstudiante(estudiantePensumEntity);
         return alEstudiantePensum(estudiantePensumRepository.registrar(estudiantePensumEntity));
+    }
+    
+        /**
+     * Este método valida si un estudiante está matriculado en un pensum específico.
+     * Recibe el ID del pensum y el objeto Estudiante.
+     *
+     * Se utiliza el método estudiantePensumRepository.findByPensumIdAndEstudianteId
+     * para verificar si existe una asociación entre el ID del pensum y el ID del estudiante
+     * en el repositorio estudiantePensumRepository.
+     *
+     * Si no se encuentra la asociación, se lanza una excepción de tipo NotFoundItemsInException con el mensaje
+     * "No está matriculado en este pensum
+     *
+     * @param idPensum
+     * @param estudiante
+     */
+    private void validarEstudianteInPensum(Long idPensum, Long idEstudiante) {
+        Optional<EstudiantePensumEntity> optionalEstudiantePensumEntity=estudiantePensumRepository.findByPensumIdAndEstudianteId
+                (idPensum, idEstudiante);
+        if (optionalEstudiantePensumEntity.isPresent()) {
+            throw new NotFoundItemsInException("Ya se encuentra el estudiante matriculado en este pensum.");
+        }
     }
 
     /**
@@ -98,7 +122,7 @@ public class EstudiantePensumServiceImplement implements EstudiantePensumService
         try {
             Pensum pensum= restTemplate.getForObject(URL_GESTION_ACADEMICA + "/pensums/" + idPensum, Pensum.class);
 
-            if(pensum.getId() == null){
+            if(pensum == null){
                 throw new NotCreatedInException("El pensum no existe...");
             }
 
@@ -112,31 +136,30 @@ public class EstudiantePensumServiceImplement implements EstudiantePensumService
     }
 
     /**
-     * Este método obtiene la lista de materias asociadas a un pensum para un estudiante.
-     * Recibe el ID del pensum y la sesión HTTP para obtener el estudiante que realiza la acción.
+     * Este método obtiene la lista de materias asociadas a un pensum para un estudiante.Recibe el ID del pensum y la sesión HTTP para obtener el estudiante que realiza la acción.Recibe eSe valida que el usuario actualmente logueado sea un estudiante mediante el método validarLogged
+ y se verifica su rol utilizando el ID correspondiente (4L) para estudiante.
+     * Luego se obtiene el
+ objeto Estudiante a partir de la sesión HTTP.
+
+ Se utiliza el método validarEstudiante para validar al estudiante obtenido anteriormente.
+
+ Se utiliza el método validarMatriculacionEnPensum para verificar si el estudiante está matriculado en el
+ pensum proporcionado.
+
+ Se declara una lista materiasReturn para almacenar las materias encontradas.
+
+ Se utiliza el método obtenerMateriasPensum para obtener las materias asociadas al pensum mediante una
+ solicitud HTTP a la URL correspondiente.
+
+ Se filtran las materias para verificar si el estudiante está inscrito en algún curso cerrado asociado
+ a cada materia utilizando el método existeEstudianteEnCursosCerrados. Las materias que cumplan esta condición
+ se agregan a la lista materiasReturn.
+
+ Se devuelve la lista materiasReturn como resultado.@param idPensum
      *
-     * Se valida que el usuario actualmente logueado sea un estudiante mediante el método validarLogged
-     * y se verifica su rol utilizando el ID correspondiente (4L) para estudiante. Luego se obtiene el
-     * objeto Estudiante a partir de la sesión HTTP.
-     *
-     * Se utiliza el método validarEstudiante para validar al estudiante obtenido anteriormente.
-     *
-     * Se utiliza el método validarMatriculacionEnPensum para verificar si el estudiante está matriculado en el
-     * pensum proporcionado.
-     *
-     * Se declara una lista materiasReturn para almacenar las materias encontradas.
-     *
-     * Se utiliza el método obtenerMateriasPensum para obtener las materias asociadas al pensum mediante una
-     * solicitud HTTP a la URL correspondiente.
-     *
-     * Se filtran las materias para verificar si el estudiante está inscrito en algún curso cerrado asociado
-     * a cada materia utilizando el método existeEstudianteEnCursosCerrados. Las materias que cumplan esta condición
-     * se agregan a la lista materiasReturn.
-     *
-     * Se devuelve la lista materiasReturn como resultado.
-     * @param idPensum
-     *
-     * @return
+     * @param idPensum Long
+     * @param estudiante Estudiante     
+     * @return  List Materia
      */
 
     @Override
@@ -187,8 +210,8 @@ public class EstudiantePensumServiceImplement implements EstudiantePensumService
      * Si no se encuentra la asociación, se lanza una excepción de tipo NotFoundItemsInException con el mensaje
      * "No está matriculado en este pensum
      *
-     * @param idPensum
-     * @param estudiante
+     * @param idPensum Long
+     * @param estudiante Estudiante
      */
     private void validarMatriculacionEnPensum(Long idPensum, Estudiante estudiante) {
         Optional<EstudiantePensumEntity> optionalEstudiantePensumEntity=estudiantePensumRepository.findByPensumIdAndEstudianteId
