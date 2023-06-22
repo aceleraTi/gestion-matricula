@@ -234,7 +234,7 @@ public class EstudiantePensumServiceImplementTest {
                     eq(new ParameterizedTypeReference<List<Materia>>() {})))
                     .thenThrow(NotFoundItemsInException.class);
             assertThrows(NotFoundItemsInException.class, () -> restTemplate.
-                    exchange(URL_GESTION_ACADEMICA + "/materias/pensum/" + estudiantePensumIn.getPensum().getId(),
+                    exchange(URL_GESTION_ACADEMICA + "materias/pensum/" + estudiantePensumIn.getPensum().getId(),
                     HttpMethod.GET,
                     null,
                     new ParameterizedTypeReference<List<Materia>>() {}));

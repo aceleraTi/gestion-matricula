@@ -20,9 +20,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.acelerati.gestionmatricula.domain.util.Validaciones.validarLogged;
+import com.acelerati.gestionmatricula.infraestructure.exceptions.NotFoundItemsInException;
 import static com.acelerati.gestionmatricula.infraestructure.rest.mappers.CursoMapper.alCursoEntity;
 import static com.acelerati.gestionmatricula.infraestructure.rest.mappers.HorarioMapper.alHorario;
 import static com.acelerati.gestionmatricula.infraestructure.rest.mappers.HorarioMapper.alHorarioEntity;
+import org.springframework.web.client.HttpClientErrorException;
 
 @Service
 public class HorarioServiceImplement implements HorarioService {
@@ -59,7 +61,8 @@ public class HorarioServiceImplement implements HorarioService {
      */
     @Override
     public Horario asignarHorario(Horario horario) {
-        CursoEntity cursoEntity=validarCursoExiste(horario.getCurso().getId());
+       
+        CursoEntity cursoEntity=cursoRepository.findById(horario.getCurso().getId()).orElseThrow(()->new NotFoundItemsInException("No se encontro el curso en BD."));     
         HorarioEntity horarioEntity=alHorarioEntity(horario);
         horarioEntity.setCurso(cursoEntity);
         validarHorariosPermitidosCurso(horarioEntity);
