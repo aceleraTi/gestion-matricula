@@ -4,7 +4,6 @@ import com.acelerati.gestionmatricula.domain.model.*;
 import com.acelerati.gestionmatricula.domain.model.repository.CursoRepository;
 import com.acelerati.gestionmatricula.domain.model.repository.EstudianteCursoRepository;
 import com.acelerati.gestionmatricula.domain.model.repository.EstudiantePensumRepository;
-import com.acelerati.gestionmatricula.domain.model.repository.HorarioRepository;
 import com.acelerati.gestionmatricula.infraestructure.entitys.CursoEntity;
 import com.acelerati.gestionmatricula.infraestructure.entitys.EstudianteCursoEntity;
 import com.acelerati.gestionmatricula.infraestructure.entitys.EstudiantePensumEntity;
@@ -52,8 +51,7 @@ class EstudianteCursoServiceImplementTest {
     private CursoRepository cursoRepository;
     @Mock
     private EstudiantePensumRepository estudiantePensumRepository;
-    @Mock
-    private HorarioRepository horarioRepository;
+
     @Spy
     private RestTemplate restTemplate;
 

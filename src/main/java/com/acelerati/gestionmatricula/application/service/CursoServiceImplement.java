@@ -122,7 +122,7 @@ public class CursoServiceImplement implements CursoService {
 
     private void validarUsuarioEsProfesor(Long idProfesor) {
         try {
-            Usuario validarUsuario = restTemplate.getForObject(URL_GESTION_USUARIO + "/api/1.0/usuarios/" + idProfesor, Usuario.class);
+            Usuario validarUsuario = restTemplate.getForObject(URL_GESTION_USUARIO + "/usuarios/" + idProfesor, Usuario.class);
             if (validarUsuario == null || validarUsuario.getTipoUsuario() != 3) {
                 throw new NotLoggedInException("Este usuario no tiene rol de profesor");
             }

@@ -7,7 +7,9 @@ import com.acelerati.gestionmatricula.domain.model.repository.HorarioRepository;
 import com.acelerati.gestionmatricula.infraestructure.entitys.CursoEntity;
 import com.acelerati.gestionmatricula.infraestructure.entitys.HorarioEntity;
 import com.acelerati.gestionmatricula.infraestructure.entitys.SemestreAcademicoEntity;
+import com.acelerati.gestionmatricula.infraestructure.entitys.TareaEntity;
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotCreatedInException;
+import com.acelerati.gestionmatricula.infraestructure.exceptions.NotFoundItemsInException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -91,6 +93,14 @@ public class HorarioServiceImplementTest {
             when(horarioRepository.countHorariosCurso(any(HorarioEntity.class))).thenReturn(5);
             assertThrows(NotCreatedInException.class, () -> horarioService.asignarHorario(horarioIn));
             verify(horarioRepository, never()).asignarHorario(any(HorarioEntity.class));
+        }
+
+        @Test
+        void deberiaFallarCursoNoExiste(){
+            when(cursoRepository.findById(any(Long.class))).thenThrow(NotFoundItemsInException.class);
+            assertThrows(NotFoundItemsInException.class, () -> horarioService.asignarHorario(horarioIn));
+            verify(horarioRepository, never()).asignarHorario(any(HorarioEntity.class));
+
         }
 
     }

@@ -61,8 +61,22 @@ public class EstudianteCursoTareaServiceImplement implements EstudianteCursoTare
         validarRangoNotaTarea(estudianteCursoTarea);
         validarAsignacionCurso(profesor, tareaEntity);
         EstudianteCursoEntity estudianteCursoEntity = obtenerEstudianteCurso(estudianteCursoTarea.getEstudianteCurso().getId());
+        validarEstudianteCursoTarea(tareaEntity.getId(),estudianteCursoEntity.getId());
         EstudianteCursoTareaEntity estudianteCursoTareaEntity = crearEstudianteCursoTareaEntity(estudianteCursoEntity, tareaEntity, estudianteCursoTarea.getNota());
         return alEstudianteCursoTarea(estudianteCursoTareaRepository.subirNota(estudianteCursoTareaEntity));
+    }
+
+    /**
+     * Valida que la nota de esta tarea para este estudiante no se haya subido.
+     * @param idTarea
+     * @param idEstudianteCurso
+     */
+    private void validarEstudianteCursoTarea(Long idTarea, Long idEstudianteCurso){
+        Optional<EstudianteCursoTareaEntity> optionalEstudianteCursoTareaEntity=
+                estudianteCursoTareaRepository.existeEstudianteCursoNotaTarea(idTarea,idEstudianteCurso);
+        if(optionalEstudianteCursoTareaEntity.isPresent()){
+            throw new NotCreatedInException("Ya subio la nota para esta tarea a este estudiante");
+        }
     }
 
     /**

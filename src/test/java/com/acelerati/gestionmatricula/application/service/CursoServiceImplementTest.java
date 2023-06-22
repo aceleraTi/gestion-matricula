@@ -10,28 +10,28 @@ import com.acelerati.gestionmatricula.infraestructure.entitys.SemestreAcademicoE
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotCreatedInException;
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotFoundItemsInException;
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotLoggedInException;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.web.client.RestTemplate;
-
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+
+import static com.acelerati.gestionmatricula.infraestructure.settings.Url.URL_GESTION_USUARIO;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class CursoServiceImplementTest {
@@ -172,13 +172,14 @@ public class CursoServiceImplementTest {
 
         Long idProfesor = 1L;
         Long idCurso = 1L;
-        String fooResourceUrl = "http://localhost:9080//api/1.0/usuarios/" + idProfesor;
+        //String fooResourceUrl = URL_GESTION_USUARIO + "/usuarios/" + idProfesor;
 
         Usuario user = new Usuario();
         user.setUsuarioId(1L);
         user.setTipoUsuario(3L);
 
-        when(this.restTemplate.getForObject(fooResourceUrl, Usuario.class)).thenReturn(user);
+       // when(this.restTemplate.getForObject(fooResourceUrl, Usuario.class)).thenReturn(user);
+        when(restTemplate.getForObject(any(String.class),eq(Usuario.class))).thenReturn(user);
         when(cursoRepository.findById(idCurso)).thenReturn(Optional.of(cursoEntityOut));
         when(cursoRepository.countProfesorCurso(cursoEntityOut)).thenReturn(true);
 
@@ -195,13 +196,14 @@ public class CursoServiceImplementTest {
     void asignarProfesorCasoValidarUsuarioEsProfesor() {
         Long idProfesor = 1L;
         Long idCurso = 1L;
-        String fooResourceUrl = "http://localhost:9080//api/1.0/usuarios/" + idProfesor;
+       // String fooResourceUrl = URL_GESTION_USUARIO + "/usuarios/" + idProfesor;
 
         Usuario user = new Usuario();
         user.setUsuarioId(1L);
         user.setTipoUsuario(2L);
 
-        when(this.restTemplate.getForObject(fooResourceUrl, Usuario.class)).thenReturn(user);
+       // when(this.restTemplate.getForObject(fooResourceUrl, Usuario.class)).thenReturn(user);
+        when(restTemplate.getForObject(any(String.class),eq(Usuario.class))).thenReturn(user);
         assertThrows(NotLoggedInException.class, () -> cursoService
                 .asignarProfesor(idCurso, idProfesor));
         verify(cursoRepository, never()).update(any(CursoEntity.class));
@@ -214,14 +216,14 @@ public class CursoServiceImplementTest {
 
         Long idProfesor = 1L;
         Long idCurso = 1L;
-        String fooResourceUrl = "http://localhost:9080//api/1.0/usuarios/" + idProfesor;
+        String fooResourceUrl = URL_GESTION_USUARIO + "/usuarios/" + idProfesor;
 
         Usuario user = new Usuario();
         user.setUsuarioId(1L);
         user.setTipoUsuario(3L);
 
-        when(this.restTemplate.getForObject(fooResourceUrl, Usuario.class)).thenReturn(user);
-
+       // when(this.restTemplate.getForObject(fooResourceUrl, Usuario.class)).thenReturn(user);
+        when(restTemplate.getForObject(any(String.class),eq(Usuario.class))).thenReturn(user);
         assertThrows(NotLoggedInException.class, () -> cursoService
                 .asignarProfesor(idCurso, idProfesor));
         verify(cursoRepository, never()).update(any(CursoEntity.class));
@@ -258,13 +260,14 @@ public class CursoServiceImplementTest {
 
         Long idProfesor = 1L;
         Long idCurso = 1L;
-        String fooResourceUrl = "http://localhost:9080//api/1.0/usuarios/" + idProfesor;
+       // String fooResourceUrl = URL_GESTION_USUARIO + "/usuarios/" + idProfesor;
 
         Usuario user = new Usuario();
         user.setUsuarioId(1L);
         user.setTipoUsuario(3L);
 
-        when(this.restTemplate.getForObject(fooResourceUrl, Usuario.class)).thenReturn(user);
+      //  when(this.restTemplate.getForObject(fooResourceUrl, Usuario.class)).thenReturn(user);
+        when(restTemplate.getForObject(any(String.class),eq(Usuario.class))).thenReturn(user);
         when(cursoRepository.findById(idCurso)).thenReturn(Optional.of(cursoEntityOut));
         when(cursoRepository.countProfesorCurso(cursoEntityOut)).thenReturn(false);
 

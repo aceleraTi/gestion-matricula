@@ -9,11 +9,14 @@ import com.acelerati.gestionmatricula.domain.model.repository.HorarioRepository;
 import com.acelerati.gestionmatricula.infraestructure.entitys.CursoEntity;
 import com.acelerati.gestionmatricula.infraestructure.entitys.HorarioEntity;
 import com.acelerati.gestionmatricula.infraestructure.exceptions.NotCreatedInException;
+import com.acelerati.gestionmatricula.infraestructure.exceptions.NotFoundItemsInException;
 import com.acelerati.gestionmatricula.infraestructure.rest.mappers.HorarioMapper;
+import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.acelerati.gestionmatricula.domain.util.Validaciones.validarLogged;
@@ -56,12 +59,26 @@ public class HorarioServiceImplement implements HorarioService {
      */
     @Override
     public Horario asignarHorario(Horario horario) {
-        CursoEntity cursoEntity=cursoRepository.findById(horario.getCurso().getId()).orElseThrow();
+        CursoEntity cursoEntity=validarCursoExiste(horario.getCurso().getId());
         HorarioEntity horarioEntity=alHorarioEntity(horario);
         horarioEntity.setCurso(cursoEntity);
         validarHorariosPermitidosCurso(horarioEntity);
         return alHorario(horarioRepository.asignarHorario(horarioEntity));
     }
+
+    /**
+     * Valida la existencia de un curso.
+     * @param idCurso
+     * @return
+     */
+    private CursoEntity validarCursoExiste(Long idCurso){
+        Optional<CursoEntity> cursoEntityOptional=cursoRepository.findById(idCurso);
+        if (cursoEntityOptional.isEmpty()){
+            throw new NotFoundItemsInException("El curso no existe");
+        }
+        return cursoEntityOptional.get();
+    }
+
 
     private void validarHorariosPermitidosCurso(HorarioEntity horarioEntity){
         if(!(horarioRepository.countHorariosCurso(horarioEntity)<5)){
