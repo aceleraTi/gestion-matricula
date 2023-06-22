@@ -28,6 +28,7 @@ public class SemestreAcademicoEntity {
     @Min(0)
     private Integer numero;
     @Min(2023)
+    @Column(name = "anio")
     private Integer año;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -37,7 +38,7 @@ public class SemestreAcademicoEntity {
 
     //__________________________________Relaciones____________________________
 
-    @OneToMany(mappedBy = "semestreAcademicoEntity",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "semestreAcademicoEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<CursoEntity> cursos;
 
 
