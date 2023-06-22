@@ -33,7 +33,7 @@ public class HorarioEntity {
     //__________________________________Relaciones____________________________
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="id_curso ")
+    @JoinColumn(name="id_curso")
     private CursoEntity curso;
 
 
