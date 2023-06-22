@@ -82,7 +82,7 @@ public class CursoController {
     public ResponseEntity<Usuario> setSession(@PathVariable("idUsuario") Long idUsuario, HttpSession session) {
 
         try{
-            Usuario usuario1= cursoRestTemplate.getForObject(URL_GESTION_USUARIO+"/api/v1/usuarios/"+idUsuario,Usuario.class);
+            Usuario usuario1= cursoRestTemplate.getForObject(URL_GESTION_USUARIO+"/usuarios/"+idUsuario,Usuario.class);
             session.setAttribute("usuario", usuario1);
             System.out.println(session.getAttribute("usuario"));
             return new ResponseEntity<>(usuario1, HttpStatus.OK);

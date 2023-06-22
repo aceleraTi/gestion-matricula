@@ -128,7 +128,7 @@ public class EstudianteCursoServiceImplement implements EstudianteCursoService {
      */
     private Materia obtenerMateria(Long idMateria) {
         try {
-            return restTemplate.getForObject(URL_GESTION_ACADEMICA + "/materias/" + idMateria, Materia.class);
+            return restTemplate.getForObject(URL_GESTION_ACADEMICA + "materias/" + idMateria, Materia.class);
         } catch (HttpServerErrorException exception) {
             throw new NotFoundItemsInException("Materia no encontrada");
         } catch (HttpClientErrorException exception) {
